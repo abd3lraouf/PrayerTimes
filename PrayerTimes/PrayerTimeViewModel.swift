@@ -306,7 +306,79 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         updateMenuTitle()
     }
     
-    func updateMenuTitle() { guard isPrayerDataAvailable else { self.menuTitle = NSAttributedString(string: "PrayerTimes Pro"); return }; var textToShow = ""; let localizedPrayerName = NSLocalizedString(nextPrayerName, comment: ""); switch menuBarTextMode { case .hidden: textToShow = ""; case .countdown: if useMinimalMenuBarText { textToShow = "\(localizedPrayerName) -\(countdown)" } else { textToShow = String(format: NSLocalizedString("prayer_in_countdown", comment: ""), localizedPrayerName, countdown) }; case .exactTime: var nextPrayerDate: Date?; if nextPrayerName == "Fajr" && todayTimes["Fajr"] ?? Date() < Date() { nextPrayerDate = tomorrowFajrTime } else { nextPrayerDate = todayTimes[nextPrayerName] }; guard let nextDate = nextPrayerDate else { textToShow = "PrayerTimes Pro"; break }; if useMinimalMenuBarText { textToShow = "\(localizedPrayerName) \(dateFormatter.string(from: nextDate))" } else { textToShow = String(format: NSLocalizedString("prayer_at_time", comment: ""), localizedPrayerName, dateFormatter.string(from: nextDate)) } }; let attributes: [NSAttributedString.Key: Any] = isPrayerImminent ? [.foregroundColor: NSColor.systemRed] : [:]; self.menuTitle = NSAttributedString(string: textToShow, attributes: attributes) }
+    // Helper function to create RTL-aware attributed strings
+    private func createMenuTitle(_ text: String, color: NSColor? = nil) -> NSAttributedString {
+        let isRTL = languageManager.isRTLEnabled
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = isRTL ? .right : .left
+        paragraphStyle.baseWritingDirection = isRTL ? .rightToLeft : .leftToRight
+        
+        var attributes: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: paragraphStyle,
+            .writingDirection: isRTL ? 
+                [NSWritingDirectionFormatType.override.rawValue | NSWritingDirection.rightToLeft.rawValue] : 
+                [NSWritingDirectionFormatType.override.rawValue | NSWritingDirection.leftToRight.rawValue]
+        ]
+        
+        if let color = color {
+            attributes[.foregroundColor] = color
+        }
+        
+        // Add bidirectional markers for RTL text with LTR numbers
+        let processedText: String
+        if isRTL {
+            // Add RLM (Right-to-Left Mark) and LRM (Left-to-Right Mark) for proper bidirectional display
+            // RLM = \u{200F}, LRM = \u{200E}
+            processedText = text
+        } else {
+            processedText = text
+        }
+        
+        return NSAttributedString(string: processedText, attributes: attributes)
+    }
+    
+    func updateMenuTitle() {
+        guard isPrayerDataAvailable else {
+            self.menuTitle = createMenuTitle("PrayerTimes Pro")
+            return
+        }
+        
+        var textToShow = ""
+        let localizedPrayerName = NSLocalizedString(nextPrayerName, comment: "")
+        
+        switch menuBarTextMode {
+        case .hidden:
+            textToShow = ""
+        case .countdown:
+            if useMinimalMenuBarText {
+                textToShow = "\(localizedPrayerName) -\(countdown)"
+            } else {
+                textToShow = String(format: NSLocalizedString("prayer_in_countdown", comment: ""), localizedPrayerName, countdown)
+            }
+        case .exactTime:
+            var nextPrayerDate: Date?
+            if nextPrayerName == "Fajr" && todayTimes["Fajr"] ?? Date() < Date() {
+                nextPrayerDate = tomorrowFajrTime
+            } else {
+                nextPrayerDate = todayTimes[nextPrayerName]
+            }
+            
+            guard let nextDate = nextPrayerDate else {
+                textToShow = "PrayerTimes Pro"
+                break
+            }
+            
+            if useMinimalMenuBarText {
+                textToShow = "\(localizedPrayerName) \(dateFormatter.string(from: nextDate))"
+            } else {
+                textToShow = String(format: NSLocalizedString("prayer_at_time", comment: ""), localizedPrayerName, dateFormatter.string(from: nextDate))
+            }
+        }
+        
+        let color: NSColor? = isPrayerImminent ? .systemRed : nil
+        self.menuTitle = createMenuTitle(textToShow, color: color)
+    }
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()

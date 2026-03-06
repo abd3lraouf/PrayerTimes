@@ -10,6 +10,13 @@ class LanguageManager: ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    // RTL language support
+    static let rtlLanguages = ["ar", "he", "fa", "ur"]
+    
+    var isRTLEnabled: Bool {
+        return Self.rtlLanguages.contains(language)
+    }
 }
 
 // View pembungkus ini akan menerapkan environment dan memaksa render ulang.
@@ -26,7 +33,7 @@ struct LanguageManagerView<Content: View>: View {
         content
             .environmentObject(manager)
             .environment(\.locale, Locale(identifier: manager.language))
-            .environment(\.layoutDirection, manager.language == "ar" ? .rightToLeft : .leftToRight)
+            .environment(\.layoutDirection, manager.isRTLEnabled ? .rightToLeft : .leftToRight)
             .id(manager.language) // Ini adalah kunci untuk memaksa render ulang!
     }
 }

@@ -101,6 +101,7 @@ public final class FluidMenuBarExtraStatusItem: NSObject, NSWindowDelegate {
     }
     
     public func updateTitle(to newTitle: NSAttributedString) {
+        // Set the attributed title with RTL support built into the string
         statusItem.button?.attributedTitle = newTitle
     }
 
