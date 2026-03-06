@@ -55,6 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             LanguageManagerView(manager: self.languageManager) {
                 ContentView()
                     .environmentObject(self.vm)
+                    .environmentObject(self.vm.notificationSettings)
                     .environmentObject(NavigationModel())
             }
         }
@@ -84,6 +85,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let onboardingView = LanguageManagerView(manager: languageManager) {
             OnboardingView()
                 .environmentObject(vm)
+                .environmentObject(vm.notificationSettings)
                 .environmentObject(NavigationModel())
         }
 
