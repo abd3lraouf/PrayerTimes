@@ -6,6 +6,7 @@ import NavigationStack
 
 struct MainView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var languageManager: LanguageManager
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
     @State private var isSettingsHovering = false

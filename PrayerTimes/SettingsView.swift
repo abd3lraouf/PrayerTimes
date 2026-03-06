@@ -4,7 +4,10 @@ import SwiftUI
 import NavigationStack
 
 struct SettingsView: View {
+    static let id = "SettingsStack"
+    
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var languageManager: LanguageManager
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
     @State private var isHeaderHovering = false

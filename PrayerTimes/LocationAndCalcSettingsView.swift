@@ -4,6 +4,8 @@ import SwiftUI
 import NavigationStack
 
 struct LocationAndCalcSettingsView: View {
+    static let id = "LocationAndCalcSettingsStack"
+    
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
