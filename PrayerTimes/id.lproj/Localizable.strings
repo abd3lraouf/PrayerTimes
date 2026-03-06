@@ -20,3 +20,8 @@
 "None" = "Tidak Ada";
 "Fade" = "Memudar";
 "Slide" = "Geser";
+
+/* Time units */
+"time_hour_abbrev" = "j";
+"time_minute_abbrev" = "m";
+"time_now" = "Sekarang";

@@ -289,14 +289,16 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             let numberFormatter = NumberFormatter()
             numberFormatter.locale = Locale(identifier: languageManager.language)
             let formattedM = numberFormatter.string(from: NSNumber(value: m + 1)) ?? "\(m + 1)"
+            let hourAbbr = NSLocalizedString("time_hour_abbrev", comment: "")
+            let minAbbr = NSLocalizedString("time_minute_abbrev", comment: "")
             if h > 0 {
                 let formattedH = numberFormatter.string(from: NSNumber(value: h)) ?? "\(h)"
-                countdown = "\(formattedH)h \(formattedM)m"
+                countdown = "\(formattedH)\(hourAbbr) \(formattedM)\(minAbbr)"
             } else {
-                countdown = "\(formattedM)m"
+                countdown = "\(formattedM)\(minAbbr)"
             }
         } else {
-            countdown = "Now"
+            countdown = NSLocalizedString("time_now", comment: "")
             if adhanSound == .custom, let soundPath = customAdhanSoundPath.removingPercentEncoding, let soundURL = URL(string: soundPath), soundURL.isFileURL, FileManager.default.fileExists(atPath: soundURL.path) {
                 adhanPlayer = NSSound(contentsOf: soundURL, byReference: true)
                 adhanPlayer?.play()
