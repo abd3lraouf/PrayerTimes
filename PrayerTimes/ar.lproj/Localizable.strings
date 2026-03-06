@@ -1,32 +1,141 @@
-/* Arabic */
-"Fajr" = "الفجر"; "Sunrise" = "الشروق"; "Dhuhr" = "الظهر"; "Asr" = "العصر"; "Maghrib" = "المغرب"; "Isha" = "العشاء"; "Tahajud" = "التهجد"; "Dhuha" = "الضحى";
-"Sajda Pro" = "سجدة برو"; "Settings" = "الإعدادات"; "About" = "عن التطبيق"; "Quit" = "خروج"; "Quit Sajda Pro" = "الخروج من سجدة برو"; "Done" = "تم"; "Cancel" = "إلغاء";
-"prayer_in_countdown" = "%@ بعد %@"; "prayer_at_time" = "%@ في %@"; "Location Required" = "الموقع مطلوب"; "Open System Settings" = "فتح إعدادات النظام"; "Allow Location Access" = "السماح بالوصول للموقع"; "Or, set location manually" = "أو, حدد الموقع يدويًا"; "Around" = "حوالي";
-"To provide accurate prayer times, Sajda Pro needs to know your location." = "لتوفير أوقات صلاة دقيقة، يحتاج سجدة برو إلى معرفة موقعك."; "Location access is already enabled." = "تم تفعيل الوصول إلى الموقع."; "Or, Set Location Manually" = "أو، حدد الموقع يدويًا"; "Please grant location access in System Settings." = "يرجى منح صلاحية الوصول للموقع من إعدادات النظام."; "You are using a manual location: **%@**" = "أنت تستخدم موقعًا يدويًا: **%@**"; "Switch to Automatic Location" = "التبديل إلى الموقع التلقائي"; "Change Manual Location" = "تغيير الموقع اليدوي"; "Show this window on launch" = "إظهار هذه النافذة عند التشغيل"; "Welcome to Sajda Pro" = "أهلاً بك في سجدة برو";
-"To get started, please provide your location for accurate prayer times." = "للبدء، يرجى تقديم موقعك للحصول على أوقات صلاة دقيقة."; "Using manual location: **%@**" = "تستخدم موقعًا يدويًا: **%@**"; "Location access is enabled." = "تم تفعيل الوصول إلى الموقع."; "Please grant access in System Settings." = "يرجى منح الوصول في إعدادات النظام.";
-"About Sajda Pro" = "عن سجدة برو"; "Version 3.1.1" = "الإصدار 3.1.1"; "by Abrar Zha" = "بواسطة Abrar Zha"; "Show Welcome Guide on Launch" = "إظهار دليل الترحيب عند التشغيل"; "Show Welcome Window" = "إظهار نافذة الترحيب";
-"General" = "عام"; "Language" = "اللغة"; "Display" = "العرض"; "Menu Bar Style" = "نمط شريط القائمة"; "Compact View" = "عرض مصغّر"; "24-Hour Time" = "تنسيق 24 ساعة"; "Minimal Menu Bar" = "شريط قوائم مصغّر"; "Accent Color" = "لون مميز"; "Show Sunnah Prayers" = "إظهار صلوات السنن";
-"Calculation" = "الحساب"; "Method" = "طريقة الحساب"; "Time Correction" = "تعديل التوقيت"; "Adjust" = "تعديل"; "Hanafi Madhhab (for Asr)" = "المذهب الحنفي (للعصر)"; "Location" = "الموقع"; "Manual:" = "يدوي:"; "Automatic:" = "تلقائي:"; "Use Automatic" = "استخدام التلقائي";
-"Adjust prayer times to match your local mosque. Hover over the number to reset." = "عدّل أوقات الصلاة لتطابق مسجدك المحلي. مرر الفأرة فوق الرقم لإعادة التعيين."; "Reset All to Default" = "إعادة تعيين الكل";
-"Set Location" = "تحديد الموقع"; "Search for a city or paste coordinates..." = "ابحث عن مدينة أو الصق الإحداثيات..."; "Set Location Manually" = "تحديد الموقع يدويًا"; "Start typing a city or paste coordinates." = "ابدأ بكتابة اسم مدينة أو الصق الإحداثيات."; "No results found." = "لم يتم العثور على نتائج.";
-"Calculation & Location" = "الحساب والموقع";
-"System & Notifications" = "النظام والإشعارات";
-"System" = "النظام"; "Run at Login" = "التشغيل عند تسجيل الدخول"; "Notifications" = "الإشعارات"; "Prayer Notifications" = "إشعارات الصلاة"; "Notification Sound" = "صوت الإشعار"; "Custom File" = "ملف مخصص"; "Browse..." = "استعراض..."; "No file selected" = "لم يتم اختيار ملف";
+/* Arabic - PrayerTimes Pro */
 
-/* New Onboarding Strings */
+/* Prayer Names */
+"Fajr" = "الفجر";
+"Sunrise" = "الشروق";
+"Dhuhr" = "الظهر";
+"Asr" = "العصر";
+"Maghrib" = "المغرب";
+"Isha" = "العشاء";
+"Tahajud" = "التهجد";
+"Dhuha" = "الضحى";
+
+/* App Name & Common */
+"PrayerTimes" = "أوقات الصلاة";
+"PrayerTimes Pro" = "أوقات الصلاة برو";
+"Settings" = "الإعدادات";
+"About" = "عن التطبيق";
+"Quit" = "خروج";
+"Done" = "تم";
+"Cancel" = "إلغاء";
+
+/* Menu Items */
+"Show Welcome Window" = "إظهار نافذة الترحيب";
+"Quit PrayerTimes Pro" = "الخروج من أوقات الصلاة برو";
+
+/* Time Format */
+"prayer_in_countdown" = "%@ بعد %@";
+"prayer_at_time" = "%@ في %@";
+"Around" = "حوالي";
+
+/* Time Units */
+"time_hour_abbrev" = "س";
+"time_minute_abbrev" = "د";
+"time_now" = "الآن";
+"Preparing prayer schedule..." = "جارٍ إعداد جدول الصلاة...";
+
+/* Location */
+"Location Required" = "الموقع مطلوب";
+"Location" = "الموقع";
+"Open System Settings" = "فتح إعدادات النظام";
+"Allow Location Access" = "السماح بالوصول للموقع";
+"Or, set location manually" = "أو، حدد الموقع يدويًا";
+"To provide accurate prayer times, PrayerTimes Pro needs to know your location." = "لتوفير أوقات صلاة دقيقة، يحتاج أوقات الصلاة برو إلى معرفة موقعك.";
+"Location access is already enabled." = "تم تفعيل الوصول إلى الموقع.";
+"Or, Set Location Manually" = "أو، حدد الموقع يدويًا";
+"Please grant location access in System Settings." = "يرجى منح صلاحية الوصول للموقع من إعدادات النظام.";
+"You are using a manual location: **%@**" = "أنت تستخدم موقعًا يدويًا: **%@**";
+"Switch to Automatic Location" = "التبديل إلى الموقع التلقائي";
+"Change Manual Location" = "تغيير الموقع اليدوي";
+"Manual:" = "يدوي:";
+"Automatic:" = "تلقائي:";
+"Use Automatic" = "استخدام التلقائي";
+"Custom Coordinate" = "إحداثيات مخصصة";
+"Fetching Location..." = "جارٍ جلب الموقع...";
+"Location access denied." = "تم رفض الوصول للموقع.";
+"Location access needed" = "الوصول للموقع مطلوب";
+"Unable to determine location." = "تعذر تحديد الموقع.";
+
+/* Onboarding */
+"Welcome to PrayerTimes Pro" = "أهلاً بك في أوقات الصلاة برو";
+"To get started, please provide your location for accurate prayer times." = "للبدء، يرجى تقديم موقعك للحصول على أوقات صلاة دقيقة.";
+"Show this window on launch" = "إظهار هذه النافذة عند التشغيل";
+"Show Welcome Guide on Launch" = "إظهار دليل الترحيب عند التشغيل";
 "Requesting Permission..." = "جارٍ طلب الإذن...";
 "Skip for now" = "تخطٍ في الوقت الحالي";
+
+/* About Screen */
+"About PrayerTimes Pro" = "عن أوقات الصلاة برو";
+"Version 1.0.1" = "الإصدار 1.0.1";
+"A simple and beautiful prayer times app for your menu bar." = "تطبيق بسيط وجميل لأوقات الصلاة في شريط القائمة.";
+"Credits" = "الاعتمادات";
+"Developed by: abd3lraouf" = "تطوير: abd3lraouf";
+"Based on: Sajda by Abrar Zha" = "بناءً على: سجدة بواسطة Abrar Zha";
+
+/* Display Settings */
+"Display" = "العرض";
+"Language" = "اللغة";
+"Menu Bar Style" = "نمط شريط القائمة";
+"Compact View" = "عرض مصغّر";
+"24-Hour Time" = "تنسيق 24 ساعة";
+"Minimal Menu Bar" = "شريط قوائم مصغّر";
+"Accent Color" = "لون مميز";
+"Show Sunnah Prayers" = "إظهار صلوات السنن";
+
+/* Menu Bar Style Options */
+"Countdown" = "العد التنازلي";
+"Exact Time" = "الوقت المحدد";
+"Icon Only" = "الأيقونة فقط";
+
+/* Calculation & Location Settings */
+"Calculation & Location" = "الحساب والموقع";
+"Calculation" = "الحساب";
+"Method" = "طريقة الحساب";
+"Time Correction" = "تعديل التوقيت";
+"Adjust" = "تعديل";
+"Hanafi Madhhab (for Asr)" = "المذهب الحنفي (للعصر)";
+"Adjust prayer times to match your local mosque. Hover over the number to reset." = "عدّل أوقات الصلاة لتطابق مسجدك المحلي. مرر الفأرة فوق الرقم لإعادة التعيين.";
+"Reset All to Default" = "إعادة تعيين الكل";
+
+/* System & Notifications Settings */
+"System & Notifications" = "النظام والإشعارات";
+"System" = "النظام";
+"Run at Login" = "التشغيل عند تسجيل الدخول";
 "Animation Style" = "نمط التحريك";
+"Notifications" = "الإشعارات";
+"Prayer Notifications" = "إشعارات الصلاة";
+"Notification Sound" = "صوت الإشعار";
+"Custom File" = "ملف مخصص";
+"Browse..." = "استعراض...";
+"No file selected" = "لم يتم اختيار ملف";
+
+/* Animation Types */
 "None" = "بدون";
 "Fade" = "تلاشي";
 "Slide" = "انزلاق";
 
-/* Time units */
-"time_hour_abbrev" = "س";
-"time_minute_abbrev" = "د";
-"time_now" = "الآن";
+/* Adhan Sound Options */
+"No Sound" = "بدون صوت";
+"Default Beep" = "صوت افتراضي";
+"Custom Sound" = "صوت مخصص";
 
-/* Menu Bar Style options */
-"Countdown" = "العد التنازلي";
-"Exact Time" = "الوقت المحدد";
-"Icon Only" = "الأيقونة فقط";
+/* Manual Location */
+"Set Location" = "تحديد الموقع";
+"Search for a city or paste coordinates..." = "ابحث عن مدينة أو الصق الإحداثيات...";
+"Set Location Manually" = "تحديد الموقع يدويًا";
+"Start typing a city or paste coordinates." = "ابدأ بكتابة اسم مدينة أو الصق الإحداثيات.";
+"No results found." = "لم يتم العثور على نتائج.";
+"Search is powered by OpenStreetMap." = "البحث مدعوم بواسطة OpenStreetMap.";
+
+/* Prayer Time Alert */
+"Break Time is Over" = "انتهى وقت الراحة";
+"Time to begin your next activity." = "حان وقت بدء نشاطك التالي.";
+"Dismiss" = "إغلاق";
+
+/* Notification */
+"It's time for the %@ prayer." = "حان وقت صلاة %@.";
+
+/* Language Options */
+"English" = "الإنجليزية";
+"العربية" = "العربية";
+"Indonesia" = "الإندونيسية";

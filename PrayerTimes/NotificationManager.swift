@@ -1,5 +1,3 @@
-// MARK: - PASTIKAN FILE INI (NotificationManager.swift) BERISI KODE DI BAWAH INI.
-
 import Foundation
 import UserNotifications
 
@@ -26,8 +24,9 @@ struct NotificationManager {
             
             if prayerTime > Date() {
                 let content = UNMutableNotificationContent()
-                content.title = prayerName
-                content.body = "It's time for the \(prayerName) prayer."
+                let localizedPrayerName = NSLocalizedString(prayerName, comment: "")
+                content.title = localizedPrayerName
+                content.body = String(format: NSLocalizedString("It's time for the %@ prayer.", comment: ""), localizedPrayerName)
                 
                 switch adhanSound {
                 case .none:
@@ -35,7 +34,7 @@ struct NotificationManager {
                 case .defaultBeep:
                     content.sound = UNNotificationSound.default
                 case .custom:
-                    content.sound = nil // ViewModel akan memutar suara secara terpisah
+                    content.sound = nil
                 }
 
                 let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: prayerTime)

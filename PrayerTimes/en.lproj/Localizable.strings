@@ -1,32 +1,141 @@
-/* English */
-"Fajr" = "Fajr"; "Sunrise" = "Sunrise"; "Dhuhr" = "Dhuhr"; "Asr" = "Asr"; "Maghrib" = "Maghrib"; "Isha" = "Isha"; "Tahajud" = "Tahajud"; "Dhuha" = "Dhuha";
-"Sajda Pro" = "Sajda Pro"; "Settings" = "Settings"; "About" = "About"; "Quit" = "Quit"; "Quit Sajda Pro" = "Quit Sajda Pro"; "Done" = "Done"; "Cancel" = "Cancel";
-"prayer_in_countdown" = "%@ in %@"; "prayer_at_time" = "%@ at %@"; "Location Required" = "Location Required"; "Open System Settings" = "Open System Settings"; "Allow Location Access" = "Allow Location Access"; "Or, set location manually" = "Or, set location manually"; "Around" = "Around";
-"To provide accurate prayer times, Sajda Pro needs to know your location." = "To provide accurate prayer times, Sajda Pro needs to know your location."; "Location access is already enabled." = "Location access is already enabled."; "Or, Set Location Manually" = "Or, Set Location Manually"; "Please grant location access in System Settings." = "Please grant location access in System Settings."; "You are using a manual location: **%@**" = "You are using a manual location: **%@**"; "Switch to Automatic Location" = "Switch to Automatic Location"; "Change Manual Location" = "Change Manual Location"; "Show this window on launch" = "Show this window on launch"; "Welcome to Sajda Pro" = "Welcome to Sajda Pro";
-"To get started, please provide your location for accurate prayer times." = "To get started, please provide your location for accurate prayer times."; "Using manual location: **%@**" = "Using manual location: **%@**"; "Location access is enabled." = "Location access is enabled."; "Please grant access in System Settings." = "Please grant access in System Settings.";
-"About Sajda Pro" = "About Sajda Pro"; "Version 3.1.1" = "Version 3.1.1"; "by Abrar Zha" = "by Abrar Zha"; "Show Welcome Guide on Launch" = "Show Welcome Guide on Launch"; "Show Welcome Window" = "Show Welcome Window";
-"General" = "General"; "Language" = "Language"; "Display" = "Display"; "Menu Bar Style" = "Menu Bar Style"; "Compact View" = "Compact View"; "24-Hour Time" = "24-Hour Time"; "Minimal Menu Bar" = "Minimal Menu Bar"; "Accent Color" = "Accent Color"; "Show Sunnah Prayers" = "Show Sunnah Prayers";
-"Calculation" = "Calculation"; "Method" = "Method"; "Time Correction" = "Time Correction"; "Adjust" = "Adjust"; "Hanafi Madhhab (for Asr)" = "Hanafi Madhhab (for Asr)"; "Location" = "Location"; "Manual:" = "Manual:"; "Automatic:" = "Automatic:"; "Use Automatic" = "Use Automatic";
-"Adjust prayer times to match your local mosque. Hover over the number to reset." = "Adjust prayer times to match your local mosque. Hover over the number to reset."; "Reset All to Default" = "Reset All to Default";
-"Set Location" = "Set Location"; "Search for a city or paste coordinates..." = "Search for a city or paste coordinates..."; "Set Location Manually" = "Set Location Manually"; "Start typing a city or paste coordinates." = "Start typing a city or paste coordinates."; "No results found." = "No results found.";
-"Calculation & Location" = "Calculation & Location";
-"System & Notifications" = "System & Notifications";
-"System" = "System"; "Run at Login" = "Run at Login"; "Notifications" = "Notifications"; "Prayer Notifications" = "Prayer Notifications"; "Notification Sound" = "Notification Sound"; "Custom File" = "Custom File"; "Browse..." = "Browse..."; "No file selected" = "No file selected";
+/* English - PrayerTimes Pro */
 
-/* New Onboarding Strings */
+/* Prayer Names */
+"Fajr" = "Fajr";
+"Sunrise" = "Sunrise";
+"Dhuhr" = "Dhuhr";
+"Asr" = "Asr";
+"Maghrib" = "Maghrib";
+"Isha" = "Isha";
+"Tahajud" = "Tahajud";
+"Dhuha" = "Dhuha";
+
+/* App Name & Common */
+"PrayerTimes" = "PrayerTimes";
+"PrayerTimes Pro" = "PrayerTimes Pro";
+"Settings" = "Settings";
+"About" = "About";
+"Quit" = "Quit";
+"Done" = "Done";
+"Cancel" = "Cancel";
+
+/* Menu Items */
+"Show Welcome Window" = "Show Welcome Window";
+"Quit PrayerTimes Pro" = "Quit PrayerTimes Pro";
+
+/* Time Format */
+"prayer_in_countdown" = "%@ in %@";
+"prayer_at_time" = "%@ at %@";
+"Around" = "Around";
+
+/* Time Units */
+"time_hour_abbrev" = "h";
+"time_minute_abbrev" = "m";
+"time_now" = "Now";
+"Preparing prayer schedule..." = "Preparing prayer schedule...";
+
+/* Location */
+"Location Required" = "Location Required";
+"Location" = "Location";
+"Open System Settings" = "Open System Settings";
+"Allow Location Access" = "Allow Location Access";
+"Or, set location manually" = "Or, set location manually";
+"To provide accurate prayer times, PrayerTimes Pro needs to know your location." = "To provide accurate prayer times, PrayerTimes Pro needs to know your location.";
+"Location access is already enabled." = "Location access is already enabled.";
+"Or, Set Location Manually" = "Or, Set Location Manually";
+"Please grant location access in System Settings." = "Please grant location access in System Settings.";
+"You are using a manual location: **%@**" = "You are using a manual location: **%@**";
+"Switch to Automatic Location" = "Switch to Automatic Location";
+"Change Manual Location" = "Change Manual Location";
+"Manual:" = "Manual:";
+"Automatic:" = "Automatic:";
+"Use Automatic" = "Use Automatic";
+"Custom Coordinate" = "Custom Coordinate";
+"Fetching Location..." = "Fetching Location...";
+"Location access denied." = "Location access denied.";
+"Location access needed" = "Location access needed";
+"Unable to determine location." = "Unable to determine location.";
+
+/* Onboarding */
+"Welcome to PrayerTimes Pro" = "Welcome to PrayerTimes Pro";
+"To get started, please provide your location for accurate prayer times." = "To get started, please provide your location for accurate prayer times.";
+"Show this window on launch" = "Show this window on launch";
+"Show Welcome Guide on Launch" = "Show Welcome Guide on Launch";
 "Requesting Permission..." = "Requesting Permission...";
 "Skip for now" = "Skip for now";
+
+/* About Screen */
+"About PrayerTimes Pro" = "About PrayerTimes Pro";
+"Version 1.0.1" = "Version 1.0.1";
+"A simple and beautiful prayer times app for your menu bar." = "A simple and beautiful prayer times app for your menu bar.";
+"Credits" = "Credits";
+"Developed by: abd3lraouf" = "Developed by: abd3lraouf";
+"Based on: Sajda by Abrar Zha" = "Based on: Sajda by Abrar Zha";
+
+/* Display Settings */
+"Display" = "Display";
+"Language" = "Language";
+"Menu Bar Style" = "Menu Bar Style";
+"Compact View" = "Compact View";
+"24-Hour Time" = "24-Hour Time";
+"Minimal Menu Bar" = "Minimal Menu Bar";
+"Accent Color" = "Accent Color";
+"Show Sunnah Prayers" = "Show Sunnah Prayers";
+
+/* Menu Bar Style Options */
+"Countdown" = "Countdown";
+"Exact Time" = "Exact Time";
+"Icon Only" = "Icon Only";
+
+/* Calculation & Location Settings */
+"Calculation & Location" = "Calculation & Location";
+"Calculation" = "Calculation";
+"Method" = "Method";
+"Time Correction" = "Time Correction";
+"Adjust" = "Adjust";
+"Hanafi Madhhab (for Asr)" = "Hanafi Madhhab (for Asr)";
+"Adjust prayer times to match your local mosque. Hover over the number to reset." = "Adjust prayer times to match your local mosque. Hover over the number to reset.";
+"Reset All to Default" = "Reset All to Default";
+
+/* System & Notifications Settings */
+"System & Notifications" = "System & Notifications";
+"System" = "System";
+"Run at Login" = "Run at Login";
 "Animation Style" = "Animation Style";
+"Notifications" = "Notifications";
+"Prayer Notifications" = "Prayer Notifications";
+"Notification Sound" = "Notification Sound";
+"Custom File" = "Custom File";
+"Browse..." = "Browse...";
+"No file selected" = "No file selected";
+
+/* Animation Types */
 "None" = "None";
 "Fade" = "Fade";
 "Slide" = "Slide";
 
-/* Time units */
-"time_hour_abbrev" = "h";
-"time_minute_abbrev" = "m";
-"time_now" = "Now";
+/* Adhan Sound Options */
+"No Sound" = "No Sound";
+"Default Beep" = "Default Beep";
+"Custom Sound" = "Custom Sound";
 
-/* Menu Bar Style options */
-"Countdown" = "Countdown";
-"Exact Time" = "Exact Time";
-"Icon Only" = "Icon Only";
+/* Manual Location */
+"Set Location" = "Set Location";
+"Search for a city or paste coordinates..." = "Search for a city or paste coordinates...";
+"Set Location Manually" = "Set Location Manually";
+"Start typing a city or paste coordinates." = "Start typing a city or paste coordinates.";
+"No results found." = "No results found.";
+"Search is powered by OpenStreetMap." = "Search is powered by OpenStreetMap.";
+
+/* Prayer Time Alert */
+"Break Time is Over" = "Break Time is Over";
+"Time to begin your next activity." = "Time to begin your next activity.";
+"Dismiss" = "Dismiss";
+
+/* Notification */
+"It's time for the %@ prayer." = "It's time for the %@ prayer.";
+
+/* Language Options */
+"English" = "English";
+"العربية" = "العربية";
+"Indonesia" = "Indonesia";

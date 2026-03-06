@@ -64,21 +64,28 @@ struct AboutView: View {
                                 .fontWeight(.semibold)
                                 .foregroundColor(Color("SecondaryTextColor"))
                             
-                            VStack(spacing: 4) {
-                                Text("Original Author: Abrar Zha")
-                                    .font(.caption2)
-                                    .foregroundColor(Color("SecondaryTextColor"))
+                            VStack(spacing: 8) {
+                                Text("Developed by: abd3lraouf")
+                                    .font(.caption)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(.primary)
                                 
-                                if let originalURL = URL(string: "https://github.com/ikoshura/Sajda") {
-                                    Link("github.com/ikoshura/Sajda", destination: originalURL)
+                                if let currentURL = URL(string: "https://github.com/abd3lraouf/PrayerTimes") {
+                                    Link("github.com/abd3lraouf/PrayerTimes", destination: currentURL)
                                         .font(.caption2)
                                         .foregroundColor(.accentColor)
                                 }
                                 
-                                Text("Maintained by: abd3lraouf")
+                                Text("Based on: Sajda by Abrar Zha")
                                     .font(.caption2)
                                     .foregroundColor(Color("SecondaryTextColor"))
-                                    .padding(.top, 2)
+                                    .padding(.top, 4)
+                                
+                                if let originalURL = URL(string: "https://github.com/ikoshura/Sajda") {
+                                    Link("github.com/ikoshura/Sajda", destination: originalURL)
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
                         .padding(.horizontal, 16)
