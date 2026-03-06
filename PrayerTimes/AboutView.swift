@@ -41,13 +41,45 @@ struct AboutView: View {
                         Image(nsImage: NSImage(named: "AppIcon") ?? NSImage())
                             .resizable().scaledToFit().frame(width: 64, height: 64)
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        VStack(spacing: 2) {
-                            Text("PrayerTimes Pro").font(.title2).fontWeight(.bold)
-                            Text("Version 3.1.1").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-                            Text("by Abrar Zha").font(.caption).foregroundColor(Color("SecondaryTextColor"))
+                        VStack(spacing: 4) {
+                            Text("PrayerTimes").font(.title2).fontWeight(.bold)
+                            Text("Version 1.0.1").font(.caption).foregroundColor(Color("SecondaryTextColor"))
                         }
                         Text("A simple and beautiful prayer times app for your menu bar.").font(.subheadline)
-                            .multilineTextAlignment(.center).padding(.horizontal)
+                            .multilineTextAlignment(.center).padding(.horizontal, 12)
+                    }
+                    
+                    // Attribution Section
+                    VStack(spacing: 8) {
+                        Rectangle()
+                            .fill(Color("DividerColor"))
+                            .frame(height: 0.5)
+                            .padding(.horizontal, 12)
+                        
+                        VStack(spacing: 6) {
+                            Text("Credits")
+                                .font(.caption)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color("SecondaryTextColor"))
+                            
+                            VStack(spacing: 4) {
+                                Text("Original Author: Abrar Zha")
+                                    .font(.caption2)
+                                    .foregroundColor(Color("SecondaryTextColor"))
+                                
+                                if let originalURL = URL(string: "https://github.com/ikoshura/Sajda") {
+                                    Link("github.com/ikoshura/Sajda", destination: originalURL)
+                                        .font(.caption2)
+                                        .foregroundColor(.accentColor)
+                                }
+                                
+                                Text("Maintained by: abd3lraouf")
+                                    .font(.caption2)
+                                    .foregroundColor(Color("SecondaryTextColor"))
+                                    .padding(.top, 2)
+                            }
+                        }
+                        .padding(.horizontal, 16)
                     }
                     // --- PERUBAHAN DI SINI ---
                     // Mengganti tombol kustom dengan tombol native macOS.

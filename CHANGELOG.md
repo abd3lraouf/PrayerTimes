@@ -5,6 +5,15 @@ All notable changes to PrayerTimes will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-03-06
+
+### Fixed
+- **RTL (Right-to-Left) text display in menu bar** - Fixed reversed icons and text when Arabic language is enabled
+  - Added proper bidirectional text support for Arabic, Hebrew, Farsi, and Urdu
+  - Prayer names now display correctly from right-to-left
+  - Numbers and times maintain left-to-right direction within RTL context
+  - Improved text alignment and icon positioning for RTL languages
+
 ## [1.0.0] - 2026-03-06
 
 ### Added
