@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/abd3lraouf/PrayerTimes">
-        <img width="128" height="128" src="https://github.com/user-attachments/assets/6e8bd922-a446-4b33-a184-e5e89493a4b1" style="filter: drop-shadow(0px 2px 4px rgba(80, 50, 6, 0.2));">
+        <img width="128" height="128" src="assets/icon.png" style="filter: drop-shadow(0px 2px 4px rgba(80, 50, 6, 0.2));">
     </a>
     <h1 align="center"><code style="text-shadow: 0px 3px 10px rgba(8, 0, 6, 0.35); font-size: 3rem; font-family: ui-monospace, Menlo, monospace; font-weight: 800; background: transparent; color: #4d3e56; padding: 0.2rem 0.2rem; border-radius: 6px">PrayerTimes</code></h1>
     <h4 align="center" style="padding: 0; margin: 0; font-family: ui-monospace, monospace;">A minimalist prayer times app for macOS</h4>
