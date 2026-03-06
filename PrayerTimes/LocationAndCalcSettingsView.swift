@@ -4,11 +4,9 @@ import SwiftUI
 import NavigationStack
 
 struct LocationAndCalcSettingsView: View {
-    static let id = "LocationAndCalcSettingsStack"
-
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
-    
+    @Environment(\.layoutDirection) var layoutDirection
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {
@@ -22,7 +20,8 @@ struct LocationAndCalcSettingsView: View {
                     navigationModel.hideView(SettingsView.id, animation: vm.backwardAnimation())
                 }) {
                     HStack {
-                        Image(systemName: "chevron.left").font(.body.weight(.semibold))
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
+                            .font(.body.weight(.semibold))
                         Text("Calculation & Location").font(.body).fontWeight(.bold)
                         Spacer()
                     }

@@ -7,6 +7,7 @@ import NavigationStack
 struct MainView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
+    @Environment(\.layoutDirection) var layoutDirection
     @State private var isSettingsHovering = false
     @State private var isAboutHovering = false
     @State private var isQuitHovering = false
@@ -48,7 +49,13 @@ struct MainView: View {
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { SettingsView() }
                 }) {
-                    HStack { Text("Settings"); Spacer(); Image(systemName: "chevron.right").font(.caption.weight(.bold)).foregroundColor(.secondary) }
+                    HStack { 
+                        Text("Settings"); 
+                        Spacer(); 
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                            .font(.caption.weight(.bold))
+                            .foregroundColor(.secondary)
+                    }
                         .padding(.vertical, 5).padding(.horizontal, 8)
                         .background(isSettingsHovering ? Color("HoverColor") : .clear)
                         .cornerRadius(5)
@@ -62,7 +69,13 @@ struct MainView: View {
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { AboutView() }
                 }) {
-                    HStack { Text("About"); Spacer(); Image(systemName: "chevron.right").font(.caption.weight(.bold)).foregroundColor(.secondary) }
+                    HStack { 
+                        Text("About"); 
+                        Spacer(); 
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                            .font(.caption.weight(.bold))
+                            .foregroundColor(.secondary)
+                    }
                         .padding(.vertical, 5).padding(.horizontal, 8)
                         .background(isAboutHovering ? Color("HoverColor") : .clear)
                         .cornerRadius(5)

@@ -7,6 +7,7 @@ import NavigationStack
 struct ManualLocationView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
+    @Environment(\.layoutDirection) var layoutDirection
     
     let isModal: Bool
     
@@ -21,7 +22,8 @@ struct ManualLocationView: View {
         VStack(alignment: .leading, spacing: 6) {
             Button(action: handleBackButton) {
                 HStack {
-                    Image(systemName: "chevron.left").font(.body.weight(.semibold))
+                    Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
+                        .font(.body.weight(.semibold))
                     Text(LocalizedStringKey("Set Location")).font(.body).fontWeight(.bold)
                     Spacer()
                 }

@@ -9,7 +9,8 @@ struct AboutView: View {
     
     @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
     @State private var isHeaderHovering = false
-    // State isDoneHovering sudah dihapus karena tidak lagi diperlukan.
+    
+    @Environment(\.layoutDirection) var layoutDirection
     
     private var viewWidth: CGFloat {
         return vm.useCompactLayout ? 220 : 260
@@ -22,7 +23,8 @@ struct AboutView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Button(action: handleBackButton) {
                     HStack {
-                        Image(systemName: "chevron.left").font(.body.weight(.semibold))
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
+                            .font(.body.weight(.semibold))
                         Text("About PrayerTimes Pro").font(.body).fontWeight(.bold)
                         Spacer()
                     }
@@ -81,8 +83,7 @@ struct AboutView: View {
                         }
                         .padding(.horizontal, 16)
                     }
-                    // --- PERUBAHAN DI SINI ---
-                    // Mengganti tombol kustom dengan tombol native macOS.
+                    
                     Rectangle()
                         .fill(Color("DividerColor"))
                         .frame(height: 1)
@@ -94,11 +95,11 @@ struct AboutView: View {
 
                         Button(action: handleBackButton) {
                             Text("Done")
-                                .frame(maxWidth: 100) // Memberikan lebar yang cukup
+                                .frame(maxWidth: 100)
                         }
-                        .buttonStyle(.borderedProminent) // Gaya native yang menonjol
-                        .controlSize(.regular) // Ukuran tombol standar
-                        .keyboardShortcut(.defaultAction) // Menjadikannya aksi default (Enter)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.regular)
+                        .keyboardShortcut(.defaultAction)
                     }
                     .padding(.bottom, 12)
                     

@@ -8,6 +8,7 @@ struct SystemAndNotificationsSettingsView: View {
 
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
+    @Environment(\.layoutDirection) var layoutDirection
     
     @AppStorage("launchAtLogin") private var launchAtLogin = false
     @State private var isHeaderHovering = false
@@ -23,7 +24,8 @@ struct SystemAndNotificationsSettingsView: View {
                     navigationModel.hideView(SettingsView.id, animation: vm.backwardAnimation())
                 }) {
                     HStack {
-                        Image(systemName: "chevron.left").font(.body.weight(.semibold))
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
+                            .font(.body.weight(.semibold))
                         Text("System & Notifications").font(.body).fontWeight(.bold)
                         Spacer()
                     }
