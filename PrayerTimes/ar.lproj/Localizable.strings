@@ -25,3 +25,8 @@
 "time_hour_abbrev" = "س";
 "time_minute_abbrev" = "د";
 "time_now" = "الآن";
+
+/* Menu Bar Style options */
+"Countdown" = "العد التنازلي";
+"Exact Time" = "الوقت المحدد";
+"Icon Only" = "الأيقونة فقط";

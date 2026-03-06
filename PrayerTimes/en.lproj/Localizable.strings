@@ -25,3 +25,8 @@
 "time_hour_abbrev" = "h";
 "time_minute_abbrev" = "m";
 "time_now" = "Now";
+
+/* Menu Bar Style options */
+"Countdown" = "Countdown";
+"Exact Time" = "Exact Time";
+"Icon Only" = "Icon Only";

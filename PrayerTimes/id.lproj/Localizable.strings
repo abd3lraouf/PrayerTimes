@@ -25,3 +25,8 @@
 "time_hour_abbrev" = "j";
 "time_minute_abbrev" = "m";
 "time_now" = "Sekarang";
+
+/* Menu Bar Style options */
+"Countdown" = "Hitung Mundur";
+"Exact Time" = "Waktu Tepat";
+"Icon Only" = "Hanya Ikon";
