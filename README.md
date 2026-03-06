@@ -161,7 +161,7 @@ You can verify the app's safety by checking its signature and entitlements:
 
 **Check if the app is sandboxed:**
 ```bash
-codesign -d --entitlements :- /Applications/PrayerTimes.app
+codesign -d --entitlements - /Applications/PrayerTimes.app
 ```
 
 You should see `com.apple.security.app-sandbox` which confirms the app is properly sandboxed and can't access your system.
