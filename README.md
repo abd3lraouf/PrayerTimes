@@ -1,155 +1,116 @@
-# PrayerTimes - A Minimalist Prayer Times App for macOS
+<p align="center">
+    <a href="https://github.com/abd3lraouf/PrayerTimes">
+        <img width="128" height="128" src="https://github.com/user-attachments/assets/6e8bd922-a446-4b33-a184-e5e89493a4b1" style="filter: drop-shadow(0px 2px 4px rgba(80, 50, 6, 0.2));">
+    </a>
+    <h1 align="center"><code style="text-shadow: 0px 3px 10px rgba(8, 0, 6, 0.35); font-size: 3rem; font-family: ui-monospace, Menlo, monospace; font-weight: 800; background: transparent; color: #4d3e56; padding: 0.2rem 0.2rem; border-radius: 6px">PrayerTimes</code></h1>
+    <h4 align="center" style="padding: 0; margin: 0; font-family: ui-monospace, monospace;">A minimalist prayer times app for macOS</h4>
+    <h6 align="center" style="padding: 0; margin: 0; font-family: ui-monospace, monospace; font-weight: 400;">Simple, beautiful, and always in your menu bar</h6>
+</p>
 
-> **Note:** This is a renamed version of [Sajda](https://github.com/ikoshura/Sajda), originally created by [ikoshura](https://github.com/ikoshura). All credit for the original work goes to the original author.
+<p align="center">
+    <a href="#installation">
+        <img width=200 src="https://files.lowtechguys.com/macos-app.svg">
+    </a>
+</p>
 
-![PrayerTimes App Screenshot](https://github.com/user-attachments/assets/6e8bd922-a446-4b33-a184-e5e89493a4b1) 
+---
 
-## About The Project
+## Prayer times at a glance
 
-As a Muslim working on a Mac, I simply wanted a prayer app that felt as clean and calm as macOS itself. Many of the options available felt cluttered or didn't quite fit the native experience I was looking for.
+PrayerTimes lives in your **menu bar**, showing accurate prayer schedules and gentle reminders throughout your day.
 
-That's why I built PrayerTimes. It’s a simple and beautiful prayer times app for your menu bar. It delivers accurate schedules and gentle reminders directly on your desktop. It’s designed to be present when you need it and invisible when you don’t, helping you integrate moments of prayer into your day without distraction.
+It's designed to be **present when you need it** and **invisible when you don't**, helping you integrate moments of prayer into your workflow without distraction.
 
-This project is fully open-source. I built it to solve my own problem, and I hope you find it useful too.
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/6e8bd922-a446-4b33-a184-e5e89493a4b1" alt="PrayerTimes Screenshot" width="600">
+</p>
 
 ## Features
 
-PrayerTimes is designed to be simple on the surface but powerful and deeply customizable when you need it.
+### Accurate prayer times
+* **Smart location detection** - Automatically finds your location for precise prayer times
+* **Manual location** - Search any city or enter coordinates manually
+* **Multiple calculation methods** - MWL, ISNA, Umm al-Qura, Kemenag, Diyanet, and more
+* **Time correction** - Adjust each prayer time ±60 minutes to match your local mosque
+* **Hanafi Asr** - Toggle for Hanafi madhhab Asr calculation
 
-#### ✨ Native Look & Feel
-*   **Menu Bar Native:** Lives entirely in the menu bar, saving screen space and staying out of your way.
-*   **SwiftUI Built:** A modern, fast, and efficient app built with the latest Apple technologies.
-*   **Light & Dark Mode:** Automatically adapts to your system's appearance.
-*   **No Dock Icon:** Runs as a quiet background agent (`LSUIElement`), just like a proper menu bar utility.
-*   **Polished Onboarding:** A beautiful and helpful welcome guide to get you started.
+### Beautiful & native
+* **Menu bar native** - Lives in your menu bar, saving screen space
+* **SwiftUI built** - Modern, fast, and efficient with native macOS feel
+* **Light & dark mode** - Adapts to your system appearance automatically
+* **No dock icon** - Runs quietly in the background as a proper menu bar utility
+* **Polished onboarding** - Helpful welcome guide to get started
 
-#### 🕌 Accurate & Flexible Prayer Times
-*   **Smart Location:** Automatically detects your location for precise prayer times.
-*   **Manual Location:** Search for and set any city in the world, or input latitude/longitude coordinates directly.
-*   **Trusted Calculation Methods:** Choose from a wide range of standard methods (MWL, ISNA, Umm al-Qura, Kemenag, Diyanet, etc.).
-*   **Hanafi Madhhab:** A dedicated toggle to adjust the Asr prayer time.
-*   **Precision Time Correction:** Manually adjust *each* of the five daily prayers (+/- 60 minutes) to perfectly match your local mosque.
-*   **Smart Timezone Handling:** Automatically applies the correct timezone for any manually set location.
+### Deep customization
+* **Flexible menu bar display**:
+  - Simple moon icon
+  - Countdown timer (`Asr in 24m`)
+  - Exact time (`Maghrib at 6:05 PM`)
+  - Compact mode (`Asr -2h 4m`)
+* **Optional sunnah prayers** - Show/hide Tahajud and Dhuha times
+* **Custom animations** - Fade, slide, or instant transitions
+* **Native accent colors** - Uses your Mac's system accent color
 
-#### 🛠️ Deep Customization
-*   **Customizable Menu Bar:** Choose exactly what you see:
-    *   A simple moon icon.
-    *   A countdown to the next prayer (`Asr in 24m`).
-    *   The exact time of the next prayer (`Maghrib at 6:05 PM`).
-    *   A compact, minimal text style (`Asr -2h 4m`).
-*   **Optional Sunnah Prayers:** Choose to show or hide the times for Tahajud and Dhuha.
-*   **Selectable Animations:** Choose between a modern "Fade," a classic "Slide," or "None" for instant transitions.
-*   **Native Accent Color:** Uses your Mac's own system accent color to highlight the next prayer for a beautifully integrated feel.
-
-#### 🔔 System Integration
-*   **Native Notifications:** Get gentle, standard macOS notifications to remind you before each prayer begins.
-*   **Custom Sounds:** Choose between the default beep, no sound, or select your own custom audio file for notifications.
-*   **Run at Login:** Set it once and forget it. PrayerTimes can launch automatically and silently every time you start your Mac.
-*   **Multi-Language Support:** Full interface localization for English, Arabic (العربية), and Indonesian, including proper Right-to-Left (RTL) support.
-
----
+### System integration
+* **Native notifications** - Gentle reminders before each prayer
+* **Custom sounds** - Default beep, no sound, or your own audio file
+* **Launch at login** - Starts automatically and silently
+* **Multi-language** - English, Arabic (العربية), and Indonesian with RTL support
 
 ## Installation
 
-**➡️ [Download PrayerTimes Pro on Gumroad](https://ikoshura.gumroad.com/l/prayertimes)**
-Or check out the [Releases page on GitHub](https://github.com/ikoshura/PrayerTimes/releases).
+### Requirements
+* **macOS Ventura (13.0)** or later
+* Compatible with **Apple Silicon** (M1, M2, etc.) and **Intel-based** Macs
 
-#### Important: First-Time Launch Instructions
-Because this app is built by a solo developer and isn't on the App Store yet, it isn't "signed." This is perfectly safe, but it means you must give macOS permission to open it the first time.
+### Download
+Download the latest release from the [Releases page](https://github.com/abd3lraouf/PrayerTimes/releases).
 
-The easiest way is to **right-click** (or Control-click) the **PrayerTimes** app icon in your Applications folder and select **Open**.
+### First-time launch
+Since this app isn't on the App Store, you'll need to give macOS permission to open it:
+
+**Right-click** (or Control-click) the app icon in your Applications folder and select **Open**. Click **Open** in the warning dialog.
 
 <details>
-<summary><strong>Troubleshooting? Click here for the complete installation guide.</strong></summary>
+<summary><strong>Troubleshooting - Alternative methods</strong></summary>
 
-Here are three methods to get the app running. If the first one doesn't work, try the next.
+#### Method 1: System Settings
+1. Try opening the app normally (it will show a warning - click OK)
+2. Open **System Settings** → **Privacy & Security**
+3. Find the message about the app being blocked
+4. Click **Open Anyway** and enter your password
 
----
-
-### **Method 1: The Easiest Way (Right-Click to Open)**
-
-This is the quickest method and works for most users.
-
-1.  After downloading, drag the **PrayerTimes** app into your **Applications** folder.
-2.  Find **PrayerTimes** in your Applications folder, but don't double-click it.
-3.  Right-click (or hold the **Control** key and click) on the **PrayerTimes** app icon.
-4.  Select **Open** from the top of the menu that appears.
-5.  A warning pop-up will appear, but this time it will include an **Open** button. Click it.
-
-That’s it! **PrayerTimes** will now be saved as a safe app on your Mac and you can open it normally from now on.
-
----
-
-### **Method 2: Using System Settings**
-
-If you accidentally clicked **Cancel** or the method above didn’t work, this is the official way to create an exception.
-
-1.  Try to open **PrayerTimes** by double-clicking it. A warning will appear saying it cannot be opened. Click **OK**. (This step is necessary to make the next option appear).
-2.  Open **System Settings** (in older macOS versions, this is called **System Preferences**).
-3.  Go to **Privacy & Security**.
-4.  Scroll down until you see the **Security** section. You will find a message that says "`PrayerTimes` was blocked from use because it is not from an identified developer."
-5.  Click the **Open Anyway** button next to the message. You may be asked for your Mac's password.
-
-After this, **PrayerTimes** is approved and will open without any more warnings.
-
----
-
-### **Method 3: The Guaranteed Fix (Using Terminal)**
-
-If the methods above still don’t work, you can manually remove the "quarantine" flag that macOS places on downloaded apps.
-
-1.  Open the **Terminal** app. (You can find it in your **Applications > Utilities** folder, or just search for "Terminal" in **Spotlight**).
-
-2.  Carefully copy and paste the following command, followed by a **space**:
-    ```
-    xattr -r -d com.apple.quarantine 
-    ```
-
-3.  Find the **PrayerTimes** app in your **Applications** folder and drag the app icon directly onto the Terminal window. The path to the app will appear automatically.
-   (It will look something like this):
-    ```
-    xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app
-    ```
-
-4.  Press **Return** (or **Enter**).
-
-The quarantine flag is now removed. You can close the Terminal and open **PrayerTimes** normally.
+#### Method 2: Terminal (guaranteed fix)
+```bash
+xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app
+```
 
 </details>
 
----
+## Acknowledgments
 
-## System Requirements
-*   **macOS Ventura (13.0) or later.**
-*   Compatible with both **Apple Silicon** (M1, M2, etc.) and **Intel-based** Macs.
+This project is a renamed version of **[Sajda](https://github.com/ikoshura/Sajda)**, originally created by **[ikoshura](https://github.com/ikoshura)**.
 
-As a testament to its efficiency, PrayerTimes was developed and tested on a 2012 MacBook Pro (using Ventura OCLP) . It is designed to be extremely lightweight and will not slow down your machine.
+All credit for the original work goes to the original author. This repository maintains full attribution and respects the open-source nature of the original project.
 
-
----
-
-## Contributing
-
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
----
+### Third-party libraries
+* [Adhan](https://github.com/batoulapps/Adhan) - Prayer time calculation library
+* [FluidMenuBarExtra](https://github.com/lfroms/fluid-menu-bar-extra) - Dynamic menu bar window
+* [NavigationStack](https://github.com/indieSoftware/NavigationStack) - Flexible view navigation
 
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
+## Contributing
+
+Contributions are welcome! Feel free to:
+* Fork the repository
+* Create a pull request
+* Open an issue with suggestions or bug reports
+
 ---
 
-## Acknowledgements
-
-This project is a renamed version of [Sajda](https://github.com/ikoshura/Sajda), originally created by [ikoshura](https://github.com/ikoshura). 
-
-**Original Author:** [ikoshura](https://github.com/ikoshura)  
-**Original Repository:** [https://github.com/ikoshura/Sajda](https://github.com/ikoshura/Sajda)
-
-### Third-Party Libraries
-*   [Adhan](https://github.com/batoulapps/Adhan) - The core library used for calculating prayer times.
-*   [FluidMenuBarExtra](https://github.com/lfroms/fluid-menu-bar-extra) - For the dynamically resizing menu bar window.
-*   [NavigationStack](https://github.com/indieSoftware/NavigationStack) - For the flexible view navigation system.
+<p align="center">
+    <i>Built with ❤️ for the Muslim community</i>
+</p>
