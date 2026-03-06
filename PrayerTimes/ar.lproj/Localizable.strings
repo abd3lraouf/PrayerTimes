@@ -66,7 +66,7 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "عن أوقات الصلاة برو";
-"Version 1.0.1" = "الإصدار 1.0.1";
+"Version 2.0.0" = "الإصدار 2.0.0";
 "A simple and beautiful prayer times app for your menu bar." = "تطبيق بسيط وجميل لأوقات الصلاة في شريط القائمة.";
 "Credits" = "الاعتمادات";
 "Developed by: abd3lraouf" = "تطوير: abd3lraouf";
@@ -97,27 +97,52 @@
 "Adjust prayer times to match your local mosque. Hover over the number to reset." = "عدّل أوقات الصلاة لتطابق مسجدك المحلي. مرر الفأرة فوق الرقم لإعادة التعيين.";
 "Reset All to Default" = "إعادة تعيين الكل";
 
-/* System & Notifications Settings */
-"System & Notifications" = "النظام والإشعارات";
+/* System Settings */
 "System" = "النظام";
 "Run at Login" = "التشغيل عند تسجيل الدخول";
 "Animation Style" = "نمط التحريك";
+
+/* Notifications Settings */
 "Notifications" = "الإشعارات";
+"Enable Prayer Notifications" = "تفعيل إشعارات الصلاة";
 "Prayer Notifications" = "إشعارات الصلاة";
-"Notification Sound" = "صوت الإشعار";
-"Custom File" = "ملف مخصص";
-"Browse..." = "استعراض...";
-"No file selected" = "لم يتم اختيار ملف";
+
+/* Notification Type */
+"At Prayer Time" = "عند وقت الصلاة";
+"Before Prayer" = "قبل الصلاة";
+"At & Before Prayer" = "عند وقبل الصلاة";
+"At Prayer Time & Before" = "عند وقت الصلاة وقبله";
+"Type" = "النوع";
+
+/* Notification Style */
+"System Notification" = "إشعار النظام";
+"Full Screen Alert" = "تنبيه بملء الشاشة";
+"Both" = "كلاهما";
+"Style" = "النمط";
+
+/* Pre-Prayer Timing */
+"Remind Before" = "تذكير قبل";
+"minutes_before" = "قبل %d دقيقة";
+"1 min before" = "قبل دقيقة واحدة";
+"5 min before" = "قبل 5 دقائق";
+"10 min before" = "قبل 10 دقائق";
+"20 min before" = "قبل 20 دقيقة";
+"25 min before" = "قبل 25 دقيقة";
+"30 min before" = "قبل 30 دقيقة";
+
+/* Notification Messages */
+"It's time for the %@ prayer." = "حان وقت صلاة %@.";
+"prayer_in_minutes_notification" = "الصلاة بعد %d دقيقة";
+"prayer_coming_in_minutes" = "الصلاة بعد %d دقيقة";
+"prayer_time_now" = "حان وقت الصلاة";
+
+/* Full Screen Notification */
+"Dismiss" = "إغلاق";
 
 /* Animation Types */
 "None" = "بدون";
 "Fade" = "تلاشي";
 "Slide" = "انزلاق";
-
-/* Adhan Sound Options */
-"No Sound" = "بدون صوت";
-"Default Beep" = "صوت افتراضي";
-"Custom Sound" = "صوت مخصص";
 
 /* Manual Location */
 "Set Location" = "تحديد الموقع";
@@ -130,10 +155,6 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "انتهى وقت الراحة";
 "Time to begin your next activity." = "حان وقت بدء نشاطك التالي.";
-"Dismiss" = "إغلاق";
-
-/* Notification */
-"It's time for the %@ prayer." = "حان وقت صلاة %@.";
 
 /* Language Options */
 "English" = "الإنجليزية";

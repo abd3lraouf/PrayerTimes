@@ -66,7 +66,7 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "About PrayerTimes Pro";
-"Version 1.0.1" = "Version 1.0.1";
+"Version 2.0.0" = "Version 2.0.0";
 "A simple and beautiful prayer times app for your menu bar." = "A simple and beautiful prayer times app for your menu bar.";
 "Credits" = "Credits";
 "Developed by: abd3lraouf" = "Developed by: abd3lraouf";
@@ -97,27 +97,52 @@
 "Adjust prayer times to match your local mosque. Hover over the number to reset." = "Adjust prayer times to match your local mosque. Hover over the number to reset.";
 "Reset All to Default" = "Reset All to Default";
 
-/* System & Notifications Settings */
-"System & Notifications" = "System & Notifications";
+/* System Settings */
 "System" = "System";
 "Run at Login" = "Run at Login";
 "Animation Style" = "Animation Style";
+
+/* Notifications Settings */
 "Notifications" = "Notifications";
+"Enable Prayer Notifications" = "Enable Prayer Notifications";
 "Prayer Notifications" = "Prayer Notifications";
-"Notification Sound" = "Notification Sound";
-"Custom File" = "Custom File";
-"Browse..." = "Browse...";
-"No file selected" = "No file selected";
+
+/* Notification Type */
+"At Prayer Time" = "At Prayer Time";
+"Before Prayer" = "Before Prayer";
+"At & Before Prayer" = "At & Before Prayer";
+"At Prayer Time & Before" = "At Prayer Time & Before";
+"Type" = "Type";
+
+/* Notification Style */
+"System Notification" = "System Notification";
+"Full Screen Alert" = "Full Screen Alert";
+"Both" = "Both";
+"Style" = "Style";
+
+/* Pre-Prayer Timing */
+"Remind Before" = "Remind Before";
+"minutes_before" = "%d min before";
+"1 min before" = "1 min before";
+"5 min before" = "5 min before";
+"10 min before" = "10 min before";
+"20 min before" = "20 min before";
+"25 min before" = "25 min before";
+"30 min before" = "30 min before";
+
+/* Notification Messages */
+"It's time for the %@ prayer." = "It's time for the %@ prayer.";
+"prayer_in_minutes_notification" = "Prayer in %d minutes";
+"prayer_coming_in_minutes" = "Prayer in %d minutes";
+"prayer_time_now" = "It's time for prayer";
+
+/* Full Screen Notification */
+"Dismiss" = "Dismiss";
 
 /* Animation Types */
 "None" = "None";
 "Fade" = "Fade";
 "Slide" = "Slide";
-
-/* Adhan Sound Options */
-"No Sound" = "No Sound";
-"Default Beep" = "Default Beep";
-"Custom Sound" = "Custom Sound";
 
 /* Manual Location */
 "Set Location" = "Set Location";
@@ -130,10 +155,6 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "Break Time is Over";
 "Time to begin your next activity." = "Time to begin your next activity.";
-"Dismiss" = "Dismiss";
-
-/* Notification */
-"It's time for the %@ prayer." = "It's time for the %@ prayer.";
 
 /* Language Options */
 "English" = "English";

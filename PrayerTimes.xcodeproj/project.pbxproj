@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CC07FC602E63FD5800924451 /* LocationAndCalcSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */; };
-		CC07FC622E63FF5100924451 /* SystemAndNotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07FC612E63FF5100924451 /* SystemAndNotificationsSettingsView.swift */; };
 		CC07FC662E64122F00924451 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = CC07FC652E64122F00924451 /* NavigationStack */; };
 		CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659602E661CC400159A83 /* TextFieldStepper.swift */; };
 		CC4659652E6629C000159A83 /* PrayerTimesStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */; };
@@ -56,6 +55,10 @@
 		CCED21862E65F9770066D0EB /* NavigationAnimation+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCED21852E65F9770066D0EB /* NavigationAnimation+Custom.swift */; };
 		CCED21882E65FE650066D0EB /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCED21872E65FE650066D0EB /* AnimationType.swift */; };
 		CCFD21DA2E62BEEB00A80402 /* PrayerTimeCorrectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */; };
+		F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */; };
+		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
+		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
+		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +80,6 @@
 
 /* Begin PBXFileReference section */
 		CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndCalcSettingsView.swift; sourceTree = "<group>"; };
-		CC07FC612E63FF5100924451 /* SystemAndNotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemAndNotificationsSettingsView.swift; sourceTree = "<group>"; };
 		CC4659602E661CC400159A83 /* TextFieldStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStepper.swift; sourceTree = "<group>"; };
 		CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesStepper.swift; sourceTree = "<group>"; };
 		CC786E4D2E634B65007299F3 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,10 @@
 		CCED21852E65F9770066D0EB /* NavigationAnimation+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationAnimation+Custom.swift"; sourceTree = "<group>"; };
 		CCED21872E65FE650066D0EB /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeCorrectionView.swift; sourceTree = "<group>"; };
+		F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNotificationView.swift; sourceTree = "<group>"; };
+		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
+		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
+		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +227,6 @@
 				CC786E6E2E63B1CB007299F3 /* Localizable.strings */,
 				CC786E732E63BD15007299F3 /* VisualEffectView.swift */,
 				CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */,
-				CC07FC612E63FF5100924451 /* SystemAndNotificationsSettingsView.swift */,
 				CCE079702E6438100026054C /* main.swift */,
 				CCDEFEE52E65231F005D6B45 /* TimePreviewPopover.swift */,
 				CCED21832E65F7BE0066D0EB /* NavigationAnimations.swift */,
@@ -229,6 +234,10 @@
 				CCED21872E65FE650066D0EB /* AnimationType.swift */,
 				CC4659602E661CC400159A83 /* TextFieldStepper.swift */,
 				CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */,
+				F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */,
+				F45FA15E2F5B512200C702DC /* NotificationSettings.swift */,
+				F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */,
+				F45FA1602F5B512200C702DC /* SystemSettingsView.swift */,
 			);
 			path = PrayerTimes;
 			sourceTree = "<group>";
@@ -426,7 +435,6 @@
 				CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */,
 				CCE1BA452E6198C1003AF03C /* ManualLocationView.swift in Sources */,
 				CCED21882E65FE650066D0EB /* AnimationType.swift in Sources */,
-				CC07FC622E63FF5100924451 /* SystemAndNotificationsSettingsView.swift in Sources */,
 				CC786E632E63787E007299F3 /* MenuBarTextMode.swift in Sources */,
 				CCEC0E452E60B08D001E9B1E /* AboutView.swift in Sources */,
 				CC786E542E6359E1007299F3 /* PrayerTimerMonitor.swift in Sources */,
@@ -438,6 +446,10 @@
 				CC969CA92E6098C600C8630A /* SettingsView.swift in Sources */,
 				CCE1BA3F2E61852B003AF03C /* FluidMenuBarExtraWindow.swift in Sources */,
 				CCEC0E4F2E60D2EC001E9B1E /* NotificationManager.swift in Sources */,
+				F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */,
+				F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */,
+				F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */,
+				F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */,
 				CC786E672E638425007299F3 /* LocationSearchResult.swift in Sources */,
 				CCED21862E65F9770066D0EB /* NavigationAnimation+Custom.swift in Sources */,
 				CC786E4E2E634B65007299F3 /* OnboardingView.swift in Sources */,

@@ -66,7 +66,7 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "Tentang PrayerTimes Pro";
-"Version 1.0.1" = "Versi 1.0.1";
+"Version 2.0.0" = "Versi 2.0.0";
 "A simple and beautiful prayer times app for your menu bar." = "Aplikasi waktu shalat yang sederhana dan indah untuk bilah menu Anda.";
 "Credits" = "Kredit";
 "Developed by: abd3lraouf" = "Dikembangkan oleh: abd3lraouf";
@@ -97,27 +97,52 @@
 "Adjust prayer times to match your local mosque. Hover over the number to reset." = "Sesuaikan waktu shalat agar cocok dengan masjid lokal Anda. Arahkan kursor ke angka untuk reset.";
 "Reset All to Default" = "Reset Semua ke Default";
 
-/* System & Notifications Settings */
-"System & Notifications" = "Sistem & Notifikasi";
+/* System Settings */
 "System" = "Sistem";
 "Run at Login" = "Jalankan saat Login";
 "Animation Style" = "Gaya Animasi";
+
+/* Notifications Settings */
 "Notifications" = "Notifikasi";
+"Enable Prayer Notifications" = "Aktifkan Notifikasi Shalat";
 "Prayer Notifications" = "Notifikasi Shalat";
-"Notification Sound" = "Suara Notifikasi";
-"Custom File" = "File Kustom";
-"Browse..." = "Cari...";
-"No file selected" = "Tidak ada file terpilih";
+
+/* Notification Type */
+"At Prayer Time" = "Saat Waktu Shalat";
+"Before Prayer" = "Sebelum Shalat";
+"At & Before Prayer" = "Sa & Sebelum Shalat";
+"At Prayer Time & Before" = "Saat Waktu Shalat & Sebelum";
+"Type" = "Tipe";
+
+/* Notification Style */
+"System Notification" = "Notifikasi Sistem";
+"Full Screen Alert" = "Peringatan Layar Penuh";
+"Both" = "Keduanya";
+"Style" = "Gaya";
+
+/* Pre-Prayer Timing */
+"Remind Before" = "Ingatkan Sebelum";
+"minutes_before" = "%d menit sebelum";
+"1 min before" = "1 menit sebelum";
+"5 min before" = "5 menit sebelum";
+"10 min before" = "10 menit sebelum";
+"20 min before" = "20 menit sebelum";
+"25 min before" = "25 menit sebelum";
+"30 min before" = "30 menit sebelum";
+
+/* Notification Messages */
+"It's time for the %@ prayer." = "Saatnya shalat %@.";
+"prayer_in_minutes_notification" = "Shalat dalam %d menit";
+"prayer_coming_in_minutes" = "Shalat dalam %d menit";
+"prayer_time_now" = "Saatnya shalat";
+
+/* Full Screen Notification */
+"Dismiss" = "Tutup";
 
 /* Animation Types */
 "None" = "Tidak Ada";
 "Fade" = "Memudar";
 "Slide" = "Geser";
-
-/* Adhan Sound Options */
-"No Sound" = "Tanpa Suara";
-"Default Beep" = "Bip Default";
-"Custom Sound" = "Suara Kustom";
 
 /* Manual Location */
 "Set Location" = "Atur Lokasi";
@@ -130,10 +155,6 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "Waktu Istirahat Selesai";
 "Time to begin your next activity." = "Saatnya memulai aktivitas berikutnya.";
-"Dismiss" = "Tutup";
-
-/* Notification */
-"It's time for the %@ prayer." = "Saatnya shalat %@.";
 
 /* Language Options */
 "English" = "Inggris";

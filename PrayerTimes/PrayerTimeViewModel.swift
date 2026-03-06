@@ -1,5 +1,3 @@
-// MARK: - GANTI SELURUH FILE: PrayerTimeViewModel.swift
-
 import Foundation
 import Combine
 import Adhan
@@ -38,6 +36,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var isPrayerImminent: Bool = false
     @Published var isRequestingLocation: Bool = false
 
+    let notificationSettings = NotificationSettings()
     private let languageManager = LanguageManager()
     private var automaticLocationCache: (name: String, coordinates: CLLocationCoordinate2D)?
     private var tomorrowFajrTime: Date?
@@ -46,7 +45,6 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @AppStorage("useMinimalMenuBarText") var useMinimalMenuBarText: Bool = false { didSet { updateAndDisplayTimes() } }
     @AppStorage("showSunnahPrayers") var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
     @AppStorage("useAccentColor") var useAccentColor: Bool = true
-    @AppStorage("isNotificationsEnabled") var isNotificationsEnabled: Bool = true { didSet { updateNotifications() } }
     @AppStorage("useCompactLayout") var useCompactLayout: Bool = false
     @AppStorage("use24HourFormat") var use24HourFormat: Bool = false { didSet { updateAndDisplayTimes() } }
     @AppStorage("useHanafiMadhhab") var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
@@ -56,8 +54,6 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @AppStorage("asrCorrection") var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage("maghribCorrection") var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage("ishaCorrection") var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("adhanSound") var adhanSound: AdhanSound = .defaultBeep { didSet { updateNotifications() } }
-    @AppStorage("customAdhanSoundPath") var customAdhanSoundPath: String = "" { didSet { updateNotifications() } }
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
@@ -72,7 +68,6 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var cancellables = Set<AnyCancellable>()
     private let locMgr = CLLocationManager()
     private var timer: Timer?
-    private var adhanPlayer: NSSound?
     private var locationTimeZone: TimeZone = .current
     private var locationDisplayTimer: Timer?
     private var lastCalculationDate: Date?
@@ -88,6 +83,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         locMgr.delegate = self
         startTimer()
         setupSearchPublisher()
+        setupNotificationObserver()
     }
     
     func forwardAnimation() -> NavigationAnimation? {
@@ -104,6 +100,25 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         case .fade: return .prayertimesCrossfade
         case .slide: return .pop
         }
+    }
+    
+    private func setupNotificationObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUserNotificationCenterNotification(_:)),
+            name: NSApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func handleUserNotificationCenterNotification(_ notification: Notification) {
+        if let userInfo = notification.userInfo {
+            NotificationManager.handleFullScreenNotification(userInfo: userInfo)
+        }
+    }
+    
+    func scheduleNotifications() {
+        updateNotifications()
     }
     
     private struct NominatimResult: Codable, Hashable {
@@ -218,7 +233,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let correctedMaghrib = prayersToday.maghrib.addingTimeInterval(maghribCorrection * 60)
         let correctedIsha = prayersToday.isha.addingTimeInterval(ishaCorrection * 60)
         
-        var allPrayerTimes: [(name: String, time: Date)] = [("Fajr", correctedFajr), ("Dhuhr", correctedDhuhr), ("Asr", correctedAsr), ("Maghrib", correctedMaghrib), ("Isha", correctedIsha)]
+        var allPrayerTimes: [(name: String, time: Date)] = [("Fajr", correctedFajr), ("Sunrise", prayersToday.sunrise), ("Dhuhr", correctedDhuhr), ("Asr", correctedAsr), ("Maghrib", correctedMaghrib), ("Isha", correctedIsha)]
         
         if showSunnahPrayers {
             let correctedFajrTomorrow = prayersTomorrow.fajr.addingTimeInterval(fajrCorrection * 60)
@@ -299,16 +314,11 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             }
         } else {
             countdown = NSLocalizedString("time_now", comment: "")
-            if adhanSound == .custom, let soundPath = customAdhanSoundPath.removingPercentEncoding, let soundURL = URL(string: soundPath), soundURL.isFileURL, FileManager.default.fileExists(atPath: soundURL.path) {
-                adhanPlayer = NSSound(contentsOf: soundURL, byReference: true)
-                adhanPlayer?.play()
-            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) { self.updateNextPrayer() }
         }
         updateMenuTitle()
     }
     
-    // Helper function to create RTL-aware attributed strings
     private func createMenuTitle(_ text: String, color: NSColor? = nil) -> NSAttributedString {
         let isRTL = languageManager.isRTLEnabled
         
@@ -327,17 +337,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             attributes[.foregroundColor] = color
         }
         
-        // Add bidirectional markers for RTL text with LTR numbers
-        let processedText: String
-        if isRTL {
-            // Add RLM (Right-to-Left Mark) and LRM (Left-to-Right Mark) for proper bidirectional display
-            // RLM = \u{200F}, LRM = \u{200E}
-            processedText = text
-        } else {
-            processedText = text
-        }
-        
-        return NSAttributedString(string: processedText, attributes: attributes)
+        return NSAttributedString(string: text, attributes: attributes)
     }
     
     func updateMenuTitle() {
@@ -398,20 +398,19 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private func stopLocationDisplayTimer() { locationDisplayTimer?.invalidate(); locationDisplayTimer = nil; locationInfoText = "" }
     
     private func updateNotifications() {
-        guard isNotificationsEnabled, !todayTimes.isEmpty else {
+        guard notificationSettings.prayerNotificationsEnabled, !todayTimes.isEmpty else {
             NotificationManager.cancelNotifications()
             return
         }
         NotificationManager.requestPermission()
-        var prayersToNotify = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
+        var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
         if showSunnahPrayers {
             if todayTimes.keys.contains("Tahajud") { prayersToNotify.append("Tahajud") }
             if todayTimes.keys.contains("Dhuha") { prayersToNotify.append("Dhuha") }
         }
-        NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, adhanSound: self.adhanSound, customSoundPath: self.customAdhanSoundPath)
+        NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
     }
     
-    func selectCustomAdhanSound() { let openPanel = NSOpenPanel(); openPanel.canChooseFiles = true; openPanel.canChooseDirectories = false; openPanel.allowsMultipleSelection = false; openPanel.allowedContentTypes = [.audio]; if openPanel.runModal() == .OK { self.customAdhanSoundPath = openPanel.url?.absoluteString ?? "" } }
     var isPrayerDataAvailable: Bool { !todayTimes.isEmpty }
     
     func startTimer() {
@@ -431,7 +430,6 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private func handleAuthorizationStatus(status: CLAuthorizationStatus) { self.authorizationStatus = status; switch status { case .authorized: if automaticLocationCache == nil { locationStatusText = "Fetching Location..." }; locMgr.requestLocation(); case .denied, .restricted: locationStatusText = "Location access denied."; isRequestingLocation = false; todayTimes = [:]; case .notDetermined: isRequestingLocation = false; locationStatusText = "Location access needed"; @unknown default: isRequestingLocation = false; break } }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { if !isUsingManualLocation { handleAuthorizationStatus(status: manager.authorizationStatus) } }
     
-    // --- PERBAIKAN TYPO DI SINI ---
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.isRequestingLocation = false
         self.locationStatusText = "Unable to determine location."

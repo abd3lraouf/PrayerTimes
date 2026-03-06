@@ -1,5 +1,3 @@
-// MARK: - GANTI SELURUH FILE: SettingsView.swift
-
 import SwiftUI
 import NavigationStack
 
@@ -13,6 +11,7 @@ struct SettingsView: View {
     @State private var isHeaderHovering = false
     @State private var isCalcHovering = false
     @State private var isNotifHovering = false
+    @State private var isSystemHovering = false
 
     private var viewWidth: CGFloat {
         return vm.useCompactLayout ? 220 : 260
@@ -57,6 +56,17 @@ struct SettingsView: View {
                 Rectangle().fill(Color("DividerColor")).frame(height: 1).padding(.horizontal, 12)
                 
                 VStack(alignment: .leading, spacing: 0) {
+                    Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { NotificationsSettingsView() } }) {
+                        HStack { 
+                            Text("Notifications").font(.subheadline)
+                            Spacer()
+                            Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                                .font(.caption.weight(.bold))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 5).padding(.horizontal, 8).background(isNotifHovering ? Color("HoverColor") : .clear).cornerRadius(5)
+                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isNotifHovering = hovering }
+                    
                     Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { LocationAndCalcSettingsView() } }) {
                         HStack { 
                             Text("Calculation & Location").font(.subheadline)
@@ -68,16 +78,16 @@ struct SettingsView: View {
                         .padding(.vertical, 5).padding(.horizontal, 8).background(isCalcHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                     }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isCalcHovering = hovering }
                     
-                    Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { SystemAndNotificationsSettingsView() } }) {
+                    Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { SystemSettingsView() } }) {
                         HStack { 
-                            Text("System & Notifications").font(.subheadline)
+                            Text("System").font(.subheadline)
                             Spacer()
                             Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
                                 .font(.caption.weight(.bold))
                                 .foregroundColor(.secondary)
                         }
-                        .padding(.vertical, 5).padding(.horizontal, 8).background(isNotifHovering ? Color("HoverColor") : .clear).cornerRadius(5)
-                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isNotifHovering = hovering }
+                        .padding(.vertical, 5).padding(.horizontal, 8).background(isSystemHovering ? Color("HoverColor") : .clear).cornerRadius(5)
+                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isSystemHovering = hovering }
                 }
             }
             .padding(.vertical, 8)
