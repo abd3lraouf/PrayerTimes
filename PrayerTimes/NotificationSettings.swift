@@ -95,7 +95,7 @@ class NotificationSettings: ObservableObject, Codable {
     }
     
     init() {
-        if let data = UserDefaults.standard.data(forKey: "notificationSettings"),
+        if let data = UserDefaults.standard.data(forKey: StorageKeys.notificationSettings),
            let decoded = try? JSONDecoder().decode(NotificationSettings.self, from: data) {
             self.prayerNotificationsEnabled = decoded.prayerNotificationsEnabled
             self.globalSettings = decoded.globalSettings
@@ -140,7 +140,7 @@ class NotificationSettings: ObservableObject, Codable {
     
     func save() {
         guard let data = try? JSONEncoder().encode(self) else { return }
-        UserDefaults.standard.set(data, forKey: "notificationSettings")
+        UserDefaults.standard.set(data, forKey: StorageKeys.notificationSettings)
     }
     
     func settings(for prayer: String) -> PrayerNotificationSettings {

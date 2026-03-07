@@ -6,7 +6,7 @@ struct AboutView: View {
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
 
-    @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
+    @AppStorage(StorageKeys.showOnboardingAtLaunch) private var showOnboardingAtLaunch = true
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {

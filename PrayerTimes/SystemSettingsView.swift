@@ -8,7 +8,7 @@ struct SystemSettingsView: View {
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
     
-    @AppStorage("launchAtLogin") private var launchAtLogin = false
+    @AppStorage(StorageKeys.launchAtLogin) private var launchAtLogin = false
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {

@@ -1720,4 +1720,47 @@ final class PrayerTimesTests: XCTestCase {
         XCTAssertTrue(prayersToNotify.contains("Tahajud"), "Tahajud should be in prayerOrder when sunnah is on")
         XCTAssertTrue(prayersToNotify.contains("Dhuha"), "Dhuha should be in prayerOrder when sunnah is on")
     }
+
+    // MARK: - StorageKeys Tests
+
+    func testStorageKeysAreAllUnique() {
+        let allKeys = [
+            StorageKeys.animationType,
+            StorageKeys.useMinimalMenuBarText,
+            StorageKeys.showSunnahPrayers,
+            StorageKeys.useAccentColor,
+            StorageKeys.useCompactLayout,
+            StorageKeys.use24HourFormat,
+            StorageKeys.useHanafiMadhhab,
+            StorageKeys.isUsingManualLocation,
+            StorageKeys.hasManuallySelectedMethod,
+            StorageKeys.lastDetectedCountryCode,
+            StorageKeys.fajrCorrection,
+            StorageKeys.dhuhrCorrection,
+            StorageKeys.asrCorrection,
+            StorageKeys.maghribCorrection,
+            StorageKeys.ishaCorrection,
+            StorageKeys.menuBarTextMode,
+            StorageKeys.calculationMethodName,
+            StorageKeys.showInDock,
+            StorageKeys.showOnboardingAtLaunch,
+            StorageKeys.manualLocationData,
+            StorageKeys.notificationSettings,
+            StorageKeys.selectedLanguage,
+            StorageKeys.isPrayerTimerEnabled,
+            StorageKeys.prayerTimerDuration,
+            StorageKeys.launchAtLogin,
+        ]
+        let uniqueKeys = Set(allKeys)
+        XCTAssertEqual(allKeys.count, uniqueKeys.count, "StorageKeys contains duplicate values")
+        for key in allKeys {
+            XCTAssertFalse(key.isEmpty, "StorageKey should not be empty")
+        }
+    }
+
+    func testStorageKeysAreNonEmpty() {
+        XCTAssertFalse(StorageKeys.animationType.isEmpty)
+        XCTAssertFalse(StorageKeys.notificationSettings.isEmpty)
+        XCTAssertFalse(StorageKeys.manualLocationData.isEmpty)
+    }
 }

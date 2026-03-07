@@ -4,7 +4,7 @@ import SwiftUI
 
 // Kelas ini akan menjadi satu-satunya sumber kebenaran untuk bahasa.
 class LanguageManager: ObservableObject {
-    @AppStorage("selectedLanguage") var language: String = "en" {
+    @AppStorage(StorageKeys.selectedLanguage) var language: String = "en" {
         didSet {
             Bundle.setLanguage(language)
             objectWillChange.send()

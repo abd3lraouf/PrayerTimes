@@ -152,6 +152,8 @@
 "Start typing a city or paste coordinates." = "Start typing a city or paste coordinates.";
 "No results found." = "No results found.";
 "Search is powered by OpenStreetMap." = "Search is powered by OpenStreetMap.";
+"location_search_error" = "Search failed. Please check your connection and try again.";
+"no_search_results" = "No results found. Try a different search.";
 
 /* Prayer Time Alert */
 "Break Time is Over" = "Break Time is Over";

@@ -1,0 +1,164 @@
+/* Persian (Farsi) - PrayerTimes Pro */
+
+/* Prayer Names */
+"Fajr" = "فجر";
+"Sunrise" = "طلوع آفتاب";
+"Dhuhr" = "ظهر";
+"Asr" = "عصر";
+"Maghrib" = "مغرب";
+"Isha" = "عشاء";
+"Tahajud" = "تهجد";
+"Dhuha" = "چاشت";
+
+/* App Name & Common */
+"PrayerTimes" = "اوقات نماز";
+"PrayerTimes Pro" = "اوقات نماز پرو";
+"Settings" = "تنظیمات";
+"About" = "درباره";
+"Quit" = "خروج";
+"Done" = "انجام شد";
+"Cancel" = "لغو";
+
+/* Menu Items */
+"Show Welcome Window" = "نمایش پنجره خوش‌آمد";
+"Quit PrayerTimes Pro" = "خروج از اوقات نماز پرو";
+
+/* Time Format */
+"prayer_in_countdown" = "%@ تا %@";
+"prayer_at_time" = "%@ در %@";
+"Around" = "حدود";
+
+/* Time Units */
+"time_hour_abbrev" = "س";
+"time_minute_abbrev" = "د";
+"time_now" = "اکنون";
+"Preparing prayer schedule..." = "در حال آماده‌سازی برنامه نماز...";
+
+/* Location */
+"Location Required" = "موقعیت مورد نیاز است";
+"Location" = "موقعیت";
+"Open System Settings" = "باز کردن تنظیمات سیستم";
+"Allow Location Access" = "اجازه دسترسی به موقعیت";
+"Or, set location manually" = "یا، موقعیت را دستی تنظیم کنید";
+"To provide accurate prayer times, PrayerTimes Pro needs to know your location." = "برای ارائه اوقات دقیق نماز، اوقات نماز پرو نیاز به دانستن موقعیت شما دارد.";
+"Location access is already enabled." = "دسترسی به موقعیت قبلاً فعال شده است.";
+"Or, Set Location Manually" = "یا، موقعیت را دستی تنظیم کنید";
+"Please grant location access in System Settings." = "لطفاً دسترسی موقعیت را در تنظیمات سیستم اعطا کنید.";
+"You are using a manual location: **%@**" = "شما از موقعیت دستی استفاده می‌کنید: **%@**";
+"Switch to Automatic Location" = "تغییر به موقعیت خودکار";
+"Change Manual Location" = "تغییر موقعیت دستی";
+"Manual:" = "دستی:";
+"Automatic:" = "خودکار:";
+"Use Automatic" = "استفاده از خودکار";
+"Custom Coordinate" = "مختصات سفارشی";
+"Fetching Location..." = "در حال دریافت موقعیت...";
+"Location access denied." = "دسترسی به موقعیت رد شد.";
+"Location access needed" = "دسترسی به موقعیت مورد نیاز است";
+"Unable to determine location." = "تعیین موقعیت ممکن نیست.";
+
+/* Onboarding */
+"Welcome to PrayerTimes Pro" = "به اوقات نماز پرو خوش آمدید";
+"To get started, please provide your location for accurate prayer times." = "برای شروع، لطفاً موقعیت خود را برای اوقات دقیق نماز ارائه دهید.";
+"Show this window on launch" = "نمایش این پنجره هنگام شروع";
+"Show Welcome Guide on Launch" = "نمایش راهنمای خوش‌آمد هنگام شروع";
+"Requesting Permission..." = "در حال درخواست مجوز...";
+"Skip for now" = "فعلاً رد شوید";
+
+/* About Screen */
+"About PrayerTimes Pro" = "درباره اوقات نماز پرو";
+"Version 2.0.0" = "نسخه 2.0.0";
+"A simple and beautiful prayer times app for your menu bar." = "یک برنامه ساده و زیبای اوقات نماز برای نوار منوی شما.";
+"Credits" = "اعتبارات";
+"Developed by: abd3lraouf" = "توسعه‌دهنده: abd3lraouf";
+"Based on: Sajda by Abrar Zha" = "بر اساس: سجده توسط Abrar Zha";
+
+/* Display Settings */
+"Display" = "نمایش";
+"Language" = "زبان";
+"Menu Bar Style" = "سبک نوار منو";
+"Compact View" = "نمای فشرده";
+"24-Hour Time" = "ساعت ۲۴";
+"Minimal Menu Bar" = "نوار منوی کمینه";
+"Accent Color" = "رنگ تأکیدی";
+"Show Sunnah Prayers" = "نمایش نمازهای سنت";
+
+/* Menu Bar Style Options */
+"Countdown" = "شمارش معکوس";
+"Exact Time" = "زمان دقیق";
+"Icon Only" = "فقط آیکون";
+
+/* Calculation & Location Settings */
+"Calculation & Location" = "محاسبه و موقعیت";
+"Calculation" = "محاسبه";
+"Method" = "روش";
+"Time Correction" = "تصحیح زمان";
+"Adjust" = "تنظیم";
+"Hanafi Madhhab (for Asr)" = "مذهب حنفی (برای عصر)";
+"Adjust prayer times to match your local mosque. Hover over the number to reset." = "اوقات نماز را با مسجد محلی خود تنظیم کنید. برای بازنشانی، ماوس را روی عدد ببرید.";
+"Reset All to Default" = "بازنشانی همه به پیش‌فرض";
+
+/* System Settings */
+"System" = "سیستم";
+"Run at Login" = "اجرا هنگام ورود";
+"Animation Style" = "سبک انیمیشن";
+
+/* Notifications Settings */
+"Notifications" = "اعلان‌ها";
+"Enable Prayer Notifications" = "فعال‌سازی اعلان نماز";
+"Prayer Notifications" = "اعلان‌های نماز";
+
+/* Notification Type */
+"At Prayer Time" = "در وقت نماز";
+"Before Prayer" = "قبل از نماز";
+"At & Before Prayer" = "در وقت و قبل از نماز";
+"At Prayer Time & Before" = "در وقت نماز و قبل";
+"Type" = "نوع";
+
+/* Notification Style */
+"System Notification" = "اعلان سیستم";
+"Full Screen Alert" = "هشدار تمام‌صفحه";
+"Both" = "هر دو";
+"Style" = "سبک";
+
+/* Pre-Prayer Timing */
+"Remind Before" = "یادآوری قبل";
+"minutes_before" = "%d دقیقه قبل";
+"1 min before" = "۱ دقیقه قبل";
+"5 min before" = "۵ دقیقه قبل";
+"10 min before" = "۱۰ دقیقه قبل";
+"20 min before" = "۲۰ دقیقه قبل";
+"25 min before" = "۲۵ دقیقه قبل";
+"30 min before" = "۳۰ دقیقه قبل";
+
+/* Notification Messages */
+"It's time for the %@ prayer." = "وقت نماز %@ فرا رسیده است.";
+"prayer_in_minutes_notification" = "نماز تا %d دقیقه دیگر";
+"prayer_coming_in_minutes" = "نماز تا %d دقیقه دیگر";
+"prayer_time_now" = "وقت نماز فرا رسیده است";
+
+/* Full Screen Notification */
+"Dismiss" = "بستن";
+
+/* Animation Types */
+"None" = "هیچ";
+"Fade" = "محو شدن";
+"Slide" = "لغزش";
+
+/* Manual Location */
+"Set Location" = "تنظیم موقعیت";
+"Search for a city or paste coordinates..." = "جستجوی شهر یا چسباندن مختصات...";
+"Set Location Manually" = "تنظیم دستی موقعیت";
+"Start typing a city or paste coordinates." = "نام شهر را تایپ کنید یا مختصات بچسبانید.";
+"No results found." = "نتیجه‌ای یافت نشد.";
+"Search is powered by OpenStreetMap." = "جستجو توسط OpenStreetMap ارائه می‌شود.";
+"location_search_error" = "جستجو ناموفق بود. لطفاً اتصال خود را بررسی کرده و دوباره تلاش کنید.";
+"no_search_results" = "نتیجه‌ای یافت نشد. جستجوی دیگری را امتحان کنید.";
+
+/* Prayer Time Alert */
+"Break Time is Over" = "زمان استراحت تمام شد";
+"Time to begin your next activity." = "وقت شروع فعالیت بعدی شماست.";
+
+/* Language Options */
+"English" = "انگلیسی";
+"العربية" = "عربی";
+"Indonesia" = "اندونزیایی";

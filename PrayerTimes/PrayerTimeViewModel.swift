@@ -27,11 +27,12 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var todayTimes: [String: Date] = [:]
     @Published var nextPrayerName: String = ""
     @Published var countdown: String = "--:--"
-    @Published var locationStatusText: String = "Preparing prayer schedule..."
+    @Published var locationStatusText: String = NSLocalizedString("Preparing prayer schedule...", comment: "")
     @Published var authorizationStatus: CLAuthorizationStatus
     @Published var locationSearchQuery: String = ""
     @Published var locationSearchResults: [LocationSearchResult] = []
     @Published var isLocationSearching: Bool = false
+    @Published var locationSearchError: String? = nil
     @Published var locationInfoText: String = ""
     @Published var isPrayerImminent: Bool = false
     @Published var isRequestingLocation: Bool = false
@@ -41,46 +42,48 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var automaticLocationCache: (name: String, coordinates: CLLocationCoordinate2D)?
     private var tomorrowFajrTime: Date?
 
-    @AppStorage("animationType") var animationType: AnimationType = .fade
-    @AppStorage("useMinimalMenuBarText") var useMinimalMenuBarText: Bool = false { didSet { updateAndDisplayTimes() } }
-    @AppStorage("showSunnahPrayers") var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
-    @AppStorage("useAccentColor") var useAccentColor: Bool = true
-    @AppStorage("useCompactLayout") var useCompactLayout: Bool = false
-    @AppStorage("use24HourFormat") var use24HourFormat: Bool = false { didSet { updateAndDisplayTimes() } }
-    @AppStorage("useHanafiMadhhab") var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
-    @AppStorage("isUsingManualLocation") var isUsingManualLocation: Bool = false
-    @AppStorage("hasManuallySelectedMethod") var hasManuallySelectedMethod: Bool = false
-    @AppStorage("lastDetectedCountryCode") private var lastDetectedCountryCode: String = ""
+    @AppStorage(StorageKeys.animationType) var animationType: AnimationType = .fade
+    @AppStorage(StorageKeys.useMinimalMenuBarText) var useMinimalMenuBarText: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
+    @AppStorage(StorageKeys.showSunnahPrayers) var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.useAccentColor) var useAccentColor: Bool = true
+    @AppStorage(StorageKeys.useCompactLayout) var useCompactLayout: Bool = false
+    @AppStorage(StorageKeys.use24HourFormat) var use24HourFormat: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
+    @AppStorage(StorageKeys.useHanafiMadhhab) var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.isUsingManualLocation) var isUsingManualLocation: Bool = false
+    @AppStorage(StorageKeys.hasManuallySelectedMethod) var hasManuallySelectedMethod: Bool = false
+    @AppStorage(StorageKeys.lastDetectedCountryCode) private var lastDetectedCountryCode: String = ""
     @Published var suggestedMethod: PrayerTimesCalculationMethod? = nil
-    @AppStorage("fajrCorrection") var fajrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("dhuhrCorrection") var dhuhrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("asrCorrection") var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("maghribCorrection") var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("ishaCorrection") var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.fajrCorrection) var fajrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.dhuhrCorrection) var dhuhrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.asrCorrection) var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.maghribCorrection) var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.ishaCorrection) var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
-            UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: "menuBarTextMode")
+            UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
             if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
+            startTimer()
             updateMenuTitle()
         }
     }
     
     private var isAutoSelectingMethod = false
-    @Published var method: PrayerTimesCalculationMethod { didSet { UserDefaults.standard.set(method.name, forKey: "calculationMethodName"); if !isAutoSelectingMethod { hasManuallySelectedMethod = true }; updatePrayerTimes() } }
+    @Published var method: PrayerTimesCalculationMethod { didSet { UserDefaults.standard.set(method.name, forKey: StorageKeys.calculationMethodName); if !isAutoSelectingMethod { hasManuallySelectedMethod = true }; updatePrayerTimes() } }
     private var currentCoordinates: CLLocationCoordinate2D?
     private var cancellables = Set<AnyCancellable>()
     private let locMgr = CLLocationManager()
     private var timer: Timer?
-    private var locationTimeZone: TimeZone = .current
+    private var locationTimeZone: TimeZone = .current { didSet { _cachedDateFormatter = nil } }
     private var locationDisplayTimer: Timer?
+    private var _cachedDateFormatter: DateFormatter?
     private var lastCalculationDate: Date?
 
 
     override init() {
-        let savedMethodName = UserDefaults.standard.string(forKey: "calculationMethodName") ?? "Muslim World League"
+        let savedMethodName = UserDefaults.standard.string(forKey: StorageKeys.calculationMethodName) ?? "Muslim World League"
         self.method = PrayerTimesCalculationMethod.allCases.first { $0.name == savedMethodName } ?? .allCases[0]
-        let savedTextMode = UserDefaults.standard.string(forKey: "menuBarTextMode")
+        let savedTextMode = UserDefaults.standard.string(forKey: StorageKeys.menuBarTextMode)
         self.menuBarTextMode = MenuBarTextMode(rawValue: savedTextMode ?? "") ?? .countdown
         self.authorizationStatus = locMgr.authorizationStatus
         super.init()
@@ -88,6 +91,9 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         startTimer()
         setupSearchPublisher()
         setupNotificationObserver()
+        NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
+            self?.updateCountdown()
+        }
     }
     
     func forwardAnimation() -> NavigationAnimation? {
@@ -157,6 +163,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             .handleEvents(receiveOutput: { [weak self] query in
                 let trimmedQuery = query.trimmingCharacters(in: .whitespaces)
                 self?.isLocationSearching = !trimmedQuery.isEmpty
+                self?.locationSearchError = nil
                 if trimmedQuery.isEmpty { self?.locationSearchResults = [] }
             })
             .flatMap { [weak self] query -> AnyPublisher<[LocationSearchResult], Never> in
@@ -183,10 +190,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                 return URLSession.shared.dataTaskPublisher(for: request)
                     .map(\.data)
                     .decode(type: [NominatimResult].self, decoder: JSONDecoder())
-                    .catch { error -> Just<[NominatimResult]> in
-                        #if DEBUG
-                        print("🔴 DECODING ERROR: \(error)")
-                        #endif
+                    .catch { [weak self] error -> Just<[NominatimResult]> in
+                        DispatchQueue.main.async {
+                            self?.locationSearchError = NSLocalizedString("location_search_error", comment: "")
+                        }
                         return Just([])
                     }
                     .map { results -> [LocationSearchResult] in
@@ -210,8 +217,73 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             .store(in: &cancellables)
     }
     
-    private func parseCoordinates(from string: String) -> LocationSearchResult? { let cleaned = string.replacingOccurrences(of: " ", with: ""); let components = cleaned.split(separator: ",").compactMap { Double($0) }; guard components.count == 2, let lat = components.first, let lon = components.last, (lat >= -90 && lat <= 90) && (lon >= -180 && lon <= 180) else { return nil }; return LocationSearchResult(name: "Custom Coordinate", country: String(format: "%.4f, %.4f", lat, lon), coordinates: CLLocationCoordinate2D(latitude: lat, longitude: lon)) }
-    func setManualLocation(city: String, coordinates: CLLocationCoordinate2D) { let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude); self.locationTimeZone = TimeZoneLocate.timeZoneWithLocation(location); var locationNameToSave = city; if city == "Custom Coordinate" { let geocoder = CLGeocoder(); geocoder.reverseGeocodeLocation(location) { (placemarks, _) in if let placemark = placemarks?.first, let cityName = placemark.locality { locationNameToSave = cityName; self.locationStatusText = cityName; let manualData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualData, forKey: "manualLocationData"); if let cc = placemark.isoCountryCode { self.handleDetectedCountryCode(cc) } } else { self.locationStatusText = String(format: "Coord: %.2f, %.2f", coordinates.latitude, coordinates.longitude) } } } else { self.locationStatusText = city; let countryGeocoder = CLGeocoder(); countryGeocoder.reverseGeocodeLocation(location) { (placemarks, _) in if let cc = placemarks?.first?.isoCountryCode { DispatchQueue.main.async { self.handleDetectedCountryCode(cc) } } } }; let manualLocationData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualLocationData, forKey: "manualLocationData"); isUsingManualLocation = true; currentCoordinates = coordinates; authorizationStatus = .authorized; locationSearchQuery = ""; locationSearchResults = []; updateAndDisplayTimes() }
+    private func parseCoordinates(from string: String) -> LocationSearchResult? {
+        let cleaned = string.replacingOccurrences(of: " ", with: "")
+        let components = cleaned.split(separator: ",").compactMap { Double($0) }
+        guard components.count == 2,
+              let lat = components.first,
+              let lon = components.last,
+              (-90...90).contains(lat),
+              (-180...180).contains(lon) else {
+            return nil
+        }
+        return LocationSearchResult(
+            name: "Custom Coordinate",
+            country: String(format: "%.4f, %.4f", lat, lon),
+            coordinates: CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        )
+    }
+    func setManualLocation(city: String, coordinates: CLLocationCoordinate2D) {
+        let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
+        self.locationTimeZone = TimeZoneLocate.timeZoneWithLocation(location)
+
+        var locationNameToSave = city
+
+        if city == "Custom Coordinate" {
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, _ in
+                guard let self = self else { return }
+                if let placemark = placemarks?.first, let cityName = placemark.locality {
+                    locationNameToSave = cityName
+                    self.locationStatusText = cityName
+                    let manualData: [String: Any] = [
+                        "name": locationNameToSave,
+                        "latitude": coordinates.latitude,
+                        "longitude": coordinates.longitude
+                    ]
+                    UserDefaults.standard.set(manualData, forKey: StorageKeys.manualLocationData)
+                    if let cc = placemark.isoCountryCode {
+                        self.handleDetectedCountryCode(cc)
+                    }
+                } else {
+                    self.locationStatusText = String(format: "Coord: %.2f, %.2f", coordinates.latitude, coordinates.longitude)
+                }
+            }
+        } else {
+            self.locationStatusText = city
+            let countryGeocoder = CLGeocoder()
+            countryGeocoder.reverseGeocodeLocation(location) { [weak self] placemarks, _ in
+                if let cc = placemarks?.first?.isoCountryCode {
+                    DispatchQueue.main.async {
+                        self?.handleDetectedCountryCode(cc)
+                    }
+                }
+            }
+        }
+
+        let manualLocationData: [String: Any] = [
+            "name": locationNameToSave,
+            "latitude": coordinates.latitude,
+            "longitude": coordinates.longitude
+        ]
+        UserDefaults.standard.set(manualLocationData, forKey: StorageKeys.manualLocationData)
+        isUsingManualLocation = true
+        currentCoordinates = coordinates
+        authorizationStatus = .authorized
+        locationSearchQuery = ""
+        locationSearchResults = []
+        updateAndDisplayTimes()
+    }
     
     func startLocationProcess() {
         if isUsingManualLocation, let manualData = loadManualLocation() {
@@ -229,10 +301,64 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
     }
     
-    private func loadManualLocation() -> (name: String, coordinates: CLLocationCoordinate2D)? { guard let data = UserDefaults.standard.dictionary(forKey: "manualLocationData"), let name = data["name"] as? String, let lat = data["latitude"] as? CLLocationDegrees, let lon = data["longitude"] as? CLLocationDegrees else { return nil }; return (name, CLLocationCoordinate2D(latitude: lat, longitude: lon)) }
-    func switchToAutomaticLocation() { isUsingManualLocation = false; UserDefaults.standard.removeObject(forKey: "manualLocationData"); if let cache = automaticLocationCache { currentCoordinates = cache.coordinates; locationStatusText = cache.name; updateAndDisplayTimes() } else { handleAuthorizationStatus(status: locMgr.authorizationStatus) } }
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locs: [CLLocation]) { guard let location = locs.last else { return }; let geocoder = CLGeocoder(); geocoder.reverseGeocodeLocation(location) { (placemarks, _) in DispatchQueue.main.async { guard let locality = placemarks?.first?.locality else { self.isRequestingLocation = false; return }; self.automaticLocationCache = (name: locality, coordinates: location.coordinate); if let countryCode = placemarks?.first?.isoCountryCode { self.handleDetectedCountryCode(countryCode) }; if !self.isUsingManualLocation { self.currentCoordinates = location.coordinate; self.locationStatusText = locality; self.updateAndDisplayTimes() }; if self.isRequestingLocation { self.isRequestingLocation = false } } } }
-    private func updateAndDisplayTimes() { updatePrayerTimes(); if isUsingManualLocation { startLocationDisplayTimer() } else { stopLocationDisplayTimer() } }
+    private func loadManualLocation() -> (name: String, coordinates: CLLocationCoordinate2D)? {
+        guard let data = UserDefaults.standard.dictionary(forKey: StorageKeys.manualLocationData),
+              let name = data["name"] as? String,
+              let lat = data["latitude"] as? CLLocationDegrees,
+              let lon = data["longitude"] as? CLLocationDegrees else {
+            return nil
+        }
+        return (name, CLLocationCoordinate2D(latitude: lat, longitude: lon))
+    }
+    func switchToAutomaticLocation() {
+        isUsingManualLocation = false
+        UserDefaults.standard.removeObject(forKey: StorageKeys.manualLocationData)
+        if let cache = automaticLocationCache {
+            currentCoordinates = cache.coordinates
+            locationStatusText = cache.name
+            updateAndDisplayTimes()
+        } else {
+            handleAuthorizationStatus(status: locMgr.authorizationStatus)
+        }
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locs: [CLLocation]) {
+        guard let location = locs.last else { return }
+
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, _ in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                guard let locality = placemarks?.first?.locality else {
+                    self.isRequestingLocation = false
+                    return
+                }
+
+                self.automaticLocationCache = (name: locality, coordinates: location.coordinate)
+
+                if let countryCode = placemarks?.first?.isoCountryCode {
+                    self.handleDetectedCountryCode(countryCode)
+                }
+
+                if !self.isUsingManualLocation {
+                    self.currentCoordinates = location.coordinate
+                    self.locationStatusText = locality
+                    self.updateAndDisplayTimes()
+                }
+
+                if self.isRequestingLocation {
+                    self.isRequestingLocation = false
+                }
+            }
+        }
+    }
+    private func updateAndDisplayTimes() {
+        updatePrayerTimes()
+        if isUsingManualLocation {
+            startLocationDisplayTimer()
+        } else {
+            stopLocationDisplayTimer()
+        }
+    }
     
     func updatePrayerTimes() {
         guard let coord = currentCoordinates else { return }
@@ -420,6 +546,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     var dateFormatter: DateFormatter {
+        if let cached = _cachedDateFormatter { return cached }
         let formatter = DateFormatter()
         formatter.timeZone = self.locationTimeZone
         formatter.locale = Locale(identifier: languageManager.language)
@@ -428,11 +555,28 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         } else {
             formatter.timeStyle = .short
         }
+        _cachedDateFormatter = formatter
         return formatter
     }
     
-    private func startLocationDisplayTimer() { stopLocationDisplayTimer(); locationDisplayTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in guard let self = self else { return }; let timeFormatter = DateFormatter(); timeFormatter.timeZone = self.locationTimeZone; timeFormatter.timeStyle = .medium; let tzName = self.locationTimeZone.identifier; let currentTime = timeFormatter.string(from: Date()); self.locationInfoText = "Timezone: \(tzName) | Current Time: \(currentTime)" } }
-    private func stopLocationDisplayTimer() { locationDisplayTimer?.invalidate(); locationDisplayTimer = nil; locationInfoText = "" }
+    private func startLocationDisplayTimer() {
+        stopLocationDisplayTimer()
+        locationDisplayTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            let timeFormatter = DateFormatter()
+            timeFormatter.timeZone = self.locationTimeZone
+            timeFormatter.timeStyle = .medium
+            let tzName = self.locationTimeZone.identifier
+            let currentTime = timeFormatter.string(from: Date())
+            self.locationInfoText = "Timezone: \(tzName) | Current Time: \(currentTime)"
+        }
+    }
+
+    private func stopLocationDisplayTimer() {
+        locationDisplayTimer?.invalidate()
+        locationDisplayTimer = nil
+        locationInfoText = ""
+    }
     
     private func updateNotifications() {
         guard notificationSettings.prayerNotificationsEnabled, !todayTimes.isEmpty else {
@@ -452,7 +596,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     func startTimer() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        let interval: TimeInterval = (menuBarTextMode == .hidden) ? 60 : 1
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
             if let lastDate = self.lastCalculationDate,
@@ -464,14 +609,48 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
     }
     
-    private func handleAuthorizationStatus(status: CLAuthorizationStatus) { self.authorizationStatus = status; switch status { case .authorized: if automaticLocationCache == nil { locationStatusText = "Fetching Location..." }; locMgr.requestLocation(); case .denied, .restricted: locationStatusText = "Location access denied."; isRequestingLocation = false; todayTimes = [:]; case .notDetermined: isRequestingLocation = false; locationStatusText = "Location access needed"; @unknown default: isRequestingLocation = false; break } }
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) { if !isUsingManualLocation { handleAuthorizationStatus(status: manager.authorizationStatus) } }
+    private func handleAuthorizationStatus(status: CLAuthorizationStatus) {
+        self.authorizationStatus = status
+        switch status {
+        case .authorized:
+            if automaticLocationCache == nil {
+                locationStatusText = NSLocalizedString("Fetching Location...", comment: "")
+            }
+            locMgr.requestLocation()
+        case .denied, .restricted:
+            locationStatusText = NSLocalizedString("Location access denied.", comment: "")
+            isRequestingLocation = false
+            todayTimes = [:]
+        case .notDetermined:
+            isRequestingLocation = false
+            locationStatusText = NSLocalizedString("Location access needed", comment: "")
+        @unknown default:
+            isRequestingLocation = false
+        }
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        if !isUsingManualLocation {
+            handleAuthorizationStatus(status: manager.authorizationStatus)
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.isRequestingLocation = false
-        self.locationStatusText = "Unable to determine location."
+        self.locationStatusText = NSLocalizedString("Unable to determine location.", comment: "")
     }
     
-    func requestLocationPermission() { if authorizationStatus == .notDetermined { isRequestingLocation = true; DispatchQueue.main.async { self.locMgr.requestWhenInUseAuthorization() } } }
-    func openLocationSettings() { guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") else { return }; NSWorkspace.shared.open(url) }
+    func requestLocationPermission() {
+        if authorizationStatus == .notDetermined {
+            isRequestingLocation = true
+            DispatchQueue.main.async {
+                self.locMgr.requestWhenInUseAuthorization()
+            }
+        }
+    }
+
+    func openLocationSettings() {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_LocationServices") else { return }
+        NSWorkspace.shared.open(url)
+    }
 }

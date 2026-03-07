@@ -50,6 +50,17 @@ struct ManualLocationView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
+                } else if let error = vm.locationSearchError {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.horizontal)
+                } else if vm.locationSearchResults.isEmpty && !vm.locationSearchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
+                    Text(NSLocalizedString("no_search_results", comment: ""))
+                        .font(.caption)
+                        .foregroundColor(Color("SecondaryTextColor"))
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 20)
                 } else {
                     VStack(spacing: 2) {
                         ForEach(vm.locationSearchResults) { result in

@@ -6,7 +6,7 @@ struct OnboardingView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var languageManager: LanguageManager
     
-    @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
+    @AppStorage(StorageKeys.showOnboardingAtLaunch) private var showOnboardingAtLaunch = true
     @State private var showingManualLocationSheet = false
     
     // State untuk efek hover

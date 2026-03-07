@@ -5,8 +5,8 @@ import SwiftUI
 import Combine
 
 class PrayerTimerMonitor {
-    @AppStorage("isPrayerTimerEnabled") private var isEnabled: Bool = false
-    @AppStorage("prayerTimerDuration") private var duration: Int = 5
+    @AppStorage(StorageKeys.isPrayerTimerEnabled) private var isEnabled: Bool = false
+    @AppStorage(StorageKeys.prayerTimerDuration) private var duration: Int = 5
     
     private var timer: Timer?
 

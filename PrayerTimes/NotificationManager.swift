@@ -87,8 +87,12 @@ struct NotificationManager {
             let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: prayerTime)
             let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
             let request = UNNotificationRequest(identifier: "\(prayerName)_at", content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request)
+
+            UNUserNotificationCenter.current().add(request) { error in
+                #if DEBUG
+                if let error = error { print("Failed to schedule \(prayerName)_at: \(error.localizedDescription)") }
+                #endif
+            }
         }
         
         if style == .fullScreen || style == .both {
@@ -121,8 +125,12 @@ struct NotificationManager {
             let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: preTime)
             let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
             let request = UNNotificationRequest(identifier: "\(prayerName)_pre_\(minutesBefore)", content: content, trigger: trigger)
-            
-            UNUserNotificationCenter.current().add(request)
+
+            UNUserNotificationCenter.current().add(request) { error in
+                #if DEBUG
+                if let error = error { print("Failed to schedule \(prayerName)_pre: \(error.localizedDescription)") }
+                #endif
+            }
         }
         
         if style == .fullScreen || style == .both {
@@ -158,8 +166,12 @@ struct NotificationManager {
         let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: prayerTime)
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
         let request = UNNotificationRequest(identifier: "\(prayerName)_fullscreen_\(isPreNotification ? "pre" : "at")", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            #if DEBUG
+            if let error = error { print("Failed to schedule \(prayerName)_fullscreen: \(error.localizedDescription)") }
+            #endif
+        }
     }
     
     static func handleFullScreenNotification(userInfo: [AnyHashable: Any]) {

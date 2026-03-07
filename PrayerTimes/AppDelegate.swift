@@ -11,7 +11,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     
     var menuBarExtra: FluidMenuBarExtra?
     private var cancellables = Set<AnyCancellable>()
-    @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
+    private var wakeObserver: NSObjectProtocol?
+    @AppStorage(StorageKeys.showOnboardingAtLaunch) private var showOnboardingAtLaunch = true
     
     private var onboardingWindow: NSWindow?
 
@@ -23,20 +24,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         vm.startLocationProcess()
 
         vm.$menuTitle.debounce(for: .milliseconds(100), scheduler: RunLoop.main).sink { [weak self] newTitle in self?.menuBarExtra?.updateTitle(to: newTitle) }.store(in: &cancellables)
-        NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification).debounce(for: .milliseconds(50), scheduler: RunLoop.main).sink { [weak self] _ in self?.updateIconForMode(self?.vm.menuBarTextMode ?? .countdown) }.store(in: &cancellables)
+        NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
+            .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.updateIconForMode(self.vm.menuBarTextMode)
+            }
+            .store(in: &cancellables)
     
         if self.showOnboardingAtLaunch {
             self.showOnboardingWindow()
         }
 
-        // --- PERBAIKAN UNTUK BUG WAKE-FROM-SLEEP ---
-        // Menambahkan observer untuk mendeteksi saat Mac bangun dari mode sleep.
-        NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(systemDidWake), name: NSWorkspace.didWakeNotification, object: nil)
+        wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didWakeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.systemDidWake()
+        }
     }
     
-    // --- FUNGSI BARU UNTUK MENANGANI WAKE-FROM-SLEEP ---
-    // Fungsi ini dipanggil saat Mac bangun, memaksa pembaruan waktu shalat.
-    @objc private func systemDidWake() {
+    private func systemDidWake() {
         // Tunggu sebentar untuk memastikan koneksi jaringan sudah siap jika diperlukan
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.vm.updatePrayerTimes()
@@ -66,9 +75,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return false
     }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        if let observer = wakeObserver {
+            NSWorkspace.shared.notificationCenter.removeObserver(observer)
+        }
+    }
     
     private func setupMenuBar() {
-        let showInDock = UserDefaults.standard.bool(forKey: "showInDock")
+        let showInDock = UserDefaults.standard.bool(forKey: StorageKeys.showInDock)
         NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
         
         self.menuBarExtra = FluidMenuBarExtra(title: vm.menuTitle.string, systemImage: "moon.zzz.fill") {

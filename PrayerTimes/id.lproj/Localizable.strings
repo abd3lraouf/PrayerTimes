@@ -152,6 +152,8 @@
 "Start typing a city or paste coordinates." = "Mulai ketik nama kota atau tempel koordinat.";
 "No results found." = "Hasil tidak ditemukan.";
 "Search is powered by OpenStreetMap." = "Pencarian didukung oleh OpenStreetMap.";
+"location_search_error" = "Pencarian gagal. Periksa koneksi Anda dan coba lagi.";
+"no_search_results" = "Tidak ada hasil. Coba pencarian lain.";
 
 /* Prayer Time Alert */
 "Break Time is Over" = "Waktu Istirahat Selesai";
