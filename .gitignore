@@ -112,3 +112,6 @@ iOSInjectionProject/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Worktrees
+.worktrees/
