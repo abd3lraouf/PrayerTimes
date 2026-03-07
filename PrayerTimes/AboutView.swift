@@ -134,6 +134,7 @@ private struct CreditCard: View {
     let url: String
     let icon: String
 
+    @Environment(\.layoutDirection) var layoutDirection
     @State private var isHovering = false
 
     var body: some View {
@@ -174,7 +175,7 @@ private struct CreditCard: View {
 
             Spacer()
 
-            Image(systemName: "arrow.up.right")
+            Image(systemName: layoutDirection == .rightToLeft ? "arrow.up.left" : "arrow.up.right")
                 .font(.caption2)
                 .foregroundColor(.secondary)
         }
