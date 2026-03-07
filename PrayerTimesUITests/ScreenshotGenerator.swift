@@ -1,9 +1,9 @@
 import XCTest
+import AppKit
 
 final class ScreenshotGenerator: XCTestCase {
 
     let languages = ["en", "ar", "id", "fa", "ur"]
-    let views = ["main", "settings", "notifications", "about"]
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool { false }
 
@@ -20,7 +20,7 @@ final class ScreenshotGenerator: XCTestCase {
             app.launchArguments += ["-AppleLanguages", "(\(lang))", "-AppleLocale", lang]
 
             app.launch()
-            sleep(2)
+            sleep(3)
 
             // 1. Main view
             captureScreenshot(app: app, lang: lang, view: "main")
@@ -29,14 +29,14 @@ final class ScreenshotGenerator: XCTestCase {
             let settingsButton = app.buttons["MainView.settingsButton"]
             XCTAssertTrue(settingsButton.waitForExistence(timeout: 5), "Settings button not found for \(lang)")
             settingsButton.tap()
-            sleep(1)
+            sleep(2)
             captureScreenshot(app: app, lang: lang, view: "settings")
 
             // 3. Notifications
             let notifButton = app.buttons["SettingsView.notificationsButton"]
             XCTAssertTrue(notifButton.waitForExistence(timeout: 5), "Notifications button not found for \(lang)")
             notifButton.tap()
-            sleep(1)
+            sleep(2)
             captureScreenshot(app: app, lang: lang, view: "notifications")
 
             // 4. Back to Settings, back to Main
@@ -54,7 +54,7 @@ final class ScreenshotGenerator: XCTestCase {
             let aboutButton = app.buttons["MainView.aboutButton"]
             XCTAssertTrue(aboutButton.waitForExistence(timeout: 5), "About button not found for \(lang)")
             aboutButton.tap()
-            sleep(1)
+            sleep(2)
             captureScreenshot(app: app, lang: lang, view: "about")
 
             app.terminate()
@@ -63,26 +63,79 @@ final class ScreenshotGenerator: XCTestCase {
 
     private func captureScreenshot(app: XCUIApplication, lang: String, view: String) {
         let window = app.windows.firstMatch
-        let screenshot = window.screenshot()
-        let attachment = XCTAttachment(screenshot: screenshot)
+        guard window.waitForExistence(timeout: 5) else {
+            NSLog("SCREENSHOT ERROR: No window for \(lang)/\(view)")
+            return
+        }
+
+        // Wait for the window to have a valid (non-zero) frame
+        var windowFrame = window.frame
+        for _ in 0..<10 {
+            if windowFrame.width > 0 && windowFrame.height > 0 {
+                break
+            }
+            sleep(1)
+            windowFrame = window.frame
+        }
+
+        guard windowFrame.width > 0 && windowFrame.height > 0 else {
+            NSLog("SCREENSHOT ERROR: Zero window frame for \(lang)/\(view): \(windowFrame)")
+            return
+        }
+
+        NSLog("SCREENSHOT: \(lang)/\(view) windowFrame=\(windowFrame)")
+
+        let fullScreenshot = XCUIScreen.main.screenshot()
+        let fullPNG = fullScreenshot.pngRepresentation
+
+        guard let nsImage = NSImage(data: fullPNG),
+              let cgImage = nsImage.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
+            NSLog("SCREENSHOT ERROR: Failed to process image for \(lang)/\(view)")
+            return
+        }
+
+        let scale = CGFloat(cgImage.width) / nsImage.size.width
+
+        let hPad: CGFloat = 20
+        let bottomPad: CGFloat = 20
+
+        let cropPointsRect = CGRect(
+            x: max(0, windowFrame.minX - hPad),
+            y: 0,
+            width: windowFrame.width + hPad * 2,
+            height: windowFrame.maxY + bottomPad
+        )
+
+        let cropPixelRect = CGRect(
+            x: cropPointsRect.minX * scale,
+            y: cropPointsRect.minY * scale,
+            width: cropPointsRect.width * scale,
+            height: cropPointsRect.height * scale
+        )
+
+        let safeCropRect = cropPixelRect.intersection(
+            CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height)
+        )
+
+        NSLog("SCREENSHOT: \(lang)/\(view) cropPixel=\(cropPixelRect) safe=\(safeCropRect) imgSize=\(cgImage.width)x\(cgImage.height)")
+
+        guard !safeCropRect.isEmpty,
+              let croppedCGImage = cgImage.cropping(to: safeCropRect) else {
+            NSLog("SCREENSHOT ERROR: Crop failed for \(lang)/\(view)")
+            return
+        }
+
+        let bitmapRep = NSBitmapImageRep(cgImage: croppedCGImage)
+        guard let pngData = bitmapRep.representation(using: .png, properties: [:]) else {
+            NSLog("SCREENSHOT ERROR: PNG encoding failed for \(lang)/\(view)")
+            return
+        }
+
+        NSLog("SCREENSHOT OK: \(lang)/\(view) \(croppedCGImage.width)x\(croppedCGImage.height)")
+
+        let attachment = XCTAttachment(data: pngData, uniformTypeIdentifier: "public.png")
         attachment.name = "\(lang)_\(view)"
         attachment.lifetime = .keepAlways
         add(attachment)
-
-        // Write to temp directory (test runner is sandboxed)
-        let tempDir = NSTemporaryDirectory() + "screenshots/\(lang)"
-        try? FileManager.default.createDirectory(
-            atPath: tempDir,
-            withIntermediateDirectories: true
-        )
-
-        let outputPath = "\(tempDir)/\(view).png"
-        let pngData = screenshot.pngRepresentation
-        do {
-            try pngData.write(to: URL(fileURLWithPath: outputPath))
-            NSLog("Screenshot saved: \(outputPath)")
-        } catch {
-            NSLog("Failed to write screenshot: \(error)")
-        }
     }
 }

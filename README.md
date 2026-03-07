@@ -1,10 +1,12 @@
 <p align="center">
-    <a href="https://github.com/abd3lraouf/PrayerTimes">
-        <img width="128" height="128" src="assets/icon.png">
-    </a>
-    <h1 align="center">PrayerTimes</h1>
-    <p align="center">A simple prayer times app that lives in your Mac's menu bar.</p>
+    <strong>English</strong> | <a href="README.ar.md">العربية</a> | <a href="README.id.md">Indonesia</a> | <a href="README.fa.md">فارسی</a> | <a href="README.ur.md">اردو</a>
 </p>
+
+<p align="center">
+    <img src="art/en/logo.png" alt="PrayerTimes Pro" height="80">
+</p>
+
+<p align="center">A simple prayer times app that lives in your Mac's menu bar.</p>
 
 <p align="center">
     <a href="#installation">
@@ -15,19 +17,7 @@
 ---
 
 <p align="center">
-    <img src="screenshots/output/en.png" alt="English" width="700">
-</p>
-<p align="center">
-    <img src="screenshots/output/ar.png" alt="العربية" width="700">
-</p>
-<p align="center">
-    <img src="screenshots/output/fa.png" alt="فارسی" width="700">
-</p>
-<p align="center">
-    <img src="screenshots/output/ur.png" alt="اردو" width="700">
-</p>
-<p align="center">
-    <img src="screenshots/output/id.png" alt="Indonesia" width="700">
+    <img src="art/en/screenshots.png" alt="PrayerTimes Pro Screenshots" width="700">
 </p>
 
 ## What it does
