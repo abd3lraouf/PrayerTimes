@@ -58,7 +58,26 @@ final class ScreenshotGenerator: XCTestCase {
             captureScreenshot(app: app, lang: lang, view: "about")
 
             app.terminate()
+
+            // 6. Full-screen notification (separate launch)
+            let fsApp = XCUIApplication()
+            fsApp.launchEnvironment["SCREENSHOT_LANGUAGE"] = lang
+            fsApp.launchEnvironment["SCREENSHOT_FULLSCREEN"] = "1"
+            fsApp.launchArguments += ["-AppleLanguages", "(\(lang))", "-AppleLocale", lang]
+            fsApp.launch()
+            sleep(3)
+            captureFullScreenshot(app: fsApp, lang: lang, view: "fullscreen")
+            fsApp.terminate()
         }
+    }
+
+    private func captureFullScreenshot(app: XCUIApplication, lang: String, view: String) {
+        let screenshot = XCUIScreen.main.screenshot()
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = "\(lang)_\(view)"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        NSLog("SCREENSHOT OK: \(lang)/\(view) full screen")
     }
 
     private func captureScreenshot(app: XCUIApplication, lang: String, view: String) {

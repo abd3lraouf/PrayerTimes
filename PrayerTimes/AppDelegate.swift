@@ -45,6 +45,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             }
         }
 
+        // Show demo full-screen notification for screenshot automation
+        if ProcessInfo.processInfo.environment["SCREENSHOT_FULLSCREEN"] != nil {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                let prayerName = NSLocalizedString("Fajr", comment: "")
+                FullScreenNotificationManager.shared.showFullScreenNotification(
+                    prayerName: prayerName,
+                    prayerTime: Date()
+                )
+            }
+        }
+
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didWakeNotification,
             object: nil,

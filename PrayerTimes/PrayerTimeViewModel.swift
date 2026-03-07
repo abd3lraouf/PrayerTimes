@@ -446,8 +446,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
         let numberFormatter = NumberFormatter()
         numberFormatter.locale = Locale(identifier: languageManager.language)
-        let lri = languageManager.isRTLEnabled ? "\u{2066}" : ""
-        let pdi = languageManager.isRTLEnabled ? "\u{2069}" : ""
+        let isolateStart = languageManager.isRTLEnabled ? "\u{2067}" : "\u{2066}"  // RLI for RTL, LRI for LTR
+        let isolateEnd = "\u{2069}"  // PDI
         let hourAbbr = NSLocalizedString("time_hour_abbrev", comment: "")
         let minAbbr = NSLocalizedString("time_minute_abbrev", comment: "")
         let secAbbr = NSLocalizedString("time_second_abbrev", comment: "")
@@ -456,7 +456,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             if diff < 60 {
                 // Under 1 minute: show seconds
                 let formattedS = numberFormatter.string(from: NSNumber(value: diff)) ?? "\(diff)"
-                countdown = "\(lri)\(formattedS)\(secAbbr)\(pdi)"
+                countdown = "\(isolateStart)\(formattedS)\(secAbbr)\(isolateEnd)"
             } else {
                 // Round up to nearest minute
                 let totalMinutes = (diff + 59) / 60
@@ -466,13 +466,13 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                 if h > 0 && m > 0 {
                     let formattedH = numberFormatter.string(from: NSNumber(value: h)) ?? "\(h)"
                     let formattedM = numberFormatter.string(from: NSNumber(value: m)) ?? "\(m)"
-                    countdown = "\(lri)\(formattedH)\(hourAbbr) \(formattedM)\(minAbbr)\(pdi)"
+                    countdown = "\(isolateStart)\(formattedH)\(hourAbbr) \(formattedM)\(minAbbr)\(isolateEnd)"
                 } else if h > 0 {
                     let formattedH = numberFormatter.string(from: NSNumber(value: h)) ?? "\(h)"
-                    countdown = "\(lri)\(formattedH)\(hourAbbr)\(pdi)"
+                    countdown = "\(isolateStart)\(formattedH)\(hourAbbr)\(isolateEnd)"
                 } else {
                     let formattedM = numberFormatter.string(from: NSNumber(value: m)) ?? "\(m)"
-                    countdown = "\(lri)\(formattedM)\(minAbbr)\(pdi)"
+                    countdown = "\(isolateStart)\(formattedM)\(minAbbr)\(isolateEnd)"
                 }
             }
         } else {
