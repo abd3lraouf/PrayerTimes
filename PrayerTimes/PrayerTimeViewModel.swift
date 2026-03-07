@@ -60,6 +60,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         didSet {
             UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
             if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
+            startTimer()
             updateMenuTitle()
         }
     }
@@ -86,6 +87,9 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         startTimer()
         setupSearchPublisher()
         setupNotificationObserver()
+        NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
+            self?.updateCountdown()
+        }
     }
     
     func forwardAnimation() -> NavigationAnimation? {
@@ -540,7 +544,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     func startTimer() {
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+        let interval: TimeInterval = (menuBarTextMode == .hidden) ? 60 : 1
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
             if let lastDate = self.lastCalculationDate,
