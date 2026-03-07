@@ -1,10 +1,12 @@
 #!/bin/sh
 
-# Prevent committing to main directly
+# Prevent committing to main directly (allow merge commits)
 branch=$(git symbolic-ref --short HEAD 2>/dev/null)
 if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
-    echo "error: Direct commits to $branch are not allowed. Use a feature branch."
-    exit 1
+    if [ ! -f "$(git rev-parse --git-dir)/MERGE_HEAD" ]; then
+        echo "error: Direct commits to $branch are not allowed. Use a feature branch."
+        exit 1
+    fi
 fi
 
 # Check for common sensitive files
