@@ -109,15 +109,14 @@
 "Prayer Notifications" = "Prayer Notifications";
 
 /* Notification Type */
-"At Prayer Time" = "At Prayer Time";
-"Before Prayer" = "Before Prayer";
-"At & Before Prayer" = "At & Before Prayer";
-"At Prayer Time & Before" = "At Prayer Time & Before";
+"At Time" = "At Time";
+"Before" = "Before";
+"At & Before" = "At & Before";
 "Type" = "Type";
 
 /* Notification Style */
-"System Notification" = "System Notification";
-"Full Screen Alert" = "Full Screen Alert";
+"System" = "System";
+"Full Screen" = "Full Screen";
 "Both" = "Both";
 "Style" = "Style";
 
@@ -163,8 +162,6 @@
 "Global Settings" = "Global Settings";
 "Use Custom Settings" = "Use Custom Settings";
 "Using global settings" = "Using global settings";
-"Notification Type" = "Notification Type";
-"Notification Style" = "Notification Style";
 
 /* Calculation Method Names */
 "calc_method_Muslim World League" = "Muslim World League";

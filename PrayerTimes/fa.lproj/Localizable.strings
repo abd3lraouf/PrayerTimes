@@ -108,15 +108,14 @@
 "Prayer Notifications" = "اعلان‌های نماز";
 
 /* Notification Type */
-"At Prayer Time" = "در وقت نماز";
-"Before Prayer" = "قبل از نماز";
-"At & Before Prayer" = "در وقت و قبل از نماز";
-"At Prayer Time & Before" = "در وقت نماز و قبل";
+"At Time" = "در وقت";
+"Before" = "قبل";
+"At & Before" = "در وقت و قبل";
 "Type" = "نوع";
 
 /* Notification Style */
-"System Notification" = "اعلان سیستم";
-"Full Screen Alert" = "هشدار تمام‌صفحه";
+"System" = "سیستم";
+"Full Screen" = "تمام‌صفحه";
 "Both" = "هر دو";
 "Style" = "سبک";
 

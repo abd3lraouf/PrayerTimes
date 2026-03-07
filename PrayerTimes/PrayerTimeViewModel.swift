@@ -583,11 +583,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             NotificationManager.cancelNotifications()
             return
         }
-        NotificationManager.requestPermission()
         var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
         if showSunnahPrayers {
-            if todayTimes.keys.contains("Tahajud") { prayersToNotify.append("Tahajud") }
-            if todayTimes.keys.contains("Dhuha") { prayersToNotify.append("Dhuha") }
+            if todayTimes.keys.contains("Tahajud") { prayersToNotify.insert("Tahajud", at: 0) }
+            if todayTimes.keys.contains("Dhuha") { prayersToNotify.insert("Dhuha", at: prayersToNotify.firstIndex(of: "Dhuhr") ?? 2) }
         }
         NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
     }
@@ -599,7 +598,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let interval: TimeInterval = (menuBarTextMode == .hidden) ? 60 : 1
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            
+
+            // Check if any full-screen notifications should fire now
+            NotificationManager.checkPendingFullScreenNotifications()
+
             if let lastDate = self.lastCalculationDate,
                !Calendar.current.isDate(lastDate, inSameDayAs: Date()) {
                 self.updatePrayerTimes()
@@ -607,6 +609,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                 self.updateCountdown()
             }
         }
+        // Ensure timer fires even during menu interaction / scrolling
+        RunLoop.main.add(timer!, forMode: .common)
     }
     
     private func handleAuthorizationStatus(status: CLAuthorizationStatus) {

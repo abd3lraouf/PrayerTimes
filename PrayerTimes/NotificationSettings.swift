@@ -27,9 +27,9 @@ enum NotificationStyle: String, CaseIterable, Identifiable, Codable {
     var localized: String {
         switch self {
         case .system:
-            return NSLocalizedString("System Notification", comment: "")
+            return NSLocalizedString("System", comment: "")
         case .fullScreen:
-            return NSLocalizedString("Full Screen Alert", comment: "")
+            return NSLocalizedString("Full Screen", comment: "")
         case .both:
             return NSLocalizedString("Both", comment: "")
         }
@@ -46,11 +46,11 @@ enum NotificationType: String, CaseIterable, Identifiable, Codable {
     var localized: String {
         switch self {
         case .atPrayerTime:
-            return NSLocalizedString("At Prayer Time", comment: "")
+            return NSLocalizedString("At Time", comment: "")
         case .beforePrayer:
-            return NSLocalizedString("Before Prayer", comment: "")
+            return NSLocalizedString("Before", comment: "")
         case .both:
-            return NSLocalizedString("At & Before Prayer", comment: "")
+            return NSLocalizedString("At & Before", comment: "")
         }
     }
 }

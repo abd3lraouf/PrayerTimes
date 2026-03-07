@@ -109,15 +109,14 @@
 "Prayer Notifications" = "Notifikasi Shalat";
 
 /* Notification Type */
-"At Prayer Time" = "Saat Waktu Shalat";
-"Before Prayer" = "Sebelum Shalat";
-"At & Before Prayer" = "Sa & Sebelum Shalat";
-"At Prayer Time & Before" = "Saat Waktu Shalat & Sebelum";
+"At Time" = "Saat Waktu";
+"Before" = "Sebelum";
+"At & Before" = "Saat & Sebelum";
 "Type" = "Tipe";
 
 /* Notification Style */
-"System Notification" = "Notifikasi Sistem";
-"Full Screen Alert" = "Peringatan Layar Penuh";
+"System" = "Sistem";
+"Full Screen" = "Layar Penuh";
 "Both" = "Keduanya";
 "Style" = "Gaya";
 
@@ -163,8 +162,6 @@
 "Global Settings" = "Pengaturan Global";
 "Use Custom Settings" = "Gunakan Pengaturan Kustom";
 "Using global settings" = "Menggunakan pengaturan global";
-"Notification Type" = "Tipe Notifikasi";
-"Notification Style" = "Gaya Notifikasi";
 
 /* Calculation Method Names */
 "calc_method_Muslim World League" = "Liga Muslim Dunia";

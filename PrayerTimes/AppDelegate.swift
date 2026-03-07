@@ -19,6 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     func applicationDidFinishLaunching(_ notification: Notification) {
         Bundle.setLanguage(languageManager.language)
         UNUserNotificationCenter.current().delegate = self
+        NotificationManager.requestPermission()
 
         setupMenuBar()
         vm.startLocationProcess()
@@ -63,20 +64,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     // MARK: - UNUserNotificationCenterDelegate
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        let userInfo = notification.request.content.userInfo
-        if let isFullScreen = userInfo["isFullScreen"] as? Bool, isFullScreen {
-            NotificationManager.handleFullScreenNotification(userInfo: userInfo)
-            completionHandler([])
-        } else {
-            completionHandler([.banner, .sound])
-        }
+        completionHandler([.banner, .sound])
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-        if let isFullScreen = userInfo["isFullScreen"] as? Bool, isFullScreen {
-            NotificationManager.handleFullScreenNotification(userInfo: userInfo)
-        }
         completionHandler()
     }
 

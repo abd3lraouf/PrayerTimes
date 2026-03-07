@@ -9,12 +9,12 @@ struct NotificationsSettingsView: View {
     @State private var isHeaderHovering = false
 
     private let mainPrayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
-    private let sunnahPrayers = ["Tahajud", "Dhuha"]
+    private let allPrayers = ["Tahajud", "Fajr", "Sunrise", "Dhuha", "Dhuhr", "Asr", "Maghrib", "Isha"]
 
     private var prayers: [String] {
-        vm.showSunnahPrayers ? mainPrayers + sunnahPrayers : mainPrayers
+        vm.showSunnahPrayers ? allPrayers : mainPrayers
     }
-    private var viewWidth: CGFloat { vm.useCompactLayout ? 220 : 260 }
+    private var viewWidth: CGFloat { vm.useCompactLayout ? 300 : 340 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -75,7 +75,7 @@ struct NotificationsSettingsView: View {
     private var globalSettingsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Notification Type").font(.subheadline)
+                Text("Type").font(.subheadline)
                 Spacer()
                 Picker("", selection: $notificationSettings.globalSettings.notificationType) {
                     ForEach(NotificationType.allCases) { type in
@@ -89,7 +89,7 @@ struct NotificationsSettingsView: View {
             }
 
             HStack {
-                Text("Notification Style").font(.subheadline)
+                Text("Style").font(.subheadline)
                 Spacer()
                 Picker("", selection: $notificationSettings.globalSettings.notificationStyle) {
                     ForEach(NotificationStyle.allCases) { style in

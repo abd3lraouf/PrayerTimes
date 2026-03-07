@@ -108,15 +108,14 @@
 "Prayer Notifications" = "نماز کی اطلاعات";
 
 /* Notification Type */
-"At Prayer Time" = "نماز کے وقت";
-"Before Prayer" = "نماز سے پہلے";
-"At & Before Prayer" = "نماز کے وقت اور پہلے";
-"At Prayer Time & Before" = "نماز کے وقت اور پہلے";
+"At Time" = "وقت پر";
+"Before" = "پہلے";
+"At & Before" = "وقت اور پہلے";
 "Type" = "قسم";
 
 /* Notification Style */
-"System Notification" = "سسٹم اطلاع";
-"Full Screen Alert" = "فل سکرین الرٹ";
+"System" = "سسٹم";
+"Full Screen" = "فل سکرین";
 "Both" = "دونوں";
 "Style" = "انداز";
 

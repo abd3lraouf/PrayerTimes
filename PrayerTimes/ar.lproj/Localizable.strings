@@ -109,15 +109,14 @@
 "Prayer Notifications" = "إشعارات الصلاة";
 
 /* Notification Type */
-"At Prayer Time" = "عند وقت الصلاة";
-"Before Prayer" = "قبل الصلاة";
-"At & Before Prayer" = "عند وقبل الصلاة";
-"At Prayer Time & Before" = "عند وقت الصلاة وقبله";
+"At Time" = "عند الوقت";
+"Before" = "قبل";
+"At & Before" = "عند وقبل";
 "Type" = "النوع";
 
 /* Notification Style */
-"System Notification" = "إشعار النظام";
-"Full Screen Alert" = "تنبيه بملء الشاشة";
+"System" = "النظام";
+"Full Screen" = "ملء الشاشة";
 "Both" = "كلاهما";
 "Style" = "النمط";
 
@@ -163,8 +162,6 @@
 "Global Settings" = "الإعدادات العامة";
 "Use Custom Settings" = "استخدام إعدادات مخصصة";
 "Using global settings" = "يستخدم الإعدادات العامة";
-"Notification Type" = "نوع الإشعار";
-"Notification Style" = "نمط الإشعار";
 
 /* Calculation Method Names */
 "calc_method_Muslim World League" = "رابطة العالم الإسلامي";

@@ -70,7 +70,7 @@ USER_FONTS = os.path.expanduser("~/Library/Fonts")
 SYS_FONTS = "/System/Library/Fonts/Supplemental"
 
 FONT_PATHS = {
-    "syne": os.path.join(USER_FONTS, "Syne[wght].ttf"),
+    "sfpro": "/System/Library/Fonts/SFNS.ttf",
     "jakarta": os.path.join(USER_FONTS, "PlusJakartaSans-ExtraBold.ttf"),
     "jakarta_semi": os.path.join(USER_FONTS, "PlusJakartaSans-SemiBold.ttf"),
     "naskh": os.path.join(SYS_FONTS, "DecoTypeNaskh.ttc"),
@@ -80,7 +80,7 @@ FONT_PATHS = {
 }
 
 HEADER_FONTS = {
-    "en": ("syne", 64, "ExtraBold"),
+    "en": ("sfpro", 64, "Heavy"),
     "id": ("jakarta", 64, None),
     "ar": ("naskh", 68, None),
     "fa": ("vazirmatn", 64, "Bold"),
@@ -88,7 +88,7 @@ HEADER_FONTS = {
 }
 
 TAGLINE_FONTS = {
-    "en": ("syne", 44, "ExtraBold"),
+    "en": ("sfpro", 44, "Bold"),
     "id": ("jakarta", 44, None),
     "ar": ("naskh", 56, None),
     "fa": ("vazirmatn", 44, "Bold"),
@@ -96,7 +96,7 @@ TAGLINE_FONTS = {
 }
 
 SUBTITLE_FONTS = {
-    "en": ("syne", 28, "Bold"),
+    "en": ("sfpro", 28, "Medium"),
     "id": ("jakarta_semi", 28, None),
     "ar": ("naskh", 32, None),
     "fa": ("vazirmatn", 28, "SemiBold"),
@@ -108,31 +108,31 @@ SUBTITLE_FONTS = {
 TAGLINES = {
     "en": {
         "main": "Every prayer,\nright on time.",
-        "settings": "Your prayers,\nyour way.",
+        "settings": "Your prayer is your\nsalvation, be diligent.",
         "notifications": "Never miss\na prayer.",
         "about": "Made with love\nfor the Ummah.",
     },
     "ar": {
         "main": "كل صلاة،\nفي وقتها.",
-        "settings": "صلاتك،\nبطريقتك.",
+        "settings": "صلاتك نجاتك\nاحرص عليها.",
         "notifications": "تذكير لطيف\nقبل كل صلاة.",
         "about": "صُنع بحب\nللأمة.",
     },
     "id": {
         "main": "Setiap shalat,\ntepat waktu.",
-        "settings": "Shalat Anda,\ncara Anda.",
+        "settings": "Shalatmu adalah\nkeselamatanmu.",
         "notifications": "Pengingat lembut\nsebelum setiap shalat.",
         "about": "Dibuat dengan cinta\nuntuk Ummah.",
     },
     "fa": {
         "main": "هر نماز،\nدرست به موقع.",
-        "settings": "نمازهای شما،\nبه روش شما.",
+        "settings": "نمازت نجات توست،\nبر آن حریص باش.",
         "notifications": "یادآوری آرام\nپیش از هر نماز.",
         "about": "ساخته شده با عشق\nبرای امت.",
     },
     "ur": {
         "main": "ہر نماز،\nبالکل وقت پر۔",
-        "settings": "آپ کی نماز،\nآپ کے انداز میں۔",
+        "settings": "آپ کی نماز آپ کی\nنجات ہے، اسے لازم پکڑیں۔",
         "notifications": "ہر نماز سے پہلے\nایک نرم یاد دہانی۔",
         "about": "امت کے لیے\nمحبت سے بنایا گیا۔",
     },
@@ -179,6 +179,21 @@ def text_direction(lang: str) -> str:
     return "rtl" if lang in RTL_LANGUAGES else "ltr"
 
 
+def resize_keep_ratio(img: Image.Image, *, width: int = 0, height: int = 0) -> Image.Image:
+    """Resize an image preserving aspect ratio. Supply exactly one of width or height."""
+    if width and height:
+        raise ValueError("Supply only width or height, not both")
+    if width:
+        ratio = width / img.width
+        new_h = round(img.height * ratio)
+        return img.resize((width, new_h), Image.LANCZOS)
+    if height:
+        ratio = height / img.height
+        new_w = round(img.width * ratio)
+        return img.resize((new_w, height), Image.LANCZOS)
+    raise ValueError("Supply width or height")
+
+
 def load_screenshot(lang: str, view: str) -> Image.Image | None:
     path = RAW_DIR / lang / f"{view}.png"
     if path.exists():
@@ -188,7 +203,7 @@ def load_screenshot(lang: str, view: str) -> Image.Image | None:
 
 def card_height_for_screenshot(screenshot: Image.Image) -> int:
     ss_width = CARD_WIDTH - SCREENSHOT_INSET * 2
-    scaled_h = int(ss_width * screenshot.height / screenshot.width)
+    scaled_h = round(ss_width * screenshot.height / screenshot.width)
     return SCREENSHOT_TOP_PADDING + scaled_h + SCREENSHOT_BOTTOM_PADDING
 
 
@@ -256,13 +271,13 @@ def load_icon() -> Image.Image:
 
 def draw_card(canvas: Image.Image, x: int, y: int, screenshot: Image.Image):
     ss_width = CARD_WIDTH - SCREENSHOT_INSET * 2
-    ss_height = int(ss_width * screenshot.height / screenshot.width)
+    ss_resized = resize_keep_ratio(screenshot, width=ss_width)
+    ss_height = ss_resized.height
     card_height = SCREENSHOT_TOP_PADDING + ss_height + SCREENSHOT_BOTTOM_PADDING
 
     card_bg = make_gradient(CARD_WIDTH, card_height, CARD_GRADIENT_TOP, CARD_GRADIENT_BOTTOM)
     paste_rounded(canvas, card_bg, (x, y), CARD_CORNER_RADIUS)
 
-    ss_resized = screenshot.resize((ss_width, ss_height), Image.LANCZOS)
     ss_x = x + SCREENSHOT_INSET
     ss_y = y + SCREENSHOT_TOP_PADDING
 
@@ -271,6 +286,7 @@ def draw_card(canvas: Image.Image, x: int, y: int, screenshot: Image.Image):
 
 
 def draw_rounded_icon(canvas: Image.Image, icon: Image.Image, x: int, y: int, size: int, radius: int):
+    # Icons are square by design — resize to square is intentional
     icon_resized = icon.resize((size, size), Image.LANCZOS)
     add_shadow(canvas, (x, y, size, size), radius, 12, (0, 6), opacity=100)
     paste_rounded(canvas, icon_resized, (x, y), radius)

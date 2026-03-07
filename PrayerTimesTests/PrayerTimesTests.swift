@@ -1030,7 +1030,7 @@ final class PrayerTimesTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
     }
 
-    func testNotificationSchedulingFullScreenCreatesFullScreenRequest() {
+    func testNotificationSchedulingFullScreenCreatesFullScreenEntry() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
         settings.globalSettings.notificationStyle = .fullScreen
@@ -1042,18 +1042,15 @@ final class PrayerTimesTests: XCTestCase {
             settings: settings
         )
 
-        let expectation = XCTestExpectation(description: "Check fullscreen notification")
+        // Full-screen notifications now use polling, not UNNotification
+        let fullScreenEntries = NotificationManager.scheduledFullScreenNotifications
+        XCTAssertEqual(fullScreenEntries.count, 1, "Should have one full-screen entry")
+        XCTAssertEqual(fullScreenEntries.first?.prayerName, "Fajr")
+        XCTAssertFalse(fullScreenEntries.first?.isPreNotification ?? true)
+
+        // Should NOT have a system notification
+        let expectation = XCTestExpectation(description: "Check no system notification")
         NotificationManager.getScheduledNotifications { requests in
-            let fullscreenRequests = requests.filter { $0.identifier.contains("fullscreen") }
-            XCTAssertEqual(fullscreenRequests.count, 1, "Should have one fullscreen notification")
-
-            if let fsRequest = fullscreenRequests.first {
-                let userInfo = fsRequest.content.userInfo
-                XCTAssertEqual(userInfo["isFullScreen"] as? Bool, true)
-                XCTAssertEqual(userInfo["prayerName"] as? String, "Fajr")
-            }
-
-            // Should NOT have a system notification
             let systemRequests = requests.filter { $0.identifier == "Fajr_at" }
             XCTAssertEqual(systemRequests.count, 0, "Should have no system notification when style is fullScreen only")
             expectation.fulfill()
@@ -1073,12 +1070,15 @@ final class PrayerTimesTests: XCTestCase {
             settings: settings
         )
 
-        let expectation = XCTestExpectation(description: "Check both system and fullscreen")
+        // Check full-screen entry
+        let fullScreenEntries = NotificationManager.scheduledFullScreenNotifications
+        XCTAssertEqual(fullScreenEntries.count, 1, "Should have one full-screen entry")
+
+        // Check system notification
+        let expectation = XCTestExpectation(description: "Check system notification")
         NotificationManager.getScheduledNotifications { requests in
             let systemRequests = requests.filter { $0.identifier == "Fajr_at" }
-            let fullscreenRequests = requests.filter { $0.identifier.contains("fullscreen") }
             XCTAssertEqual(systemRequests.count, 1, "Should have one system notification")
-            XCTAssertEqual(fullscreenRequests.count, 1, "Should have one fullscreen notification")
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 5.0)
@@ -1388,20 +1388,16 @@ final class PrayerTimesTests: XCTestCase {
             settings: settings
         )
 
-        let expectation = XCTestExpectation(description: "Check fullscreen content")
-        NotificationManager.getScheduledNotifications { requests in
-            guard let request = requests.first(where: { $0.identifier.contains("fullscreen") }) else {
-                XCTFail("Fullscreen notification not found")
-                expectation.fulfill()
-                return
-            }
-            let userInfo = request.content.userInfo
-            XCTAssertEqual(userInfo["isFullScreen"] as? Bool, true)
-            XCTAssertEqual(userInfo["prayerName"] as? String, "Fajr")
-            XCTAssertNotNil(userInfo["prayerTime"], "prayerTime should be in userInfo")
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 5.0)
+        // Full-screen notifications now use polling entries, not UNNotification
+        let entries = NotificationManager.scheduledFullScreenNotifications
+        XCTAssertEqual(entries.count, 1, "Should have one full-screen entry")
+
+        let entry = entries[0]
+        XCTAssertEqual(entry.prayerName, "Fajr")
+        XCTAssertEqual(entry.fireDate.timeIntervalSince1970, futureTime.timeIntervalSince1970, accuracy: 1.0)
+        XCTAssertFalse(entry.isPreNotification)
+        XCTAssertNil(entry.minutesBefore)
+        XCTAssertFalse(entry.hasFired)
     }
 
     // MARK: - Sunnah Prayer Notification Tests
