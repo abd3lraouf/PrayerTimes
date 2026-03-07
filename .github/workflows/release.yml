@@ -29,17 +29,10 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Building version: $VERSION"
           
-      - name: Update marketing version
-        run: |
-          VERSION=${{ steps.get_version.outputs.VERSION }}
-          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PrayerTimes/Info.plist 2>/dev/null || \
-          /usr/libexec/PlistBuddy -c "Add :CFBundleShortVersionString string $VERSION" PrayerTimes/Info.plist
-          
-          BUILD_NUMBER=${{ github.run_number }}
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" PrayerTimes/Info.plist 2>/dev/null || \
-          /usr/libexec/PlistBuddy -c "Add :CFBundleVersion string $BUILD_NUMBER" PrayerTimes/Info.plist
-          
       - name: Build app
+        env:
+          APP_VERSION: ${{ steps.get_version.outputs.VERSION }}
+          BUILD_NUMBER: ${{ github.run_number }}
         run: |
           xcodebuild -project PrayerTimes.xcodeproj \
             -scheme PrayerTimes \
@@ -48,7 +41,9 @@ jobs:
             clean build \
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO \
+            MARKETING_VERSION="$APP_VERSION" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
             
       - name: Create app bundle
         run: |
