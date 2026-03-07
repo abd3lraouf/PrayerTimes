@@ -7,37 +7,39 @@ final class ScreenshotGenerator: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool { false }
 
+    override func setUp() {
+        super.setUp()
+        let app = XCUIApplication()
+        app.terminate()
+    }
+
     func testGenerateAllScreenshots() throws {
         for lang in languages {
             let app = XCUIApplication()
             app.launchEnvironment["SCREENSHOT_LANGUAGE"] = lang
-
-            // Set Apple language/locale for proper system formatting
             app.launchArguments += ["-AppleLanguages", "(\(lang))", "-AppleLocale", lang]
 
             app.launch()
-
-            // Wait for app to settle
             sleep(2)
 
-            // 1. Main view screenshot
+            // 1. Main view
             captureScreenshot(app: app, lang: lang, view: "main")
 
-            // 2. Navigate to Settings
+            // 2. Settings
             let settingsButton = app.buttons["MainView.settingsButton"]
             XCTAssertTrue(settingsButton.waitForExistence(timeout: 5), "Settings button not found for \(lang)")
             settingsButton.tap()
             sleep(1)
             captureScreenshot(app: app, lang: lang, view: "settings")
 
-            // 3. Navigate to Notifications (from Settings)
+            // 3. Notifications
             let notifButton = app.buttons["SettingsView.notificationsButton"]
             XCTAssertTrue(notifButton.waitForExistence(timeout: 5), "Notifications button not found for \(lang)")
             notifButton.tap()
             sleep(1)
             captureScreenshot(app: app, lang: lang, view: "notifications")
 
-            // 4. Go back to Settings, then back to Main
+            // 4. Back to Settings, back to Main
             let notifBackButton = app.buttons["NotificationsSettingsView.backButton"]
             XCTAssertTrue(notifBackButton.waitForExistence(timeout: 5))
             notifBackButton.tap()
@@ -48,7 +50,7 @@ final class ScreenshotGenerator: XCTestCase {
             settingsBackButton.tap()
             sleep(1)
 
-            // 5. Navigate to About
+            // 5. About
             let aboutButton = app.buttons["MainView.aboutButton"]
             XCTAssertTrue(aboutButton.waitForExistence(timeout: 5), "About button not found for \(lang)")
             aboutButton.tap()
@@ -60,20 +62,27 @@ final class ScreenshotGenerator: XCTestCase {
     }
 
     private func captureScreenshot(app: XCUIApplication, lang: String, view: String) {
-        let screenshot = app.screenshot()
+        let window = app.windows.firstMatch
+        let screenshot = window.screenshot()
         let attachment = XCTAttachment(screenshot: screenshot)
         attachment.name = "\(lang)_\(view)"
         attachment.lifetime = .keepAlways
         add(attachment)
 
-        // Also save to disk
-        let projectDir = ProcessInfo.processInfo.environment["PROJECT_DIR"]
-            ?? URL(fileURLWithPath: #file)
-                .deletingLastPathComponent()
-                .deletingLastPathComponent()
-                .path
-        let outputPath = "\(projectDir)/screenshots/raw/\(lang)/\(view).png"
+        // Write to temp directory (test runner is sandboxed)
+        let tempDir = NSTemporaryDirectory() + "screenshots/\(lang)"
+        try? FileManager.default.createDirectory(
+            atPath: tempDir,
+            withIntermediateDirectories: true
+        )
+
+        let outputPath = "\(tempDir)/\(view).png"
         let pngData = screenshot.pngRepresentation
-        try? pngData.write(to: URL(fileURLWithPath: outputPath))
+        do {
+            try pngData.write(to: URL(fileURLWithPath: outputPath))
+            NSLog("Screenshot saved: \(outputPath)")
+        } catch {
+            NSLog("Failed to write screenshot: \(error)")
+        }
     }
 }

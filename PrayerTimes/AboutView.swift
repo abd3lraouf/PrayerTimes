@@ -122,7 +122,6 @@ struct AboutView: View {
         }
         .padding(.vertical, 8)
         .frame(width: viewWidth)
-        .accessibilityIdentifier("AboutView")
     }
 
     private func handleBackButton() {

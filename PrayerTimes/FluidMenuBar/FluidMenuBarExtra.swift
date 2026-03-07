@@ -16,6 +16,10 @@ public final class FluidMenuBarExtra {
     }
     
     // --- PERUBAHAN: Overload fungsi untuk menerima NSAttributedString ---
+    public func showWindow() {
+        statusItem.showWindow()
+    }
+
     public func updateTitle(to newTitle: NSAttributedString) {
         statusItem.updateTitle(to: newTitle)
     }

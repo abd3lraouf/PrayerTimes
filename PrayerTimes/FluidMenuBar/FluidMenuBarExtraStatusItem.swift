@@ -53,6 +53,10 @@ public final class FluidMenuBarExtraStatusItem: NSObject, NSWindowDelegate {
     }
     
     public func windowDidResignKey(_ notification: Notification) {
+        // Don't dismiss in screenshot mode - the test runner steals focus
+        if ProcessInfo.processInfo.environment["SCREENSHOT_LANGUAGE"] != nil {
+            return
+        }
         if window.isVisible {
             dismissWindow()
         }
@@ -103,6 +107,13 @@ public final class FluidMenuBarExtraStatusItem: NSObject, NSWindowDelegate {
     public func updateTitle(to newTitle: NSAttributedString) {
         // Set the attributed title with RTL support built into the string
         statusItem.button?.attributedTitle = newTitle
+    }
+
+    public func showWindow() {
+        if !window.isVisible {
+            setWindowPosition()
+            window.makeKeyAndOrderFront(nil)
+        }
     }
 
     // Convenience initializers

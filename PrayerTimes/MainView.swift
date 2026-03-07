@@ -103,7 +103,6 @@ struct MainView: View {
                 .focusable(false)
             }
         }.padding(.vertical, 8).frame(width: viewWidth)
-        .accessibilityIdentifier("MainView")
     }
 }
 

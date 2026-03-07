@@ -95,6 +95,5 @@ struct SettingsView: View {
             .padding(.vertical, 8)
             .frame(width: viewWidth)
         }
-        .accessibilityIdentifier("SettingsView")
     }
 }

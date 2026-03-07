@@ -32,8 +32,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             }
             .store(in: &cancellables)
     
-        if self.showOnboardingAtLaunch {
+        let isScreenshotMode = ProcessInfo.processInfo.environment["SCREENSHOT_LANGUAGE"] != nil
+        if self.showOnboardingAtLaunch && !isScreenshotMode {
             self.showOnboardingWindow()
+        }
+
+        // Auto-open the menu bar panel for screenshot automation
+        if isScreenshotMode {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.menuBarExtra?.showWindow()
+            }
         }
 
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(

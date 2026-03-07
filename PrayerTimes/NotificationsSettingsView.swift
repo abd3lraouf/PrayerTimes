@@ -70,7 +70,6 @@ struct NotificationsSettingsView: View {
         }
         .padding(.vertical, 8)
         .frame(width: viewWidth)
-        .accessibilityIdentifier("NotificationsSettingsView")
     }
 
     private var globalSettingsSection: some View {
