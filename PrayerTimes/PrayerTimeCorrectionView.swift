@@ -6,6 +6,7 @@ import NavigationStack
 
 struct CorrectionRow: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @Environment(\.layoutDirection) var layoutDirection
     let prayerName: String
     @Binding var value: Double
     
@@ -41,7 +42,7 @@ struct CorrectionRow: View {
                 if let original = originalTime, let adjusted = adjustedTime {
                     Text(vm.dateFormatter.string(from: original))
                         .strikethrough(color: .secondary)
-                    Image(systemName: "arrow.right")
+                    Image(systemName: layoutDirection == .rightToLeft ? "arrow.left" : "arrow.right")
                         .font(.system(size: 11, weight: .semibold))
                     Text(vm.dateFormatter.string(from: adjusted))
                         .fontWeight(.semibold)
@@ -71,7 +72,8 @@ struct CorrectionRow: View {
 struct PrayerTimeCorrectionView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
-    
+    @Environment(\.layoutDirection) var layoutDirection
+
     @State private var fajrValue: Double = 0
     @State private var dhuhrValue: Double = 0
     @State private var asrValue: Double = 0
@@ -95,7 +97,7 @@ struct PrayerTimeCorrectionView: View {
                 navigationModel.hideView(LocationAndCalcSettingsView.id, animation: vm.backwardAnimation())
             }) {
                 HStack {
-                    Image(systemName: "chevron.left")
+                    Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
                         .font(.system(size: 14, weight: .semibold))
                     Text("Time Correction")
                         .font(.subheadline).fontWeight(.bold)

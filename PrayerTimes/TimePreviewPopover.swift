@@ -6,6 +6,7 @@ struct TimePreviewPopover: View {
     let originalTime: Date
     let adjustedTime: Date
     let formatter: DateFormatter
+    @Environment(\.layoutDirection) var layoutDirection
 
     var body: some View {
         HStack(spacing: 6) {
@@ -13,8 +14,8 @@ struct TimePreviewPopover: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .strikethrough(color: .secondary)
-            
-            Image(systemName: "arrow.right")
+
+            Image(systemName: layoutDirection == .rightToLeft ? "arrow.left" : "arrow.right")
                 .font(.caption)
                 .foregroundColor(.secondary)
             
