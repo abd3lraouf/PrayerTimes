@@ -11,6 +11,7 @@
 		CC07FC662E64122F00924451 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = CC07FC652E64122F00924451 /* NavigationStack */; };
 		CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659602E661CC400159A83 /* TextFieldStepper.swift */; };
 		CC4659652E6629C000159A83 /* PrayerTimesStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */; };
+		CC68E326B0B6B140D5A75A6F /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */; };
 		CC786E4E2E634B65007299F3 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E4D2E634B65007299F3 /* OnboardingView.swift */; };
 		CC786E522E6353F1007299F3 /* ManualLocationSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E512E6353F1007299F3 /* ManualLocationSheetView.swift */; };
 		CC786E542E6359E1007299F3 /* PrayerTimerMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E532E6359E1007299F3 /* PrayerTimerMonitor.swift */; };
@@ -59,7 +60,7 @@
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
-		CC68E326B0B6B140D5A75A6F /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */; };
+		3FED8B9EA6E246AEB8278230 /* ScreenshotGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndCalcSettingsView.swift; sourceTree = "<group>"; };
 		CC4659602E661CC400159A83 /* TextFieldStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStepper.swift; sourceTree = "<group>"; };
 		CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesStepper.swift; sourceTree = "<group>"; };
+		CC5C8CF703AADB4D5783D66B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC786E4D2E634B65007299F3 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		CC786E512E6353F1007299F3 /* ManualLocationSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualLocationSheetView.swift; sourceTree = "<group>"; };
 		CC786E532E6359E1007299F3 /* PrayerTimerMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimerMonitor.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		CC969CA62E60989F00C8630A /* PrayerTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeViewModel.swift; sourceTree = "<group>"; };
 		CC969CA82E6098C500C8630A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		CC9C2F002E61385B00BAE49A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CCBD46F86A2CC54DE3B21A4D /* ur */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ur; path = ur.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CCDEFEE52E65231F005D6B45 /* TimePreviewPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePreviewPopover.swift; sourceTree = "<group>"; };
 		CCE079702E6438100026054C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CCE1BA2E2E61839E003AF03C /* UpdateSizeAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateSizeAction.swift; sourceTree = "<group>"; };
@@ -124,6 +127,7 @@
 		CCE1BA332E6183A0003AF03C /* RootViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		CCE1BA442E6198C1003AF03C /* ManualLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualLocationView.swift; sourceTree = "<group>"; };
 		CCE1BA462E620757003AF03C /* StyledToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledToggle.swift; sourceTree = "<group>"; };
+		CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 		CCEC0E402E60A899001E9B1E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		CCEC0E442E60B08D001E9B1E /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		CCEC0E482E60B700001E9B1E /* StartupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupManager.swift; sourceTree = "<group>"; };
@@ -136,9 +140,7 @@
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
-		CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
-		CC5C8CF703AADB4D5783D66B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CCBD46F86A2CC54DE3B21A4D /* ur */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ur; path = ur.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +270,8 @@
 			children = (
 				CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */,
 				CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */,
+			
+				8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */,
 			);
 			path = PrayerTimesUITests;
 			sourceTree = "<group>";
@@ -377,6 +381,8 @@
 				Base,
 				ar,
 				id,
+				fa,
+				ur,
 			);
 			mainGroup = CC969C6B2E60857A00C8630A;
 			packageReferences = (
@@ -488,6 +494,8 @@
 			files = (
 				CC969C962E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift in Sources */,
 				CC969C942E60857E00C8630A /* PrayerTimesUITests.swift in Sources */,
+			
+				3FED8B9EA6E246AEB8278230 /* ScreenshotGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
