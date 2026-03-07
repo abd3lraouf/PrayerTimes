@@ -10,6 +10,13 @@ class LanguageManager: ObservableObject {
             objectWillChange.send()
         }
     }
+
+    init() {
+        if let langOverride = ProcessInfo.processInfo.environment["SCREENSHOT_LANGUAGE"] {
+            language = langOverride
+        }
+        Bundle.setLanguage(language)
+    }
     
     // RTL language support
     static let rtlLanguages = ["ar", "he", "fa", "ur"]
