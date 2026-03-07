@@ -29,7 +29,7 @@ struct NotificationManager {
             guard let prayerTime = prayerTimes[prayerName] else { continue }
             guard prayerTime > Date() else { continue }
             
-            let prayerSettings = settings.settings(for: prayerName)
+            let prayerSettings = settings.effectiveSettings(for: prayerName)
             
             guard prayerSettings.isEnabled else { continue }
             

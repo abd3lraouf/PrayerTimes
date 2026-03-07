@@ -50,73 +50,92 @@ enum NotificationType: String, CaseIterable, Identifiable, Codable {
         case .beforePrayer:
             return NSLocalizedString("Before Prayer", comment: "")
         case .both:
-            return NSLocalizedString("At Prayer Time & Before", comment: "")
+            return NSLocalizedString("At & Before Prayer", comment: "")
         }
     }
 }
 
 struct PrayerNotificationSettings: Codable, Equatable {
+    var useGlobalSettings: Bool = true
     var isEnabled: Bool = true
     var notificationType: NotificationType = .both
     var notificationStyle: NotificationStyle = .system
     var prePrayerMinutes: NotificationTiming = .minutes_10
     
     static let `default` = PrayerNotificationSettings()
-    static let disabled = PrayerNotificationSettings(isEnabled: false, notificationType: .atPrayerTime, notificationStyle: .system, prePrayerMinutes: .minutes_10)
+    static let disabled = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: .atPrayerTime, notificationStyle: .system, prePrayerMinutes: .minutes_10)
 }
 
 class NotificationSettings: ObservableObject, Codable {
     @Published var prayerNotificationsEnabled: Bool = true
+    
+    // Global settings that apply to all prayers (when useGlobalSettings is true)
+    @Published var globalSettings: PrayerNotificationSettings = .default
+    
     @Published var fajrNotification: PrayerNotificationSettings = .default
     @Published var dhuhrNotification: PrayerNotificationSettings = .default
     @Published var asrNotification: PrayerNotificationSettings = .default
     @Published var maghribNotification: PrayerNotificationSettings = .default
     @Published var ishaNotification: PrayerNotificationSettings = .default
     @Published var sunriseNotification: PrayerNotificationSettings = .disabled
-    
+    @Published var tahajudNotification: PrayerNotificationSettings = .disabled
+    @Published var dhuhaNotification: PrayerNotificationSettings = .disabled
+
     enum CodingKeys: String, CodingKey {
         case prayerNotificationsEnabled
+        case globalSettings
         case fajrNotification
         case dhuhrNotification
         case asrNotification
         case maghribNotification
         case ishaNotification
         case sunriseNotification
+        case tahajudNotification
+        case dhuhaNotification
     }
     
     init() {
         if let data = UserDefaults.standard.data(forKey: "notificationSettings"),
            let decoded = try? JSONDecoder().decode(NotificationSettings.self, from: data) {
             self.prayerNotificationsEnabled = decoded.prayerNotificationsEnabled
+            self.globalSettings = decoded.globalSettings
             self.fajrNotification = decoded.fajrNotification
             self.dhuhrNotification = decoded.dhuhrNotification
             self.asrNotification = decoded.asrNotification
             self.maghribNotification = decoded.maghribNotification
             self.ishaNotification = decoded.ishaNotification
             self.sunriseNotification = decoded.sunriseNotification
+            self.tahajudNotification = decoded.tahajudNotification
+            self.dhuhaNotification = decoded.dhuhaNotification
         }
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        prayerNotificationsEnabled = try container.decode(Bool.self, forKey: .prayerNotificationsEnabled)
-        fajrNotification = try container.decode(PrayerNotificationSettings.self, forKey: .fajrNotification)
-        dhuhrNotification = try container.decode(PrayerNotificationSettings.self, forKey: .dhuhrNotification)
-        asrNotification = try container.decode(PrayerNotificationSettings.self, forKey: .asrNotification)
-        maghribNotification = try container.decode(PrayerNotificationSettings.self, forKey: .maghribNotification)
-        ishaNotification = try container.decode(PrayerNotificationSettings.self, forKey: .ishaNotification)
-        sunriseNotification = try container.decode(PrayerNotificationSettings.self, forKey: .sunriseNotification)
+        prayerNotificationsEnabled = try container.decodeIfPresent(Bool.self, forKey: .prayerNotificationsEnabled) ?? true
+        globalSettings = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .globalSettings) ?? .default
+        fajrNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .fajrNotification) ?? .default
+        dhuhrNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .dhuhrNotification) ?? .default
+        asrNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .asrNotification) ?? .default
+        maghribNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .maghribNotification) ?? .default
+        ishaNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .ishaNotification) ?? .default
+        sunriseNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .sunriseNotification) ?? .disabled
+        tahajudNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .tahajudNotification) ?? .disabled
+        dhuhaNotification = try container.decodeIfPresent(PrayerNotificationSettings.self, forKey: .dhuhaNotification) ?? .disabled
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(prayerNotificationsEnabled, forKey: .prayerNotificationsEnabled)
+        try container.encode(globalSettings, forKey: .globalSettings)
         try container.encode(fajrNotification, forKey: .fajrNotification)
         try container.encode(dhuhrNotification, forKey: .dhuhrNotification)
         try container.encode(asrNotification, forKey: .asrNotification)
         try container.encode(maghribNotification, forKey: .maghribNotification)
         try container.encode(ishaNotification, forKey: .ishaNotification)
         try container.encode(sunriseNotification, forKey: .sunriseNotification)
+        try container.encode(tahajudNotification, forKey: .tahajudNotification)
+        try container.encode(dhuhaNotification, forKey: .dhuhaNotification)
     }
     
     func save() {
@@ -132,7 +151,25 @@ class NotificationSettings: ObservableObject, Codable {
         case "Maghrib": return maghribNotification
         case "Isha": return ishaNotification
         case "Sunrise": return sunriseNotification
+        case "Tahajud": return tahajudNotification
+        case "Dhuha": return dhuhaNotification
         default: return .default
+        }
+    }
+    
+    func effectiveSettings(for prayer: String) -> PrayerNotificationSettings {
+        let prayerSettings = settings(for: prayer)
+        
+        if prayerSettings.useGlobalSettings {
+            return PrayerNotificationSettings(
+                useGlobalSettings: true,
+                isEnabled: prayerSettings.isEnabled,
+                notificationType: globalSettings.notificationType,
+                notificationStyle: globalSettings.notificationStyle,
+                prePrayerMinutes: globalSettings.prePrayerMinutes
+            )
+        } else {
+            return prayerSettings
         }
     }
     
@@ -144,8 +181,22 @@ class NotificationSettings: ObservableObject, Codable {
         case "Maghrib": maghribNotification = settings
         case "Isha": ishaNotification = settings
         case "Sunrise": sunriseNotification = settings
+        case "Tahajud": tahajudNotification = settings
+        case "Dhuha": dhuhaNotification = settings
         default: break
         }
+        save()
+    }
+    
+    func applyGlobalToAll() {
+        fajrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        dhuhrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        asrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        maghribNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        ishaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        sunriseNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        tahajudNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        dhuhaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
         save()
     }
 }

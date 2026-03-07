@@ -3,8 +3,9 @@
 import SwiftUI
 import Combine
 import NavigationStack
+import UserNotifications
 
-class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDelegate, UNUserNotificationCenterDelegate {
     let vm = PrayerTimeViewModel()
     let languageManager = LanguageManager()
     
@@ -16,7 +17,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         Bundle.setLanguage(languageManager.language)
-        
+        UNUserNotificationCenter.current().delegate = self
+
         setupMenuBar()
         vm.startLocationProcess()
 
@@ -26,12 +28,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         if self.showOnboardingAtLaunch {
             self.showOnboardingWindow()
         }
-        
+
         // --- PERBAIKAN UNTUK BUG WAKE-FROM-SLEEP ---
         // Menambahkan observer untuk mendeteksi saat Mac bangun dari mode sleep.
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(systemDidWake), name: NSWorkspace.didWakeNotification, object: nil)
-        
-        NSApp.run()
     }
     
     // --- FUNGSI BARU UNTUK MENANGANI WAKE-FROM-SLEEP ---
@@ -43,6 +43,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         }
     }
     
+    // MARK: - UNUserNotificationCenterDelegate
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        let userInfo = notification.request.content.userInfo
+        if let isFullScreen = userInfo["isFullScreen"] as? Bool, isFullScreen {
+            NotificationManager.handleFullScreenNotification(userInfo: userInfo)
+            completionHandler([])
+        } else {
+            completionHandler([.banner, .sound])
+        }
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let userInfo = response.notification.request.content.userInfo
+        if let isFullScreen = userInfo["isFullScreen"] as? Bool, isFullScreen {
+            NotificationManager.handleFullScreenNotification(userInfo: userInfo)
+        }
+        completionHandler()
+    }
+
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
         return false
     }
