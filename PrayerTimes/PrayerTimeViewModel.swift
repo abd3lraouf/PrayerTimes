@@ -27,7 +27,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var todayTimes: [String: Date] = [:]
     @Published var nextPrayerName: String = ""
     @Published var countdown: String = "--:--"
-    @Published var locationStatusText: String = "Preparing prayer schedule..."
+    @Published var locationStatusText: String = NSLocalizedString("Preparing prayer schedule...", comment: "")
     @Published var authorizationStatus: CLAuthorizationStatus
     @Published var locationSearchQuery: String = ""
     @Published var locationSearchResults: [LocationSearchResult] = []
@@ -557,16 +557,16 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         switch status {
         case .authorized:
             if automaticLocationCache == nil {
-                locationStatusText = "Fetching Location..."
+                locationStatusText = NSLocalizedString("Fetching Location...", comment: "")
             }
             locMgr.requestLocation()
         case .denied, .restricted:
-            locationStatusText = "Location access denied."
+            locationStatusText = NSLocalizedString("Location access denied.", comment: "")
             isRequestingLocation = false
             todayTimes = [:]
         case .notDetermined:
             isRequestingLocation = false
-            locationStatusText = "Location access needed"
+            locationStatusText = NSLocalizedString("Location access needed", comment: "")
         @unknown default:
             isRequestingLocation = false
         }
@@ -580,7 +580,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         self.isRequestingLocation = false
-        self.locationStatusText = "Unable to determine location."
+        self.locationStatusText = NSLocalizedString("Unable to determine location.", comment: "")
     }
     
     func requestLocationPermission() {

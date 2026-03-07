@@ -117,7 +117,7 @@ struct FullScreenNotificationView: View {
                             manager.dismissFullScreenNotification()
                         }
                     }) {
-                        Text("Dismiss")
+                        Text(NSLocalizedString("Dismiss", comment: ""))
                             .font(.headline)
                             .foregroundColor(.white)
                             .padding(.horizontal, 40)
