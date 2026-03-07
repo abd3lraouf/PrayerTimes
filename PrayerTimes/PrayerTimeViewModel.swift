@@ -23,7 +23,7 @@ struct FlexibleDouble: Codable, Equatable, Hashable {
 }
 
 class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var menuTitle: NSAttributedString = NSAttributedString(string: "PrayerTimes Pro")
+    @Published var menuTitle: NSAttributedString = NSAttributedString(string: NSLocalizedString("PrayerTimes Pro", comment: ""))
     @Published var todayTimes: [String: Date] = [:]
     @Published var nextPrayerName: String = ""
     @Published var countdown: String = "--:--"
@@ -505,7 +505,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     func updateMenuTitle() {
         guard isPrayerDataAvailable else {
-            self.menuTitle = createMenuTitle("PrayerTimes Pro")
+            self.menuTitle = createMenuTitle(NSLocalizedString("PrayerTimes Pro", comment: ""))
             return
         }
         
@@ -530,7 +530,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             }
             
             guard let nextDate = nextPrayerDate else {
-                textToShow = "PrayerTimes Pro"
+                textToShow = NSLocalizedString("PrayerTimes Pro", comment: "")
                 break
             }
             
