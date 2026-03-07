@@ -40,7 +40,34 @@ struct LocationAndCalcSettingsView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Group {
                             Text("Calculation").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-                            HStack { Text("Method").font(.subheadline); Spacer(); Picker("", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.name).tag(method) } }.frame(maxWidth: 140) }
+                            HStack { Text("Method").font(.subheadline); Spacer(); Picker("", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.localizedName).tag(method) } }.frame(maxWidth: 140) }
+                            if let suggested = vm.suggestedMethod {
+                                VStack(alignment: .leading, spacing: 6) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "info.circle.fill")
+                                            .foregroundColor(.accentColor)
+                                            .font(.caption)
+                                        Text(String(format: NSLocalizedString("method_suggestion", comment: ""), suggested.localizedName))
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    HStack(spacing: 8) {
+                                        Button(NSLocalizedString("Switch", comment: "")) {
+                                            vm.acceptSuggestedMethod()
+                                        }
+                                        .buttonStyle(.borderedProminent)
+                                        .controlSize(.small)
+                                        Button(NSLocalizedString("Keep Current", comment: "")) {
+                                            vm.dismissSuggestedMethod()
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .controlSize(.small)
+                                    }
+                                }
+                                .padding(8)
+                                .background(Color.accentColor.opacity(0.08))
+                                .cornerRadius(6)
+                            }
                             HStack { Text("Time Correction").font(.subheadline); Spacer(); Button("Adjust") { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { PrayerTimeCorrectionView() } }.buttonStyle(.bordered) }
                             StyledToggle(label: "Hanafi Madhhab (for Asr)", isOn: $vm.useHanafiMadhhab)
                         }

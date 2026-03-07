@@ -102,6 +102,33 @@ struct OnboardingView: View {
                 .animation(.easeInOut, value: vm.isRequestingLocation)
                 .animation(.easeInOut, value: vm.authorizationStatus)
 
+                if vm.isPrayerDataAvailable {
+                    VStack(spacing: 8) {
+                        Rectangle()
+                            .fill(Color("DividerColor"))
+                            .frame(height: 0.5)
+                            .padding(.horizontal, 20)
+
+                        HStack {
+                            Text("Calculation Method")
+                                .font(.subheadline)
+                            Spacer()
+                            Picker("", selection: $vm.method) {
+                                ForEach(PrayerTimesCalculationMethod.allCases) { method in
+                                    Text(method.localizedName).tag(method)
+                                }
+                            }
+                            .frame(maxWidth: 160)
+                        }
+                        .padding(.horizontal, 40)
+
+                        Text("Recommended for your region")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                }
+
                 Spacer(minLength: 25)
                 
                 VStack(spacing: 12) {

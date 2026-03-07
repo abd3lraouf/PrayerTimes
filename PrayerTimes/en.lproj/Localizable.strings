@@ -31,6 +31,7 @@
 /* Time Units */
 "time_hour_abbrev" = "h";
 "time_minute_abbrev" = "m";
+"time_second_abbrev" = "s";
 "time_now" = "Now";
 "Preparing prayer schedule..." = "Preparing prayer schedule...";
 
@@ -66,11 +67,11 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "About PrayerTimes Pro";
-"Version 2.0.0" = "Version 2.0.0";
+"version_format" = "Version %@";
 "A simple and beautiful prayer times app for your menu bar." = "A simple and beautiful prayer times app for your menu bar.";
 "Credits" = "Credits";
-"Developed by: abd3lraouf" = "Developed by: abd3lraouf";
-"Based on: Sajda by Abrar Zha" = "Based on: Sajda by Abrar Zha";
+"Developed by" = "Developed by";
+"Based on" = "Based on";
 
 /* Display Settings */
 "Display" = "Display";
@@ -155,6 +156,42 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "Break Time is Over";
 "Time to begin your next activity." = "Time to begin your next activity.";
+
+/* Global/Custom Notification Settings */
+"Global Settings" = "Global Settings";
+"Use Custom Settings" = "Use Custom Settings";
+"Using global settings" = "Using global settings";
+"Notification Type" = "Notification Type";
+"Notification Style" = "Notification Style";
+
+/* Calculation Method Names */
+"calc_method_Muslim World League" = "Muslim World League";
+"calc_method_Egyptian General Authority" = "Egyptian General Authority";
+"calc_method_University of Islamic Sciences, Karachi" = "University of Islamic Sciences, Karachi";
+"calc_method_Umm al-Qura University, Makkah" = "Umm al-Qura University, Makkah";
+"calc_method_Dubai" = "Dubai";
+"calc_method_Moonsighting Committee" = "Moonsighting Committee";
+"calc_method_ISNA (North America)" = "ISNA (North America)";
+"calc_method_Kuwait" = "Kuwait";
+"calc_method_Qatar" = "Qatar";
+"calc_method_Singapore" = "Singapore";
+"calc_method_Tehran" = "Tehran";
+"calc_method_Diyanet (Turkey)" = "Diyanet (Turkey)";
+"calc_method_Algeria" = "Algeria";
+"calc_method_France (12°)" = "France (12°)";
+"calc_method_France (18°)" = "France (18°)";
+"calc_method_Germany" = "Germany";
+"calc_method_Malaysia (JAKIM)" = "Malaysia (JAKIM)";
+"calc_method_Indonesia (Kemenag)" = "Indonesia (Kemenag)";
+"calc_method_Russia" = "Russia";
+"calc_method_Tunisia" = "Tunisia";
+
+/* Calculation Method Auto-Detection */
+"Calculation Method" = "Calculation Method";
+"Recommended for your region" = "Recommended for your region";
+"method_suggestion" = "%@ is recommended for your location";
+"Switch" = "Switch";
+"Keep Current" = "Keep Current";
 
 /* Language Options */
 "English" = "English";

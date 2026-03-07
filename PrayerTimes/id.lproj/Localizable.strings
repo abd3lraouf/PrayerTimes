@@ -31,6 +31,7 @@
 /* Time Units */
 "time_hour_abbrev" = "j";
 "time_minute_abbrev" = "m";
+"time_second_abbrev" = "d";
 "time_now" = "Sekarang";
 "Preparing prayer schedule..." = "Menyiapkan jadwal shalat...";
 
@@ -66,11 +67,11 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "Tentang PrayerTimes Pro";
-"Version 2.0.0" = "Versi 2.0.0";
+"version_format" = "Versi %@";
 "A simple and beautiful prayer times app for your menu bar." = "Aplikasi waktu shalat yang sederhana dan indah untuk bilah menu Anda.";
 "Credits" = "Kredit";
-"Developed by: abd3lraouf" = "Dikembangkan oleh: abd3lraouf";
-"Based on: Sajda by Abrar Zha" = "Berdasarkan: Sajda oleh Abrar Zha";
+"Developed by" = "Dikembangkan oleh";
+"Based on" = "Berdasarkan";
 
 /* Display Settings */
 "Display" = "Tampilan";
@@ -155,6 +156,42 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "Waktu Istirahat Selesai";
 "Time to begin your next activity." = "Saatnya memulai aktivitas berikutnya.";
+
+/* Global/Custom Notification Settings */
+"Global Settings" = "Pengaturan Global";
+"Use Custom Settings" = "Gunakan Pengaturan Kustom";
+"Using global settings" = "Menggunakan pengaturan global";
+"Notification Type" = "Tipe Notifikasi";
+"Notification Style" = "Gaya Notifikasi";
+
+/* Calculation Method Names */
+"calc_method_Muslim World League" = "Liga Muslim Dunia";
+"calc_method_Egyptian General Authority" = "Otoritas Umum Mesir";
+"calc_method_University of Islamic Sciences, Karachi" = "Universitas Ilmu Islam, Karachi";
+"calc_method_Umm al-Qura University, Makkah" = "Universitas Ummul Qura, Makkah";
+"calc_method_Dubai" = "Dubai";
+"calc_method_Moonsighting Committee" = "Komite Rukyatul Hilal";
+"calc_method_ISNA (North America)" = "ISNA (Amerika Utara)";
+"calc_method_Kuwait" = "Kuwait";
+"calc_method_Qatar" = "Qatar";
+"calc_method_Singapore" = "Singapura";
+"calc_method_Tehran" = "Tehran";
+"calc_method_Diyanet (Turkey)" = "Diyanet (Turki)";
+"calc_method_Algeria" = "Aljazair";
+"calc_method_France (12°)" = "Prancis (12°)";
+"calc_method_France (18°)" = "Prancis (18°)";
+"calc_method_Germany" = "Jerman";
+"calc_method_Malaysia (JAKIM)" = "Malaysia (JAKIM)";
+"calc_method_Indonesia (Kemenag)" = "Indonesia (Kemenag)";
+"calc_method_Russia" = "Rusia";
+"calc_method_Tunisia" = "Tunisia";
+
+/* Calculation Method Auto-Detection */
+"Calculation Method" = "Metode Perhitungan";
+"Recommended for your region" = "Direkomendasikan untuk wilayah Anda";
+"method_suggestion" = "%@ direkomendasikan untuk lokasi Anda";
+"Switch" = "Ganti";
+"Keep Current" = "Pertahankan";
 
 /* Language Options */
 "English" = "Inggris";

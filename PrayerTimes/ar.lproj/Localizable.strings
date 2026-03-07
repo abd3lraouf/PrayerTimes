@@ -31,6 +31,7 @@
 /* Time Units */
 "time_hour_abbrev" = "س";
 "time_minute_abbrev" = "د";
+"time_second_abbrev" = "ث";
 "time_now" = "الآن";
 "Preparing prayer schedule..." = "جارٍ إعداد جدول الصلاة...";
 
@@ -66,11 +67,11 @@
 
 /* About Screen */
 "About PrayerTimes Pro" = "عن أوقات الصلاة برو";
-"Version 2.0.0" = "الإصدار 2.0.0";
+"version_format" = "الإصدار %@";
 "A simple and beautiful prayer times app for your menu bar." = "تطبيق بسيط وجميل لأوقات الصلاة في شريط القائمة.";
 "Credits" = "الاعتمادات";
-"Developed by: abd3lraouf" = "تطوير: abd3lraouf";
-"Based on: Sajda by Abrar Zha" = "بناءً على: سجدة بواسطة Abrar Zha";
+"Developed by" = "تطوير";
+"Based on" = "بناءً على";
 
 /* Display Settings */
 "Display" = "العرض";
@@ -155,6 +156,42 @@
 /* Prayer Time Alert */
 "Break Time is Over" = "انتهى وقت الراحة";
 "Time to begin your next activity." = "حان وقت بدء نشاطك التالي.";
+
+/* Global/Custom Notification Settings */
+"Global Settings" = "الإعدادات العامة";
+"Use Custom Settings" = "استخدام إعدادات مخصصة";
+"Using global settings" = "يستخدم الإعدادات العامة";
+"Notification Type" = "نوع الإشعار";
+"Notification Style" = "نمط الإشعار";
+
+/* Calculation Method Names */
+"calc_method_Muslim World League" = "رابطة العالم الإسلامي";
+"calc_method_Egyptian General Authority" = "الهيئة المصرية العامة للمساحة";
+"calc_method_University of Islamic Sciences, Karachi" = "جامعة العلوم الإسلامية، كراتشي";
+"calc_method_Umm al-Qura University, Makkah" = "جامعة أم القرى، مكة";
+"calc_method_Dubai" = "دبي";
+"calc_method_Moonsighting Committee" = "لجنة رؤية الهلال";
+"calc_method_ISNA (North America)" = "الجمعية الإسلامية لأمريكا الشمالية";
+"calc_method_Kuwait" = "الكويت";
+"calc_method_Qatar" = "قطر";
+"calc_method_Singapore" = "سنغافورة";
+"calc_method_Tehran" = "طهران";
+"calc_method_Diyanet (Turkey)" = "ديانت (تركيا)";
+"calc_method_Algeria" = "الجزائر";
+"calc_method_France (12°)" = "فرنسا (°١٢)";
+"calc_method_France (18°)" = "فرنسا (°١٨)";
+"calc_method_Germany" = "ألمانيا";
+"calc_method_Malaysia (JAKIM)" = "ماليزيا (جاكيم)";
+"calc_method_Indonesia (Kemenag)" = "إندونيسيا (كيمناغ)";
+"calc_method_Russia" = "روسيا";
+"calc_method_Tunisia" = "تونس";
+
+/* Calculation Method Auto-Detection */
+"Calculation Method" = "طريقة الحساب";
+"Recommended for your region" = "موصى بها لمنطقتك";
+"method_suggestion" = "%@ موصى بها لموقعك";
+"Switch" = "تبديل";
+"Keep Current" = "الإبقاء على الحالي";
 
 /* Language Options */
 "English" = "الإنجليزية";
