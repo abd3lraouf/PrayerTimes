@@ -137,6 +137,8 @@
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
 		CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
+		CC5C8CF703AADB4D5783D66B /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CCBD46F86A2CC54DE3B21A4D /* ur */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ur; path = ur.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -511,6 +513,8 @@
 				CC786E6D2E63B1CB007299F3 /* en */,
 				CC786E6F2E63B20E007299F3 /* ar */,
 				CC786E702E63B21D007299F3 /* id */,
+				CC5C8CF703AADB4D5783D66B /* fa */,
+				CCBD46F86A2CC54DE3B21A4D /* ur */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
