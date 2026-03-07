@@ -32,6 +32,7 @@ struct NotificationsSettingsView: View {
             }
             .buttonStyle(.plain).padding(.horizontal, 5).padding(.top, 2)
             .onHover { isHeaderHovering = $0 }
+            .accessibilityIdentifier("NotificationsSettingsView.backButton")
 
             Rectangle().fill(Color("DividerColor")).frame(height: 0.5).padding(.horizontal, 12)
 
@@ -69,6 +70,7 @@ struct NotificationsSettingsView: View {
         }
         .padding(.vertical, 8)
         .frame(width: viewWidth)
+        .accessibilityIdentifier("NotificationsSettingsView")
     }
 
     private var globalSettingsSection: some View {

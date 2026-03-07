@@ -13,6 +13,7 @@ struct ContentView: View {
         NavigationStackView(Self.id) {
             MainView()
         }
+        .accessibilityIdentifier("ContentView")
         // --- PERBAIKAN DI SINI ---
         // Menggunakan properti animationType yang baru, bukan disableAnimations yang sudah dihapus.
         .transaction { transaction in

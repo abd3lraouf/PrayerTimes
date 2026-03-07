@@ -38,6 +38,7 @@ struct AboutView: View {
             .buttonStyle(.plain)
             .padding(.horizontal, 5).padding(.top, 2)
             .onHover { isHeaderHovering = $0 }
+            .accessibilityIdentifier("AboutView.backButton")
 
             Rectangle()
                 .fill(Color("DividerColor"))
@@ -121,6 +122,7 @@ struct AboutView: View {
         }
         .padding(.vertical, 8)
         .frame(width: viewWidth)
+        .accessibilityIdentifier("AboutView")
     }
 
     private func handleBackButton() {

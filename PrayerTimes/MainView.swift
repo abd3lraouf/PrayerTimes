@@ -63,7 +63,8 @@ struct MainView: View {
                 .padding(.horizontal, 5)
                 .onHover { hovering in isSettingsHovering = hovering }
                 .focusable(false)
-                
+                .accessibilityIdentifier("MainView.settingsButton")
+
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { AboutView() }
                 }) {
@@ -82,6 +83,7 @@ struct MainView: View {
                 .padding(.horizontal, 5)
                 .onHover { hovering in isAboutHovering = hovering }
                 .focusable(false)
+                .accessibilityIdentifier("MainView.aboutButton")
 
                 Rectangle()
                     .fill(Color("DividerColor"))
@@ -101,6 +103,7 @@ struct MainView: View {
                 .focusable(false)
             }
         }.padding(.vertical, 8).frame(width: viewWidth)
+        .accessibilityIdentifier("MainView")
     }
 }
 

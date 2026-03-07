@@ -32,7 +32,8 @@ struct SettingsView: View {
                     .padding(.vertical, 5).padding(.horizontal, 8)
                     .background(isHeaderHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                 }.buttonStyle(.plain).padding(.horizontal, 5).padding(.top, 2).onHover { hovering in isHeaderHovering = hovering }
-                
+                .accessibilityIdentifier("SettingsView.backButton")
+
                 Rectangle()
                     .fill(Color("DividerColor"))
                     .frame(height: 0.5)
@@ -66,7 +67,8 @@ struct SettingsView: View {
                         }
                         .padding(.vertical, 5).padding(.horizontal, 8).background(isNotifHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                     }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isNotifHovering = hovering }
-                    
+                    .accessibilityIdentifier("SettingsView.notificationsButton")
+
                     Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { LocationAndCalcSettingsView() } }) {
                         HStack { 
                             Text("Calculation & Location").font(.subheadline)
@@ -93,5 +95,6 @@ struct SettingsView: View {
             .padding(.vertical, 8)
             .frame(width: viewWidth)
         }
+        .accessibilityIdentifier("SettingsView")
     }
 }
