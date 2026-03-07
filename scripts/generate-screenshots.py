@@ -21,7 +21,7 @@ import os
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -59,6 +59,9 @@ SHADOW_OFFSET = (0, 10)
 
 # Colors
 BG_COLOR = (8, 8, 13)
+BG_TINT = (5, 10, 25)        # subtle dark blue tint over background image
+BG_BLUR = 6                   # light blur to keep image recognizable
+BG_DARKEN = 0.55              # brightness multiplier (0 = black, 1 = original)
 CARD_GRADIENT_TOP = (15, 20, 36)
 CARD_GRADIENT_BOTTOM = (5, 26, 38)
 SUBTITLE_COLOR = (140, 166, 204)
@@ -267,6 +270,37 @@ def load_icon() -> Image.Image:
     return Image.open(icon_path).convert("RGBA")
 
 
+def make_bg_canvas(width: int, height: int) -> Image.Image:
+    """Create a canvas using the background image (blurred, darkened, tinted)."""
+    bg_path = PROJECT_ROOT / "art" / "bg.jpg"
+    if not bg_path.exists():
+        # Fallback to flat color
+        return Image.new("RGBA", (width, height), (*BG_COLOR, 255))
+
+    bg = Image.open(bg_path).convert("RGBA")
+
+    # Cover-crop: scale to fill canvas, then center-crop
+    scale = max(width / bg.width, height / bg.height)
+    new_w = round(bg.width * scale)
+    new_h = round(bg.height * scale)
+    bg = bg.resize((new_w, new_h), Image.LANCZOS)
+    left = (new_w - width) // 2
+    top = (new_h - height) // 2
+    bg = bg.crop((left, top, left + width, top + height))
+
+    # Blur
+    bg = bg.filter(ImageFilter.GaussianBlur(BG_BLUR))
+
+    # Darken
+    bg = ImageEnhance.Brightness(bg).enhance(BG_DARKEN)
+
+    # Tint overlay
+    tint = Image.new("RGBA", (width, height), (*BG_TINT, 80))
+    bg = Image.alpha_composite(bg, tint)
+
+    return bg
+
+
 # ─── Drawing ─────────────────────────────────────────────────────────────────
 
 def draw_card(canvas: Image.Image, x: int, y: int, screenshot: Image.Image):
@@ -369,7 +403,7 @@ def generate_collage(lang: str, max_card_height: int, icon: Image.Image) -> Path
     canvas_height = (CANVAS_PADDING * 2 + HEADER_HEIGHT + header_gap
                      + max_tagline_row_height + TAGLINE_GAP + cards_area_height)
 
-    canvas = Image.new("RGBA", (canvas_width, canvas_height), (*BG_COLOR, 255))
+    canvas = make_bg_canvas(canvas_width, canvas_height)
     draw_header(canvas, lang, icon)
 
     cards_top_y = canvas_height - CANVAS_PADDING - cards_area_height
