@@ -7,7 +7,7 @@ struct AboutView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var navigationModel: NavigationModel
     
-    @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
+    @AppStorage(StorageKeys.showOnboardingAtLaunch) private var showOnboardingAtLaunch = true
     @State private var isHeaderHovering = false
     
     @Environment(\.layoutDirection) var layoutDirection

@@ -41,29 +41,29 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var automaticLocationCache: (name: String, coordinates: CLLocationCoordinate2D)?
     private var tomorrowFajrTime: Date?
 
-    @AppStorage("animationType") var animationType: AnimationType = .fade
-    @AppStorage("useMinimalMenuBarText") var useMinimalMenuBarText: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
-    @AppStorage("showSunnahPrayers") var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
-    @AppStorage("useAccentColor") var useAccentColor: Bool = true
-    @AppStorage("useCompactLayout") var useCompactLayout: Bool = false
-    @AppStorage("use24HourFormat") var use24HourFormat: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
-    @AppStorage("useHanafiMadhhab") var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
-    @AppStorage("isUsingManualLocation") var isUsingManualLocation: Bool = false
-    @AppStorage("fajrCorrection") var fajrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("dhuhrCorrection") var dhuhrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("asrCorrection") var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("maghribCorrection") var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
-    @AppStorage("ishaCorrection") var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.animationType) var animationType: AnimationType = .fade
+    @AppStorage(StorageKeys.useMinimalMenuBarText) var useMinimalMenuBarText: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
+    @AppStorage(StorageKeys.showSunnahPrayers) var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.useAccentColor) var useAccentColor: Bool = true
+    @AppStorage(StorageKeys.useCompactLayout) var useCompactLayout: Bool = false
+    @AppStorage(StorageKeys.use24HourFormat) var use24HourFormat: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
+    @AppStorage(StorageKeys.useHanafiMadhhab) var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.isUsingManualLocation) var isUsingManualLocation: Bool = false
+    @AppStorage(StorageKeys.fajrCorrection) var fajrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.dhuhrCorrection) var dhuhrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.asrCorrection) var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.maghribCorrection) var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.ishaCorrection) var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
-            UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: "menuBarTextMode")
+            UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
             if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
             updateMenuTitle()
         }
     }
     
-    @Published var method: PrayerTimesCalculationMethod { didSet { UserDefaults.standard.set(method.name, forKey: "calculationMethodName"); updatePrayerTimes() } }
+    @Published var method: PrayerTimesCalculationMethod { didSet { UserDefaults.standard.set(method.name, forKey: StorageKeys.calculationMethodName); updatePrayerTimes() } }
     private var currentCoordinates: CLLocationCoordinate2D?
     private var cancellables = Set<AnyCancellable>()
     private let locMgr = CLLocationManager()
@@ -75,9 +75,9 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
 
     override init() {
-        let savedMethodName = UserDefaults.standard.string(forKey: "calculationMethodName") ?? "Muslim World League"
+        let savedMethodName = UserDefaults.standard.string(forKey: StorageKeys.calculationMethodName) ?? "Muslim World League"
         self.method = PrayerTimesCalculationMethod.allCases.first { $0.name == savedMethodName } ?? .allCases[0]
-        let savedTextMode = UserDefaults.standard.string(forKey: "menuBarTextMode")
+        let savedTextMode = UserDefaults.standard.string(forKey: StorageKeys.menuBarTextMode)
         self.menuBarTextMode = MenuBarTextMode(rawValue: savedTextMode ?? "") ?? .countdown
         self.authorizationStatus = locMgr.authorizationStatus
         super.init()
@@ -192,7 +192,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     private func parseCoordinates(from string: String) -> LocationSearchResult? { let cleaned = string.replacingOccurrences(of: " ", with: ""); let components = cleaned.split(separator: ",").compactMap { Double($0) }; guard components.count == 2, let lat = components.first, let lon = components.last, (lat >= -90 && lat <= 90) && (lon >= -180 && lon <= 180) else { return nil }; return LocationSearchResult(name: "Custom Coordinate", country: String(format: "%.4f, %.4f", lat, lon), coordinates: CLLocationCoordinate2D(latitude: lat, longitude: lon)) }
-    func setManualLocation(city: String, coordinates: CLLocationCoordinate2D) { let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude); self.locationTimeZone = TimeZoneLocate.timeZoneWithLocation(location); var locationNameToSave = city; if city == "Custom Coordinate" { let geocoder = CLGeocoder(); geocoder.reverseGeocodeLocation(location) { (placemarks, _) in if let placemark = placemarks?.first, let cityName = placemark.locality { locationNameToSave = cityName; self.locationStatusText = cityName; let manualData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualData, forKey: "manualLocationData") } else { self.locationStatusText = String(format: "Coord: %.2f, %.2f", coordinates.latitude, coordinates.longitude) } } } else { self.locationStatusText = city }; let manualLocationData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualLocationData, forKey: "manualLocationData"); isUsingManualLocation = true; currentCoordinates = coordinates; authorizationStatus = .authorized; locationSearchQuery = ""; locationSearchResults = []; updateAndDisplayTimes() }
+    func setManualLocation(city: String, coordinates: CLLocationCoordinate2D) { let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude); self.locationTimeZone = TimeZoneLocate.timeZoneWithLocation(location); var locationNameToSave = city; if city == "Custom Coordinate" { let geocoder = CLGeocoder(); geocoder.reverseGeocodeLocation(location) { (placemarks, _) in if let placemark = placemarks?.first, let cityName = placemark.locality { locationNameToSave = cityName; self.locationStatusText = cityName; let manualData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualData, forKey: StorageKeys.manualLocationData) } else { self.locationStatusText = String(format: "Coord: %.2f, %.2f", coordinates.latitude, coordinates.longitude) } } } else { self.locationStatusText = city }; let manualLocationData: [String: Any] = ["name": locationNameToSave, "latitude": coordinates.latitude, "longitude": coordinates.longitude]; UserDefaults.standard.set(manualLocationData, forKey: StorageKeys.manualLocationData); isUsingManualLocation = true; currentCoordinates = coordinates; authorizationStatus = .authorized; locationSearchQuery = ""; locationSearchResults = []; updateAndDisplayTimes() }
     
     func startLocationProcess() {
         if isUsingManualLocation, let manualData = loadManualLocation() {
@@ -210,8 +210,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
     }
     
-    private func loadManualLocation() -> (name: String, coordinates: CLLocationCoordinate2D)? { guard let data = UserDefaults.standard.dictionary(forKey: "manualLocationData"), let name = data["name"] as? String, let lat = data["latitude"] as? CLLocationDegrees, let lon = data["longitude"] as? CLLocationDegrees else { return nil }; return (name, CLLocationCoordinate2D(latitude: lat, longitude: lon)) }
-    func switchToAutomaticLocation() { isUsingManualLocation = false; UserDefaults.standard.removeObject(forKey: "manualLocationData"); if let cache = automaticLocationCache { currentCoordinates = cache.coordinates; locationStatusText = cache.name; updateAndDisplayTimes() } else { handleAuthorizationStatus(status: locMgr.authorizationStatus) } }
+    private func loadManualLocation() -> (name: String, coordinates: CLLocationCoordinate2D)? { guard let data = UserDefaults.standard.dictionary(forKey: StorageKeys.manualLocationData), let name = data["name"] as? String, let lat = data["latitude"] as? CLLocationDegrees, let lon = data["longitude"] as? CLLocationDegrees else { return nil }; return (name, CLLocationCoordinate2D(latitude: lat, longitude: lon)) }
+    func switchToAutomaticLocation() { isUsingManualLocation = false; UserDefaults.standard.removeObject(forKey: StorageKeys.manualLocationData); if let cache = automaticLocationCache { currentCoordinates = cache.coordinates; locationStatusText = cache.name; updateAndDisplayTimes() } else { handleAuthorizationStatus(status: locMgr.authorizationStatus) } }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locs: [CLLocation]) { guard let location = locs.last else { return }; let geocoder = CLGeocoder(); geocoder.reverseGeocodeLocation(location) { (placemarks, _) in DispatchQueue.main.async { guard let locality = placemarks?.first?.locality else { self.isRequestingLocation = false; return }; self.automaticLocationCache = (name: locality, coordinates: location.coordinate); if !self.isUsingManualLocation { self.currentCoordinates = location.coordinate; self.locationStatusText = locality; self.updateAndDisplayTimes() }; if self.isRequestingLocation { self.isRequestingLocation = false } } } }
     private func updateAndDisplayTimes() { updatePrayerTimes(); if isUsingManualLocation { startLocationDisplayTimer() } else { stopLocationDisplayTimer() } }
     

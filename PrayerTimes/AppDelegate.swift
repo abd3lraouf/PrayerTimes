@@ -11,7 +11,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     var menuBarExtra: FluidMenuBarExtra?
     private var cancellables = Set<AnyCancellable>()
     private var wakeObserver: NSObjectProtocol?
-    @AppStorage("showOnboardingAtLaunch") private var showOnboardingAtLaunch = true
+    @AppStorage(StorageKeys.showOnboardingAtLaunch) private var showOnboardingAtLaunch = true
     
     private var onboardingWindow: NSWindow?
 
@@ -63,7 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     }
     
     private func setupMenuBar() {
-        let showInDock = UserDefaults.standard.bool(forKey: "showInDock")
+        let showInDock = UserDefaults.standard.bool(forKey: StorageKeys.showInDock)
         NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
         
         self.menuBarExtra = FluidMenuBarExtra(title: vm.menuTitle.string, systemImage: "moon.zzz.fill") {

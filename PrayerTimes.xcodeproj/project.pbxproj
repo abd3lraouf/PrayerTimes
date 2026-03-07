@@ -59,6 +59,7 @@
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
+		CC68E326B0B6B140D5A75A6F /* StorageKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +136,7 @@
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
+		CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +214,7 @@
 				CCEC0E482E60B700001E9B1E /* StartupManager.swift */,
 				CCEC0E4E2E60D2EC001E9B1E /* NotificationManager.swift */,
 				CC9C2F002E61385B00BAE49A /* AppDelegate.swift */,
+				CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */,
 				CCE1BA462E620757003AF03C /* StyledToggle.swift */,
 				CCE1BA212E618251003AF03C /* FluidMenuBar */,
 				CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */,
@@ -423,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC68E326B0B6B140D5A75A6F /* StorageKeys.swift in Sources */,
 				CC9C2F012E61385B00BAE49A /* AppDelegate.swift in Sources */,
 				CCE1BA3C2E61852B003AF03C /* FluidMenuBarExtraStatusItem.swift in Sources */,
 				CCE079712E6438100026054C /* main.swift in Sources */,

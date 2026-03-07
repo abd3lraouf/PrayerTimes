@@ -1,0 +1,27 @@
+import Foundation
+
+enum StorageKeys {
+    static let animationType = "animationType"
+    static let useMinimalMenuBarText = "useMinimalMenuBarText"
+    static let showSunnahPrayers = "showSunnahPrayers"
+    static let useAccentColor = "useAccentColor"
+    static let useCompactLayout = "useCompactLayout"
+    static let use24HourFormat = "use24HourFormat"
+    static let useHanafiMadhhab = "useHanafiMadhhab"
+    static let isUsingManualLocation = "isUsingManualLocation"
+    static let fajrCorrection = "fajrCorrection"
+    static let dhuhrCorrection = "dhuhrCorrection"
+    static let asrCorrection = "asrCorrection"
+    static let maghribCorrection = "maghribCorrection"
+    static let ishaCorrection = "ishaCorrection"
+    static let menuBarTextMode = "menuBarTextMode"
+    static let calculationMethodName = "calculationMethodName"
+    static let showInDock = "showInDock"
+    static let showOnboardingAtLaunch = "showOnboardingAtLaunch"
+    static let manualLocationData = "manualLocationData"
+    static let notificationSettings = "notificationSettings"
+    static let selectedLanguage = "selectedLanguage"
+    static let isPrayerTimerEnabled = "isPrayerTimerEnabled"
+    static let prayerTimerDuration = "prayerTimerDuration"
+    static let launchAtLogin = "launchAtLogin"
+}
