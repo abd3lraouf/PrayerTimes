@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Run tests before pushing
+if command -v xcodebuild >/dev/null 2>&1; then
+    echo "Running tests before push..."
+    xcodebuild test -project PrayerTimes.xcodeproj -scheme PrayerTimes -destination 'platform=macOS' -quiet 2>&1
+    if [ $? -ne 0 ]; then
+        echo "error: Tests failed. Fix before pushing."
+        exit 1
+    fi
+    echo "All tests passed."
+fi
