@@ -50,6 +50,11 @@ struct ManualLocationView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity)
                         .padding()
+                } else if let error = vm.locationSearchError {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.horizontal)
                 } else {
                     VStack(spacing: 2) {
                         ForEach(vm.locationSearchResults) { result in

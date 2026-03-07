@@ -32,6 +32,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var locationSearchQuery: String = ""
     @Published var locationSearchResults: [LocationSearchResult] = []
     @Published var isLocationSearching: Bool = false
+    @Published var locationSearchError: String? = nil
     @Published var locationInfoText: String = ""
     @Published var isPrayerImminent: Bool = false
     @Published var isRequestingLocation: Bool = false
@@ -138,6 +139,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             .handleEvents(receiveOutput: { [weak self] query in
                 let trimmedQuery = query.trimmingCharacters(in: .whitespaces)
                 self?.isLocationSearching = !trimmedQuery.isEmpty
+                self?.locationSearchError = nil
                 if trimmedQuery.isEmpty { self?.locationSearchResults = [] }
             })
             .flatMap { [weak self] query -> AnyPublisher<[LocationSearchResult], Never> in
@@ -164,10 +166,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                 return URLSession.shared.dataTaskPublisher(for: request)
                     .map(\.data)
                     .decode(type: [NominatimResult].self, decoder: JSONDecoder())
-                    .catch { error -> Just<[NominatimResult]> in
-                        #if DEBUG
-                        print("🔴 DECODING ERROR: \(error)")
-                        #endif
+                    .catch { [weak self] error -> Just<[NominatimResult]> in
+                        DispatchQueue.main.async {
+                            self?.locationSearchError = NSLocalizedString("location_search_error", comment: "")
+                        }
                         return Just([])
                     }
                     .map { results -> [LocationSearchResult] in

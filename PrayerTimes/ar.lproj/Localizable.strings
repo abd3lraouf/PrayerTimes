@@ -151,6 +151,8 @@
 "Start typing a city or paste coordinates." = "ابدأ بكتابة اسم مدينة أو الصق الإحداثيات.";
 "No results found." = "لم يتم العثور على نتائج.";
 "Search is powered by OpenStreetMap." = "البحث مدعوم بواسطة OpenStreetMap.";
+"location_search_error" = "فشل البحث. يرجى التحقق من الاتصال والمحاولة مرة أخرى.";
+"no_search_results" = "لم يتم العثور على نتائج. جرّب بحثاً مختلفاً.";
 
 /* Prayer Time Alert */
 "Break Time is Over" = "انتهى وقت الراحة";
