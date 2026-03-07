@@ -42,11 +42,11 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var tomorrowFajrTime: Date?
 
     @AppStorage("animationType") var animationType: AnimationType = .fade
-    @AppStorage("useMinimalMenuBarText") var useMinimalMenuBarText: Bool = false { didSet { updateAndDisplayTimes() } }
+    @AppStorage("useMinimalMenuBarText") var useMinimalMenuBarText: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
     @AppStorage("showSunnahPrayers") var showSunnahPrayers: Bool = false { didSet { updatePrayerTimes() } }
     @AppStorage("useAccentColor") var useAccentColor: Bool = true
     @AppStorage("useCompactLayout") var useCompactLayout: Bool = false
-    @AppStorage("use24HourFormat") var use24HourFormat: Bool = false { didSet { updateAndDisplayTimes() } }
+    @AppStorage("use24HourFormat") var use24HourFormat: Bool = false { didSet { _cachedDateFormatter = nil; updateAndDisplayTimes() } }
     @AppStorage("useHanafiMadhhab") var useHanafiMadhhab: Bool = false { didSet { updatePrayerTimes() } }
     @AppStorage("isUsingManualLocation") var isUsingManualLocation: Bool = false
     @AppStorage("fajrCorrection") var fajrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
@@ -68,8 +68,9 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var cancellables = Set<AnyCancellable>()
     private let locMgr = CLLocationManager()
     private var timer: Timer?
-    private var locationTimeZone: TimeZone = .current
+    private var locationTimeZone: TimeZone = .current { didSet { _cachedDateFormatter = nil } }
     private var locationDisplayTimer: Timer?
+    private var _cachedDateFormatter: DateFormatter?
     private var lastCalculationDate: Date?
 
 
@@ -383,6 +384,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     var dateFormatter: DateFormatter {
+        if let cached = _cachedDateFormatter { return cached }
         let formatter = DateFormatter()
         formatter.timeZone = self.locationTimeZone
         formatter.locale = Locale(identifier: languageManager.language)
@@ -391,6 +393,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         } else {
             formatter.timeStyle = .short
         }
+        _cachedDateFormatter = formatter
         return formatter
     }
     
