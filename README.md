@@ -15,7 +15,19 @@
 ---
 
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/6e8bd922-a446-4b33-a184-e5e89493a4b1" alt="PrayerTimes Screenshot" width="600">
+    <img src="screenshots/output/en.png" alt="English" width="700">
+</p>
+<p align="center">
+    <img src="screenshots/output/ar.png" alt="العربية" width="700">
+</p>
+<p align="center">
+    <img src="screenshots/output/fa.png" alt="فارسی" width="700">
+</p>
+<p align="center">
+    <img src="screenshots/output/ur.png" alt="اردو" width="700">
+</p>
+<p align="center">
+    <img src="screenshots/output/id.png" alt="Indonesia" width="700">
 </p>
 
 ## What it does
@@ -25,7 +37,7 @@
 - Detects your location automatically (or set it manually)
 - Supports multiple calculation methods (MWL, ISNA, Umm al-Qura, Kemenag, Diyanet, and more)
 - Lets you adjust each prayer time to match your local mosque
-- Works in English, Arabic, and Indonesian
+- Works in English, Arabic, Indonesian, Persian, and Urdu
 - Follows your system's light/dark mode
 
 ## Menu bar styles
