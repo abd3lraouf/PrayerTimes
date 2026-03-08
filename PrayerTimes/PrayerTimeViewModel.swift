@@ -58,11 +58,12 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @AppStorage(StorageKeys.asrCorrection) var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.maghribCorrection) var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.ishaCorrection) var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.alwaysShowMenuBarIcon) var alwaysShowMenuBarIcon: Bool = true
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
             UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
-            if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
+            if menuBarTextMode == .hidden { useMinimalMenuBarText = false; alwaysShowMenuBarIcon = true }
             startTimer()
             updateMenuTitle()
         }

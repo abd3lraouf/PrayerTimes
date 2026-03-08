@@ -171,11 +171,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     
     private func updateIconForMode(_ mode: MenuBarTextMode) {
         let isIconOnly = (mode == .hidden)
-        if vm.useMinimalMenuBarText {
-            menuBarExtra?.statusItem.button?.image = nil
-        }
-        else {
-            menuBarExtra?.statusItem.button?.image = isIconOnly ? NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: "PrayerTimes Pro") : nil
-        }
+        let shouldShowIcon = vm.alwaysShowMenuBarIcon || isIconOnly
+        menuBarExtra?.statusItem.button?.image = shouldShowIcon ? NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: "PrayerTimes Pro") : nil
     }
 }	
