@@ -77,6 +77,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var locationTimeZone: TimeZone = .current { didSet { _cachedDateFormatter = nil } }
     private var locationDisplayTimer: Timer?
     private var _cachedDateFormatter: DateFormatter?
+    private var _cachedNumberFormatter: NumberFormatter?
     private var lastCalculationDate: Date?
 
 
@@ -444,8 +445,13 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let diff = Int(nextDate.timeIntervalSince(Date()))
         isPrayerImminent = (diff <= 600 && diff > 0)
 
-        let numberFormatter = NumberFormatter()
-        numberFormatter.locale = Locale(identifier: languageManager.language)
+        let currentLang = languageManager.language
+        if _cachedNumberFormatter == nil || _cachedNumberFormatter?.locale.identifier != currentLang {
+            let nf = NumberFormatter()
+            nf.locale = Locale(identifier: currentLang)
+            _cachedNumberFormatter = nf
+        }
+        let numberFormatter = _cachedNumberFormatter!
         let isolateStart = languageManager.isRTLEnabled ? "\u{2067}" : "\u{2066}"  // RLI for RTL, LRI for LTR
         let isolateEnd = "\u{2069}"  // PDI
         let hourAbbr = NSLocalizedString("time_hour_abbrev", comment: "")
@@ -482,24 +488,31 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         updateMenuTitle()
     }
     
+    private lazy var ltrParagraphStyle: NSParagraphStyle = {
+        let style = NSMutableParagraphStyle()
+        style.alignment = .left
+        style.baseWritingDirection = .leftToRight
+        return style.copy() as! NSParagraphStyle
+    }()
+
+    private lazy var rtlParagraphStyle: NSParagraphStyle = {
+        let style = NSMutableParagraphStyle()
+        style.alignment = .right
+        style.baseWritingDirection = .rightToLeft
+        return style.copy() as! NSParagraphStyle
+    }()
+
     private func createMenuTitle(_ text: String, color: NSColor? = nil) -> NSAttributedString {
         let isRTL = languageManager.isRTLEnabled
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = isRTL ? .right : .left
-        paragraphStyle.baseWritingDirection = isRTL ? .rightToLeft : .leftToRight
-        
+
         var attributes: [NSAttributedString.Key: Any] = [
-            .paragraphStyle: paragraphStyle,
-            .writingDirection: isRTL ?
-                [NSWritingDirectionFormatType.embedding.rawValue | NSWritingDirection.rightToLeft.rawValue] :
-                [NSWritingDirectionFormatType.embedding.rawValue | NSWritingDirection.leftToRight.rawValue]
+            .paragraphStyle: isRTL ? rtlParagraphStyle : ltrParagraphStyle
         ]
-        
+
         if let color = color {
             attributes[.foregroundColor] = color
         }
-        
+
         return NSAttributedString(string: text, attributes: attributes)
     }
     
