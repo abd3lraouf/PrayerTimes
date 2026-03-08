@@ -625,6 +625,66 @@ final class PrayerTimesTests: XCTestCase {
         XCTAssertFalse(manager.isRTLEnabled)
     }
 
+    // MARK: - Native Numerals Support Tests
+
+    func testSupportsNativeNumeralsForArabic() {
+        let manager = LanguageManager()
+        manager.language = "ar"
+        XCTAssertTrue(manager.supportsNativeNumerals)
+    }
+
+    func testSupportsNativeNumeralsForPersian() {
+        let manager = LanguageManager()
+        manager.language = "fa"
+        XCTAssertTrue(manager.supportsNativeNumerals)
+    }
+
+    func testSupportsNativeNumeralsForUrdu() {
+        let manager = LanguageManager()
+        manager.language = "ur"
+        XCTAssertTrue(manager.supportsNativeNumerals)
+    }
+
+    func testDoesNotSupportNativeNumeralsForEnglish() {
+        let manager = LanguageManager()
+        manager.language = "en"
+        XCTAssertFalse(manager.supportsNativeNumerals)
+    }
+
+    func testDoesNotSupportNativeNumeralsForIndonesian() {
+        let manager = LanguageManager()
+        manager.language = "id"
+        XCTAssertFalse(manager.supportsNativeNumerals)
+    }
+
+    func testNumeralLocaleReturnsLanguageLocaleWhenNativeOn() {
+        let manager = LanguageManager()
+        manager.language = "ar"
+        manager.useNativeNumerals = true
+        XCTAssertEqual(manager.numeralLocale.identifier, "ar")
+    }
+
+    func testNumeralLocaleReturnsEnglishLocaleWhenNativeOff() {
+        let manager = LanguageManager()
+        manager.language = "ar"
+        manager.useNativeNumerals = false
+        XCTAssertEqual(manager.numeralLocale.identifier, "en")
+    }
+
+    func testNumeralLocaleAlwaysReturnsLanguageForEnglish() {
+        let manager = LanguageManager()
+        manager.language = "en"
+        manager.useNativeNumerals = false
+        XCTAssertEqual(manager.numeralLocale.identifier, "en")
+    }
+
+    func testNumeralLocaleAlwaysReturnsLanguageForIndonesian() {
+        let manager = LanguageManager()
+        manager.language = "id"
+        manager.useNativeNumerals = true
+        XCTAssertEqual(manager.numeralLocale.identifier, "id")
+    }
+
     // MARK: - RTL Number Formatting Tests
 
     func testNumberFormatterWithRegionalArabicLocaleProducesHindiNumerals() {
