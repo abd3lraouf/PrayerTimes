@@ -12,7 +12,7 @@ struct LocationAndCalcSettingsView: View {
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {
-        return vm.useCompactLayout ? 220 : 260
+        return vm.useCompactLayout ? 280 : 330
     }
 
     var body: some View {
@@ -40,7 +40,7 @@ struct LocationAndCalcSettingsView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Group {
                             Text("Calculation").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-                            HStack { Text("Method").font(.subheadline); Spacer(); Picker("", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.localizedName).tag(method) } }.frame(maxWidth: 140) }
+                            HStack { Text("Method").font(.subheadline); Spacer(); Picker("", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.localizedName).tag(method) } } }
                             if let suggested = vm.suggestedMethod {
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack(spacing: 4) {

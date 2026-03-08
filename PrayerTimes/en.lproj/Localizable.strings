@@ -124,7 +124,7 @@
 
 /* Pre-Prayer Timing */
 "Remind Before" = "Remind Before";
-"minutes_before" = "%d min before";
+"minutes_before" = "%@ min before";
 "1 min before" = "1 min before";
 "5 min before" = "5 min before";
 "10 min before" = "10 min before";
@@ -134,8 +134,8 @@
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "It's time for the %@ prayer.";
-"prayer_in_minutes_notification" = "Prayer in %d minutes";
-"prayer_coming_in_minutes" = "Prayer in %d minutes";
+"prayer_in_minutes_notification" = "Prayer in %@ minutes";
+"prayer_coming_in_minutes" = "Prayer in %@ minutes";
 "prayer_time_now" = "It's time for prayer";
 
 /* Full Screen Notification */
@@ -238,9 +238,9 @@
 "Suhoor" = "Suhoor";
 "Iftar" = "Iftar";
 "Taraweeh" = "Taraweeh";
-"fasting_day_counter" = "Day %d of %d — Ramadan";
+"fasting_day_counter" = "Day %@ of %@ — Ramadan";
 "last_ten_nights_message" = "These are the blessed last 10 nights — Laylat al-Qadr may be among them";
-"suhoor_ends_in_minutes" = "Suhoor ends in %d minutes";
+"suhoor_ends_in_minutes" = "Suhoor ends in %@ minutes";
 "iftar_time_body" = "It's time to break your fast";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
@@ -250,6 +250,9 @@
 "Dua Reminders" = "Dua Reminders";
 "Taraweeh Reminder" = "Taraweeh Reminder";
 "After Isha" = "After Isha";
+
+/* Short minute label for pickers */
+"x_min_short" = "%@ min";
 
 /* Language Options */
 "English" = "English";

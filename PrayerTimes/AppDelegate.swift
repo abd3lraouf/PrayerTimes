@@ -152,7 +152,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let hostingController = NSHostingController(rootView: onboardingView)
         let window = NSWindow(contentViewController: hostingController)
         
-        window.setContentSize(NSSize(width: 380, height: 490))
+        window.setContentSize(NSSize(width: 420, height: 520))
         window.styleMask.remove(.resizable)
         window.center()
         

@@ -5,6 +5,7 @@ struct HijriCalendarView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var hijriManager: HijriCalendarManager
     @EnvironmentObject var navigationModel: NavigationModel
+    @EnvironmentObject var languageManager: LanguageManager
     @Environment(\.layoutDirection) var layoutDirection
 
     @State private var isHeaderHovering = false
@@ -13,14 +14,14 @@ struct HijriCalendarView: View {
     @State private var selectedDay: Int? = nil
     @State private var hasAppeared = false
 
-    private let weekdaySymbols: [String] = {
+    private var weekdaySymbols: [String] {
         let formatter = DateFormatter()
-        formatter.locale = Locale.current
+        formatter.locale = Locale(identifier: languageManager.language)
         return formatter.veryShortWeekdaySymbols
-    }()
+    }
 
     var body: some View {
-        let viewWidth: CGFloat = vm.useCompactLayout ? 220 : 260
+        let viewWidth: CGFloat = vm.useCompactLayout ? 280 : 330
 
         VStack(alignment: .leading, spacing: 6) {
             // Back button
@@ -50,8 +51,8 @@ struct HijriCalendarView: View {
                 .buttonStyle(.plain)
 
                 Spacer()
-                Text("\(hijriManager.monthName(month: displayedMonth)) \(String(displayedYear))")
-                    .font(.subheadline).fontWeight(.semibold)
+                Text("\(hijriManager.monthName(month: displayedMonth)) \(languageManager.formatNumber(displayedYear))")
+                    .font(languageManager.numberFont(size: 14, weight: .semibold))
                 Spacer()
 
                 Button(action: { navigateMonth(by: 1) }) {
@@ -67,7 +68,7 @@ struct HijriCalendarView: View {
             LazyVGrid(columns: columns, spacing: 0) {
                 ForEach(weekdaySymbols, id: \.self) { symbol in
                     Text(symbol)
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundColor(Color("SecondaryTextColor"))
                         .frame(maxWidth: .infinity)
                 }
@@ -80,35 +81,36 @@ struct HijriCalendarView: View {
             let todayComponents = hijriManager.hijriDate(from: Date())
             let isCurrentMonth = todayComponents.month == displayedMonth && todayComponents.year == displayedYear
 
+            let emptySlots = firstWeekday - 1
+            let totalCells = emptySlots + daysInMonth
             LazyVGrid(columns: columns, spacing: 2) {
-                // Empty cells for offset
-                ForEach(0..<(firstWeekday - 1), id: \.self) { _ in
-                    Text("").frame(height: 24)
-                }
+                ForEach(0..<totalCells, id: \.self) { index in
+                    if index < emptySlots {
+                        Color.clear.frame(height: 28)
+                    } else {
+                        let day = index - emptySlots + 1
+                        let isToday = isCurrentMonth && todayComponents.day == day
+                        let events = IslamicEvents.events(forMonth: displayedMonth, day: day)
+                        let hasEvent = !events.isEmpty
+                        let isSelected = selectedDay == day
 
-                ForEach(1...daysInMonth, id: \.self) { day in
-                    let isToday = isCurrentMonth && todayComponents.day == day
-                    let events = IslamicEvents.events(forMonth: displayedMonth, day: day)
-                    let hasEvent = !events.isEmpty
-                    let isSelected = selectedDay == day
+                        Button(action: { selectedDay = (selectedDay == day) ? nil : day }) {
+                            VStack(spacing: 1) {
+                                Text(languageManager.formatNumber(day))
+                                    .font(languageManager.numberFont(size: 12, weight: isToday ? .bold : .regular))
+                                    .foregroundColor(isToday ? .white : (isSelected ? .accentColor : .primary))
+                                    .frame(width: 24, height: 20)
+                                    .background(isToday ? Color.accentColor : (isSelected ? Color("HoverColor") : .clear))
+                                    .cornerRadius(4)
 
-                    Button(action: { selectedDay = (selectedDay == day) ? nil : day }) {
-                        VStack(spacing: 1) {
-                            Text("\(day)")
-                                .font(.caption)
-                                .fontWeight(isToday ? .bold : .regular)
-                                .foregroundColor(isToday ? .white : (isSelected ? .accentColor : .primary))
-                                .frame(width: 24, height: 20)
-                                .background(isToday ? Color.accentColor : (isSelected ? Color("HoverColor") : .clear))
-                                .cornerRadius(4)
-
-                            Circle()
-                                .fill(hasEvent ? Color.accentColor : .clear)
-                                .frame(width: 4, height: 4)
+                                Circle()
+                                    .fill(hasEvent ? Color.accentColor : .clear)
+                                    .frame(width: 4, height: 4)
+                            }
                         }
+                        .buttonStyle(.plain)
+                        .frame(height: 28)
                     }
-                    .buttonStyle(.plain)
-                    .frame(height: 28)
                 }
             }
             .padding(.horizontal, 12)

@@ -118,12 +118,11 @@ struct OnboardingView: View {
                                     Text(method.localizedName).tag(method)
                                 }
                             }
-                            .frame(maxWidth: 160)
                         }
                         .padding(.horizontal, 40)
 
                         Text("Recommended for your region")
-                            .font(.caption2)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                     }
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
@@ -162,7 +161,7 @@ struct OnboardingView: View {
                 .padding(.bottom, 30)
             }
         }
-        .frame(width: 380, height: 490)
+        .frame(width: 420, height: 520)
         .sheet(isPresented: $showingManualLocationSheet) {
             LanguageManagerView(manager: languageManager) {
                 ManualLocationSheetView().environmentObject(vm)

@@ -5,13 +5,14 @@ struct HijriCalendarSettingsView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var hijriManager: HijriCalendarManager
     @EnvironmentObject var navigationModel: NavigationModel
+    @EnvironmentObject var languageManager: LanguageManager
     @Environment(\.layoutDirection) var layoutDirection
 
     @AppStorage(StorageKeys.islamicEventNotifications) private var eventNotifications = true
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {
-        vm.useCompactLayout ? 220 : 260
+        vm.useCompactLayout ? 280 : 330
     }
 
     var body: some View {
@@ -43,7 +44,6 @@ struct HijriCalendarSettingsView: View {
                             Text(type.localized).tag(type)
                         }
                     }
-                    .fixedSize()
                 }
 
                 // Day correction stepper
@@ -61,7 +61,7 @@ struct HijriCalendarSettingsView: View {
                 }
 
                 Text("Adjust if the Hijri date doesn't match your local moon sighting.")
-                    .font(.caption2)
+                    .font(.caption)
                     .foregroundColor(Color("SecondaryTextColor"))
 
                 Rectangle().fill(Color("DividerColor")).frame(height: 0.5)
@@ -79,9 +79,9 @@ struct HijriCalendarSettingsView: View {
                 // Preview of current Hijri date
                 HStack(spacing: 4) {
                     Image(systemName: "calendar")
-                    Text(hijriManager.hijriDateString(from: Date()))
+                    Text(hijriManager.hijriDateString(from: Date(), formatter: languageManager.formatNumber))
+                        .font(languageManager.numberFont(size: 12))
                 }
-                .font(.caption)
                 .foregroundColor(Color("SecondaryTextColor"))
             }
             .controlSize(.small)

@@ -124,7 +124,7 @@
 
 /* Pre-Prayer Timing */
 "Remind Before" = "Ingatkan Sebelum";
-"minutes_before" = "%d menit sebelum";
+"minutes_before" = "%@ menit sebelum";
 "1 min before" = "1 menit sebelum";
 "5 min before" = "5 menit sebelum";
 "10 min before" = "10 menit sebelum";
@@ -134,8 +134,8 @@
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "Saatnya shalat %@.";
-"prayer_in_minutes_notification" = "Shalat dalam %d menit";
-"prayer_coming_in_minutes" = "Shalat dalam %d menit";
+"prayer_in_minutes_notification" = "Shalat dalam %@ menit";
+"prayer_coming_in_minutes" = "Shalat dalam %@ menit";
 "prayer_time_now" = "Saatnya shalat";
 
 /* Full Screen Notification */
@@ -238,9 +238,9 @@
 "Suhoor" = "Sahur";
 "Iftar" = "Berbuka";
 "Taraweeh" = "Tarawih";
-"fasting_day_counter" = "Hari %d dari %d — Ramadan";
+"fasting_day_counter" = "Hari %@ dari %@ — Ramadan";
 "last_ten_nights_message" = "Ini adalah 10 malam terakhir yang penuh berkah — Lailatul Qadr mungkin ada di antaranya";
-"suhoor_ends_in_minutes" = "Sahur berakhir dalam %d menit";
+"suhoor_ends_in_minutes" = "Sahur berakhir dalam %@ menit";
 "iftar_time_body" = "Saatnya berbuka puasa";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
@@ -250,6 +250,9 @@
 "Dua Reminders" = "Pengingat Doa";
 "Taraweeh Reminder" = "Pengingat Tarawih";
 "After Isha" = "Setelah Isya";
+
+/* Short minute label for pickers */
+"x_min_short" = "%@ mnt";
 
 /* Language Options */
 "English" = "Inggris";

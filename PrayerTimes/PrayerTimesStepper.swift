@@ -33,7 +33,7 @@ struct PrayerTimesStepper: View {
             TextField("", text: $textValue, onCommit: {
                 updateValue(from: textValue)
             })
-            .font(.system(size: 12, design: .monospaced))
+            .font(.system(size: 12).monospacedDigit())
             .textFieldStyle(.plain)
             .multilineTextAlignment(.center)
             .frame(width: 35)
@@ -62,7 +62,10 @@ struct PrayerTimesStepper: View {
     }
 
     private func formatValue(_ val: Double) -> String {
-        String(format: "%+.0f", val)
+        let intVal = Int(val)
+        let sign = intVal > 0 ? "+" : (intVal < 0 ? "-" : "")
+        let formatted = LanguageManager.formatNumberStatic(abs(intVal))
+        return "\(sign)\(formatted)"
     }
 
     private func updateValue(from text: String) {

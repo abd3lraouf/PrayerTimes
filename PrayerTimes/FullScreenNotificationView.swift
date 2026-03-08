@@ -96,7 +96,7 @@ struct FullScreenNotificationView: View {
                         .foregroundColor(.white)
                     
                     if data.isPreNotification, let minutes = data.minutesBefore {
-                        Text(String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), minutes))
+                        Text(String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), LanguageManager.formatNumberStatic(minutes)))
                             .font(.system(size: 28))
                             .foregroundColor(.white.opacity(0.9))
                     } else {
@@ -106,7 +106,7 @@ struct FullScreenNotificationView: View {
                     }
                     
                     Text(data.prayerTime, style: .time)
-                        .font(.system(size: 24, design: .monospaced))
+                        .font(LanguageManager.numberFontStatic(size: 24))
                         .foregroundColor(.white.opacity(0.8))
                     
                     Button(action: {

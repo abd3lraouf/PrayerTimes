@@ -12,7 +12,7 @@ struct SystemSettingsView: View {
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {
-        return vm.useCompactLayout ? 220 : 260
+        return vm.useCompactLayout ? 280 : 330
     }
 
     var body: some View {
@@ -47,7 +47,7 @@ struct SystemSettingsView: View {
                             ForEach(AnimationType.allCases) { type in
                                 Text(type.localized).tag(type)
                             }
-                        }.fixedSize()
+                        }
                     }
                 }
                 .controlSize(.small)

@@ -205,7 +205,7 @@ struct NotificationManager {
 
         let content = UNMutableNotificationContent()
         content.title = localizedPrayerName
-        content.body = String(format: NSLocalizedString("prayer_in_minutes_notification", comment: ""), minutesBefore)
+        content.body = String(format: NSLocalizedString("prayer_in_minutes_notification", comment: ""), LanguageManager.formatNumberStatic(minutesBefore))
         content.sound = .default
         content.userInfo = ["prayerName": prayerName, "isPreNotification": true, "minutesBefore": minutesBefore]
 
@@ -298,7 +298,7 @@ struct NotificationManager {
                 scheduleSimpleNotification(
                     id: "fasting_suhoor_pre",
                     title: NSLocalizedString("Suhoor", comment: ""),
-                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), suhoorMinutes),
+                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), LanguageManager.formatNumberStatic(suhoorMinutes)),
                     at: preTime
                 )
             }

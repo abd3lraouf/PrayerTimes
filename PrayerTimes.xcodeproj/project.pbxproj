@@ -10,8 +10,12 @@
 		016C6E29FE6809424777457A /* IslamicEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E050B467AE13BA8195B50C /* IslamicEvents.swift */; };
 		11904E833EE8B0BF29458794 /* FastingModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702633727DED1373BD6210F9 /* FastingModeSettingsView.swift */; };
 		5D8E46AB34C1469E90F68E8C /* HijriCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C3D1B3882FEB9108678491 /* HijriCalendarManager.swift */; };
+		63A4085E6BC11744A50253AA /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9590E86154FB9104C66EFFBC /* Inter-Bold.ttf */; };
 		72D39EEA4CFC526312926D73 /* ScreenshotGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */; };
+		72E046E86974B44CBF095431 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 761B58CCDB787C33C3750854 /* Inter-Regular.ttf */; };
 		87382AD183826E6994B5B0A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF8791719A5203476792F6E /* Foundation.framework */; };
+		AC61603FE6C7E3216580F7F4 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BA90FA4FB49761A65E270241 /* Inter-SemiBold.ttf */; };
+		C4E597503B2225E80DE61DA2 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63322C8D5F16F194B22D3BA1 /* Inter-Medium.ttf */; };
 		CC07FC602E63FD5800924451 /* LocationAndCalcSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */; };
 		CC07FC662E64122F00924451 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = CC07FC652E64122F00924451 /* NavigationStack */; };
 		CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659602E661CC400159A83 /* TextFieldStepper.swift */; };
@@ -63,6 +67,7 @@
 		CCFD21DA2E62BEEB00A80402 /* PrayerTimeCorrectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */; };
 		D3311CB91BF00E39D5607CD6 /* HijriCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */; };
 		E540B73AD9E7315C46D7AA19 /* FastingModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D329B7601767339D948D68 /* FastingModeManager.swift */; };
+		EF58A708A057A6938710ECE9 /* Inter-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 496052EA3F65C5BFC45AD9BD /* Inter-LICENSE.txt */; };
 		F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */; };
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
@@ -98,9 +103,14 @@
 		06C3D1B3882FEB9108678491 /* HijriCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarManager.swift; sourceTree = "<group>"; };
 		43E050B467AE13BA8195B50C /* IslamicEvents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IslamicEvents.swift; sourceTree = "<group>"; };
 		45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarSettingsView.swift; sourceTree = "<group>"; };
+		496052EA3F65C5BFC45AD9BD /* Inter-LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = "Inter-LICENSE.txt"; sourceTree = "<group>"; };
+		63322C8D5F16F194B22D3BA1 /* Inter-Medium.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
 		702633727DED1373BD6210F9 /* FastingModeSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FastingModeSettingsView.swift; sourceTree = "<group>"; };
+		761B58CCDB787C33C3750854 /* Inter-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 		7FF8791719A5203476792F6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarView.swift; sourceTree = "<group>"; };
+		9590E86154FB9104C66EFFBC /* Inter-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		BA90FA4FB49761A65E270241 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScreenshotGenerator.swift; sourceTree = "<group>"; };
 		CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndCalcSettingsView.swift; sourceTree = "<group>"; };
 		CC4659602E661CC400159A83 /* TextFieldStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStepper.swift; sourceTree = "<group>"; };
@@ -301,6 +311,7 @@
 				8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */,
 				45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */,
 				43E050B467AE13BA8195B50C /* IslamicEvents.swift */,
+				E9270E59ADC4AAEA6FD440BB /* Fonts */,
 			);
 			path = PrayerTimes;
 			sourceTree = "<group>";
@@ -341,6 +352,19 @@
 				CCE1BA2E2E61839E003AF03C /* UpdateSizeAction.swift */,
 			);
 			path = FluidMenuBar;
+			sourceTree = "<group>";
+		};
+		E9270E59ADC4AAEA6FD440BB /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				761B58CCDB787C33C3750854 /* Inter-Regular.ttf */,
+				63322C8D5F16F194B22D3BA1 /* Inter-Medium.ttf */,
+				BA90FA4FB49761A65E270241 /* Inter-SemiBold.ttf */,
+				9590E86154FB9104C66EFFBC /* Inter-Bold.ttf */,
+				496052EA3F65C5BFC45AD9BD /* Inter-LICENSE.txt */,
+			);
+			name = Fonts;
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		F9E15482272C3C6419C79C58 /* OS X */ = {
@@ -491,6 +515,11 @@
 				CC969C7F2E60857D00C8630A /* Preview Assets.xcassets in Resources */,
 				CC969C7C2E60857D00C8630A /* Assets.xcassets in Resources */,
 				CC969CA32E6085F200C8630A /* Info.plist in Resources */,
+				72E046E86974B44CBF095431 /* Inter-Regular.ttf in Resources */,
+				C4E597503B2225E80DE61DA2 /* Inter-Medium.ttf in Resources */,
+				AC61603FE6C7E3216580F7F4 /* Inter-SemiBold.ttf in Resources */,
+				63A4085E6BC11744A50253AA /* Inter-Bold.ttf in Resources */,
+				EF58A708A057A6938710ECE9 /* Inter-LICENSE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

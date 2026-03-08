@@ -14,7 +14,7 @@ struct FastingModeSettingsView: View {
     @AppStorage(StorageKeys.taraweehReminderEnabled) private var taraweehReminderEnabled: Bool = false
     @AppStorage(StorageKeys.taraweehMinutesAfterIsha) private var taraweehMinutesAfterIsha: Int = 30
 
-    private var viewWidth: CGFloat { vm.useCompactLayout ? 220 : 260 }
+    private var viewWidth: CGFloat { vm.useCompactLayout ? 280 : 330 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -50,10 +50,10 @@ struct FastingModeSettingsView: View {
                         Text("Suhoor Alert").font(.subheadline)
                         Spacer()
                         Picker("", selection: $suhoorPreAlertMinutes) {
-                            Text("30 min").tag(30)
-                            Text("45 min").tag(45)
-                            Text("60 min").tag(60)
-                        }.fixedSize()
+                            ForEach([30, 45, 60], id: \.self) { mins in
+                                Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
+                            }
+                        }
                     }
 
                     StyledToggle(label: "Iftar Notification", isOn: $iftarNotificationEnabled)
@@ -65,11 +65,10 @@ struct FastingModeSettingsView: View {
                             Text("After Isha").font(.subheadline)
                             Spacer()
                             Picker("", selection: $taraweehMinutesAfterIsha) {
-                                Text("15 min").tag(15)
-                                Text("30 min").tag(30)
-                                Text("45 min").tag(45)
-                                Text("60 min").tag(60)
-                            }.fixedSize()
+                                ForEach([15, 30, 45, 60], id: \.self) { mins in
+                                    Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
+                                }
+                            }
                         }
                     }
                 }

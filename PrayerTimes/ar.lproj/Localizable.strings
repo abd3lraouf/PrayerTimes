@@ -124,7 +124,7 @@
 
 /* Pre-Prayer Timing */
 "Remind Before" = "تذكير قبل";
-"minutes_before" = "قبل %d دقيقة";
+"minutes_before" = "قبل %@ دقيقة";
 "1 min before" = "قبل دقيقة واحدة";
 "5 min before" = "قبل ٥ دقائق";
 "10 min before" = "قبل ١٠ دقائق";
@@ -134,8 +134,8 @@
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "حان وقت صلاة %@.";
-"prayer_in_minutes_notification" = "الصلاة بعد %d دقيقة";
-"prayer_coming_in_minutes" = "الصلاة بعد %d دقيقة";
+"prayer_in_minutes_notification" = "الصلاة بعد %@ دقيقة";
+"prayer_coming_in_minutes" = "الصلاة بعد %@ دقيقة";
 "prayer_time_now" = "حان وقت الصلاة";
 
 /* Full Screen Notification */
@@ -238,9 +238,9 @@
 "Suhoor" = "السحور";
 "Iftar" = "الإفطار";
 "Taraweeh" = "التراويح";
-"fasting_day_counter" = "اليوم %d من %d — رمضان";
+"fasting_day_counter" = "اليوم %@ من %@ — رمضان";
 "last_ten_nights_message" = "هذه العشر الأواخر المباركة — ليلة القدر قد تكون فيها";
-"suhoor_ends_in_minutes" = "ينتهي السحور بعد %d دقيقة";
+"suhoor_ends_in_minutes" = "ينتهي السحور بعد %@ دقيقة";
 "iftar_time_body" = "حان وقت الإفطار";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ";
@@ -250,6 +250,9 @@
 "Dua Reminders" = "تذكير بالدعاء";
 "Taraweeh Reminder" = "تذكير بالتراويح";
 "After Isha" = "بعد العشاء";
+
+/* Short minute label for pickers */
+"x_min_short" = "%@ د";
 
 /* Language Options */
 "English" = "الإنجليزية";

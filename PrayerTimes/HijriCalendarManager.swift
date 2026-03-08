@@ -55,10 +55,11 @@ class HijriCalendarManager: ObservableObject {
         return hijriCalendar.dateComponents([.day, .month, .year], from: correctedDate)
     }
 
-    func hijriDateString(from date: Date) -> String {
+    func hijriDateString(from date: Date, formatter: ((Int) -> String)? = nil) -> String {
         let components = hijriDate(from: date)
         guard let day = components.day, let month = components.month, let year = components.year else { return "" }
-        return "\(day) \(monthName(month: month)) \(year)"
+        let fmt = formatter ?? { "\($0)" }
+        return "\(fmt(day)) \(monthName(month: month)) \(fmt(year))"
     }
 
     func daysInMonth(month: Int, year: Int) -> Int {
