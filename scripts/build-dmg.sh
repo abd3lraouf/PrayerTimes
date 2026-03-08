@@ -49,7 +49,11 @@ fi
 echo "✦ Creating a beautiful, clean DMG using create-dmg..."
 # create-dmg takes the app path and an optional destination
 # It automatically handles the background, arrow, and Application link in a standard way
-create-dmg "$APP_PATH" release --overwrite
+CREATE_DMG_ARGS="$APP_PATH release --overwrite"
+if [ "${CI:-false}" = "true" ]; then
+    CREATE_DMG_ARGS="$CREATE_DMG_ARGS --no-code-sign"
+fi
+create-dmg $CREATE_DMG_ARGS
 
 # Find the generated DMG (it uses "App Name 1.0.0.dmg" format)
 GENERATED_DMG="release/PrayerTimes $VERSION.dmg"
