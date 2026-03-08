@@ -6,11 +6,13 @@ struct MainView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var languageManager: LanguageManager
     @EnvironmentObject var navigationModel: NavigationModel
+    @EnvironmentObject var hijriManager: HijriCalendarManager
     @Environment(\.layoutDirection) var layoutDirection
     @State private var isSettingsHovering = false
     @State private var isAboutHovering = false
+    @State private var isCalendarHovering = false
     @State private var isQuitHovering = false
-    private var viewWidth: CGFloat { return vm.useCompactLayout ? 220 : 260 }
+    private var viewWidth: CGFloat { return vm.useCompactLayout ? 280 : 330 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -34,7 +36,7 @@ struct MainView: View {
                 .padding(.horizontal, 12)
 
             if vm.isPrayerDataAvailable {
-                FastingBannerView()
+                HijriBannerView()
                 PrayerListView()
             } else {
                 Spacer()
@@ -68,6 +70,26 @@ struct MainView: View {
                 .onHover { hovering in isSettingsHovering = hovering }
                 .focusable(false)
                 .accessibilityIdentifier("MainView.settingsButton")
+
+                Button(action: {
+                    navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { HijriCalendarView() }
+                }) {
+                    HStack {
+                        Text("Hijri Calendar");
+                        Spacer();
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundColor(.secondary)
+                    }
+                        .padding(.vertical, 5).padding(.horizontal, 8)
+                        .background(isCalendarHovering ? Color("HoverColor") : .clear)
+                        .cornerRadius(5)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 5)
+                .onHover { hovering in isCalendarHovering = hovering }
+                .focusable(false)
+                .accessibilityIdentifier("MainView.calendarButton")
 
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { AboutView() }
@@ -126,6 +148,7 @@ enum FastingColors {
 struct PrayerListView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var fastingManager: FastingModeManager
+    @EnvironmentObject var languageManager: LanguageManager
     @AppStorage(StorageKeys.taraweehReminderEnabled) private var taraweehReminderEnabled: Bool = false
     @AppStorage(StorageKeys.taraweehMinutesAfterIsha) private var taraweehMinutesAfterIsha: Int = 30
     private var prayerOrder: [String] {
@@ -136,20 +159,7 @@ struct PrayerListView: View {
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 4) {
-                Image(systemName: "location.fill").font(.system(size: 9))
-                Text(vm.locationStatusText).font(.system(size: 11))
-                Spacer()
-            }
-            .foregroundColor(Color("SecondaryTextColor")).padding(.horizontal, 12)
-
-            if vm.isUsingManualLocation && !vm.locationInfoText.isEmpty {
-                Text(vm.locationInfoText)
-                    .font(.system(size: 10))
-                    .foregroundColor(Color("SecondaryTextColor"))
-                    .padding(.horizontal, 12).lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+            LocationInfoBar()
             VStack(spacing: 1) {
                 ForEach(prayerOrder, id: \.self) { prayerName in
                     if let prayerTime = vm.todayTimes[prayerName] {
@@ -179,7 +189,8 @@ struct PrayerListView: View {
                             highlightColor: highlightColor,
                             textColor: textColor,
                             fastingManager: fastingManager,
-                            dateFormatter: vm.dateFormatter
+                            dateFormatter: vm.dateFormatter,
+                            numberFont: languageManager.numberFont
                         )
 
                         // Show Taraweeh time after Isha when fasting mode active
@@ -192,7 +203,7 @@ struct PrayerListView: View {
                                 Text("Around").font(.system(size: 10, weight: .medium))
                                     .foregroundColor(Color("SecondaryTextColor"))
                                 Text(vm.dateFormatter.string(from: taraweeh))
-                                    .font(.system(size: 13, design: .monospaced))
+                                    .font(languageManager.numberFont(size: 13))
                             }
                             .foregroundColor(.secondary)
                             .padding(.horizontal, 12).padding(.vertical, 5)
@@ -201,6 +212,32 @@ struct PrayerListView: View {
                 }
             }.padding(.horizontal, 5).padding(.top, 4)
         }
+    }
+}
+
+// MARK: - Location Info Bar
+
+struct LocationInfoBar: View {
+    @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var languageManager: LanguageManager
+
+    var body: some View {
+        HStack(spacing: 0) {
+            HStack(spacing: 4) {
+                Image(systemName: vm.isUsingManualLocation ? "mappin.circle.fill" : "location.fill")
+                    .font(.system(size: 10))
+                Text(vm.locationStatusText)
+                    .font(.system(size: 11))
+                    .lineLimit(1)
+            }
+            Spacer(minLength: 4)
+            if !vm.locationTimezoneText.isEmpty {
+                Text(vm.locationTimezoneText)
+                    .font(languageManager.numberFont(size: 10))
+            }
+        }
+        .foregroundColor(Color("SecondaryTextColor"))
+        .padding(.horizontal, 12)
     }
 }
 
@@ -215,6 +252,7 @@ struct PrayerRow: View {
     let textColor: Color
     let fastingManager: FastingModeManager
     let dateFormatter: DateFormatter
+    let numberFont: (CGFloat, Font.Weight) -> Font
 
     private var fastingLabel: String? {
         guard fastingManager.isFastingModeEnabled, fastingManager.currentFastingDay != nil else { return nil }
@@ -257,7 +295,7 @@ struct PrayerRow: View {
                     .padding(.trailing, 4)
             }
             Text(dateFormatter.string(from: prayerTime))
-                .font(.system(size: 13, weight: isNextPrayer ? .semibold : .regular, design: .monospaced))
+                .font(numberFont(13, isNextPrayer ? .semibold : .regular))
         }
         .foregroundColor(textColor)
         .padding(.horizontal, 12)
@@ -266,62 +304,120 @@ struct PrayerRow: View {
     }
 }
 
-// MARK: - Fasting Banner
+// MARK: - Hijri Banner (unified: hijri date + fasting info)
 
-struct FastingBannerView: View {
+struct HijriBannerView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var hijriManager: HijriCalendarManager
     @EnvironmentObject var fastingManager: FastingModeManager
+    @EnvironmentObject var languageManager: LanguageManager
 
     var body: some View {
-        if fastingManager.isFastingModeEnabled, let day = fastingManager.currentFastingDay {
-            VStack(alignment: .leading, spacing: 5) {
-                HStack(spacing: 6) {
-                    Image(systemName: "moon.stars.fill")
-                        .font(.system(size: 11))
-                        .foregroundColor(FastingColors.banner)
-                    Text(String(format: NSLocalizedString("fasting_day_counter", comment: ""), day, fastingManager.totalFastingDays))
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.primary)
-                    Spacer()
-                }
+        let isFasting = fastingManager.isFastingModeEnabled && fastingManager.currentFastingDay != nil
+        let now = Date()
+        let fmt = languageManager.formatNumber
+        let components = hijriManager.hijriDate(from: now)
+        let todayEvents = IslamicEvents.events(forMonth: components.month ?? 0, day: components.day ?? 0)
 
-                HStack(spacing: 14) {
-                    if let suhoor = fastingManager.suhoorTime(from: vm.todayTimes) {
-                        HStack(spacing: 3) {
-                            Image(systemName: "sunrise.fill")
-                                .font(.system(size: 9))
-                            Text(vm.dateFormatter.string(from: suhoor))
-                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+        VStack(alignment: .leading, spacing: 6) {
+            // Row 1: Hijri date + suhoor/iftar (non-compact only)
+            HStack(alignment: .center, spacing: 5) {
+                Image(systemName: isFasting ? "moon.stars.fill" : "calendar")
+                    .font(.system(size: 11))
+                    .foregroundColor(isFasting ? FastingColors.banner : Color("SecondaryTextColor"))
+                Text(hijriManager.hijriDateString(from: now, formatter: fmt))
+                    .font(languageManager.numberFont(size: 12, weight: .semibold))
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
+                Spacer(minLength: 4)
+                if isFasting && !vm.useCompactLayout {
+                    HStack(spacing: 8) {
+                        if let suhoor = fastingManager.suhoorTime(from: vm.todayTimes) {
+                            HStack(spacing: 2) {
+                                Image(systemName: "sunrise.fill").font(.system(size: 9))
+                                Text(vm.dateFormatter.string(from: suhoor))
+                                    .font(languageManager.numberFont(size: 10, weight: .semibold))
+                            }
+                            .foregroundColor(FastingColors.suhoor)
                         }
-                        .foregroundColor(FastingColors.suhoor)
+                        if let iftar = fastingManager.iftarTime(from: vm.todayTimes) {
+                            HStack(spacing: 2) {
+                                Image(systemName: "sunset.fill").font(.system(size: 9))
+                                Text(vm.dateFormatter.string(from: iftar))
+                                    .font(languageManager.numberFont(size: 10, weight: .semibold))
+                            }
+                            .foregroundColor(FastingColors.iftar)
+                        }
                     }
-                    if let iftar = fastingManager.iftarTime(from: vm.todayTimes) {
-                        HStack(spacing: 3) {
-                            Image(systemName: "sunset.fill")
-                                .font(.system(size: 9))
-                            Text(vm.dateFormatter.string(from: iftar))
-                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+                }
+            }
+
+            // Row 2: Progress bar with day labels (fasting only)
+            if isFasting, let day = fastingManager.currentFastingDay {
+                let total = fastingManager.totalFastingDays
+                let progress = Double(day) / Double(total)
+
+                VStack(spacing: 2) {
+                    GeometryReader { geo in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 2.5)
+                                .fill(FastingColors.banner.opacity(0.15))
+                                .frame(height: 5)
+                            RoundedRectangle(cornerRadius: 2.5)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [FastingColors.banner.opacity(0.7), FastingColors.banner],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .frame(width: max(5, geo.size.width * progress), height: 5)
                         }
-                        .foregroundColor(FastingColors.iftar)
+                    }
+                    .frame(height: 5)
+
+                    HStack {
+                        Text(String(format: NSLocalizedString("fasting_day_counter", comment: ""), fmt(day), fmt(total)))
+                            .font(languageManager.numberFont(size: 10, weight: .medium))
+                            .foregroundColor(FastingColors.banner.opacity(0.8))
+                        Spacer()
+                        Text(languageManager.formatPercent(Int(progress * 100)))
+                            .font(languageManager.numberFont(size: 10, weight: .bold))
+                            .foregroundColor(FastingColors.banner.opacity(0.6))
                     }
                 }
 
                 if fastingManager.isLastTenNights {
-                    Text(NSLocalizedString("last_ten_nights_message", comment: ""))
-                        .font(.system(size: 10, weight: .regular))
-                        .foregroundColor(.secondary)
-                        .italic()
-                        .fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 4) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 10))
+                            .foregroundColor(.orange)
+                        Text(NSLocalizedString("last_ten_nights_message", comment: ""))
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
+                            .italic()
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 7)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(FastingColors.bannerBg)
-            )
-            .padding(.horizontal, 5)
+
+            // Islamic event (when not fasting)
+            if let event = todayEvents.first, !isFasting {
+                HStack(spacing: 4) {
+                    Circle().fill(Color.accentColor).frame(width: 5, height: 5)
+                    Text(event.localizedName).font(.caption).foregroundColor(.accentColor)
+                    Spacer()
+                }
+            }
         }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(isFasting ? FastingColors.bannerBg : Color("HoverColor").opacity(0.5))
+        )
+        .padding(.horizontal, 5)
     }
 }
 
@@ -362,3 +458,4 @@ struct PermissionRequestView: View {
         }.frame(maxWidth: .infinity)
     }
 }
+

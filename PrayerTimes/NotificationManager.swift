@@ -44,6 +44,9 @@ struct NotificationManager {
         prayerOrder: [String],
         settings: NotificationSettings
     ) {
+        cancelPrayerNotifications()
+
+
         // Schedule full-screen notifications (no permission needed, uses polling)
         scheduleFullScreenTimers(for: prayerTimes, prayerOrder: prayerOrder, settings: settings)
 
@@ -202,7 +205,7 @@ struct NotificationManager {
 
         let content = UNMutableNotificationContent()
         content.title = localizedPrayerName
-        content.body = String(format: NSLocalizedString("prayer_in_minutes_notification", comment: ""), minutesBefore)
+        content.body = String(format: NSLocalizedString("prayer_in_minutes_notification", comment: ""), LanguageManager.formatNumberStatic(minutesBefore))
         content.sound = .default
         content.userInfo = ["prayerName": prayerName, "isPreNotification": true, "minutesBefore": minutesBefore]
 
@@ -261,6 +264,19 @@ struct NotificationManager {
         }
     }
 
+    static func cancelPrayerNotifications() {
+        let prayerNames = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha", "Tahajud", "Dhuha", "Sunrise"]
+        var identifiers: [String] = []
+        for name in prayerNames {
+            identifiers.append("\(name)_at")
+            for minutes in [1, 5, 10, 20, 25, 30] {
+                identifiers.append("\(name)_pre_\(minutes)")
+            }
+        }
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: identifiers)
+        scheduledFullScreenNotifications.removeAll()
+    }
+
     // MARK: - Fasting Mode Notifications
 
     static func scheduleFastingNotifications(
@@ -282,7 +298,7 @@ struct NotificationManager {
                 scheduleSimpleNotification(
                     id: "fasting_suhoor_pre",
                     title: NSLocalizedString("Suhoor", comment: ""),
-                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), suhoorMinutes),
+                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), LanguageManager.formatNumberStatic(suhoorMinutes)),
                     at: preTime
                 )
             }
@@ -363,6 +379,73 @@ struct NotificationManager {
             DispatchQueue.main.async {
                 completion(requests)
             }
+        }
+    }
+
+    // MARK: - Islamic Event Notifications
+
+    static func scheduleIslamicEventNotifications(hijriManager: HijriCalendarManager) {
+        guard UserDefaults.standard.bool(forKey: StorageKeys.islamicEventNotifications) else { return }
+
+        cancelIslamicEventNotifications()
+
+        let today = Date()
+        let todayComponents = hijriManager.hijriDate(from: today)
+        guard let currentMonth = todayComponents.month, let currentYear = todayComponents.year else { return }
+
+        // Schedule for remaining events this month and all of next month
+        let monthsToCheck: [(Int, Int)] = {
+            var result = [(currentMonth, currentYear)]
+            let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
+            let nextYear = currentMonth == 12 ? currentYear + 1 : currentYear
+            result.append((nextMonth, nextYear))
+            return result
+        }()
+
+        for (month, year) in monthsToCheck {
+            let events = IslamicEvents.events(forMonth: month)
+            for event in events {
+                var eventComponents = DateComponents()
+                eventComponents.month = month
+                eventComponents.day = event.day
+                eventComponents.year = year
+                let eventGregorianDate = hijriManager.gregorianDate(fromHijri: eventComponents)
+
+                // Schedule notification for the day before at 8 PM
+                guard let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: eventGregorianDate) else { continue }
+                guard dayBefore > today else { continue }
+
+                var triggerComponents = Calendar.current.dateComponents([.year, .month, .day], from: dayBefore)
+                triggerComponents.hour = 20
+                triggerComponents.minute = 0
+
+                let content = UNMutableNotificationContent()
+                content.title = event.localizedName
+                content.body = String(format: NSLocalizedString("event_tomorrow_notification", comment: ""), event.localizedName)
+                content.sound = .default
+                content.userInfo = ["isIslamicEvent": true, "eventKey": event.nameKey]
+
+                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
+                let identifier = "islamic_event_\(event.nameKey)_\(month)_\(event.day)_\(year)"
+                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+                UNUserNotificationCenter.current().add(request) { error in
+                    #if DEBUG
+                    if let error = error {
+                        print("Failed to schedule Islamic event notification: \(error.localizedDescription)")
+                    } else {
+                        print("Scheduled Islamic event notification: \(event.nameKey) for \(dayBefore)")
+                    }
+                    #endif
+                }
+            }
+        }
+    }
+
+    static func cancelIslamicEventNotifications() {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
+            let eventIds = requests.filter { $0.identifier.hasPrefix("islamic_event_") }.map { $0.identifier }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: eventIds)
         }
     }
 }

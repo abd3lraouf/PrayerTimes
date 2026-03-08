@@ -33,7 +33,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var locationSearchResults: [LocationSearchResult] = []
     @Published var isLocationSearching: Bool = false
     @Published var locationSearchError: String? = nil
-    @Published var locationInfoText: String = ""
+    @Published var locationTimezoneText: String = ""
     @Published var isPrayerImminent: Bool = false
     @Published var isRequestingLocation: Bool = false
 
@@ -268,7 +268,9 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                         self.handleDetectedCountryCode(cc)
                     }
                 } else {
-                    self.locationStatusText = String(format: "Coord: %.2f, %.2f", coordinates.latitude, coordinates.longitude)
+                    let lat = self.languageManager.formatDecimal(coordinates.latitude)
+                    let lon = self.languageManager.formatDecimal(coordinates.longitude)
+                    self.locationStatusText = "\(lat), \(lon)"
                 }
             }
         } else {
@@ -594,25 +596,28 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     private func startLocationDisplayTimer() {
         stopLocationDisplayTimer()
-        locationDisplayTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            let timeFormatter = DateFormatter()
-            timeFormatter.timeZone = self.locationTimeZone
-            timeFormatter.timeStyle = .medium
-            let tzName = self.locationTimeZone.identifier
-            let currentTime = timeFormatter.string(from: Date())
-            self.locationInfoText = "Timezone: \(tzName) | Current Time: \(currentTime)"
-        }
+        let tz = self.locationTimeZone
+        let abbr = tz.abbreviation() ?? ""
+        let seconds = tz.secondsFromGMT()
+        let hours = seconds / 3600
+        let minutes = abs(seconds % 3600) / 60
+        let sign = hours >= 0 ? "+" : ""
+        let fmtH = languageManager.formatNumber(hours)
+        let fmtM = languageManager.formatNumber(minutes)
+        let gmtOffset = minutes == 0
+            ? "GMT\(sign)\(fmtH)"
+            : "GMT\(sign)\(fmtH):\(fmtM)"
+        self.locationTimezoneText = abbr == gmtOffset ? gmtOffset : "\(abbr) (\(gmtOffset))"
     }
 
     private func stopLocationDisplayTimer() {
         locationDisplayTimer?.invalidate()
         locationDisplayTimer = nil
-        locationInfoText = ""
+        locationTimezoneText = ""
     }
     
     private func updateNotifications() {
-        NotificationManager.cancelNotifications()
+        NotificationManager.cancelPrayerNotifications()
         guard !todayTimes.isEmpty else { return }
 
         if notificationSettings.prayerNotificationsEnabled {

@@ -14,7 +14,7 @@ struct NotificationsSettingsView: View {
     private var prayers: [String] {
         vm.showSunnahPrayers ? allPrayers : mainPrayers
     }
-    private var viewWidth: CGFloat { vm.useCompactLayout ? 300 : 340 }
+    private var viewWidth: CGFloat { vm.useCompactLayout ? 350 : 400 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -81,8 +81,7 @@ struct NotificationsSettingsView: View {
                     ForEach(NotificationType.allCases) { type in
                         Text(type.localized).tag(type)
                     }
-                }.fixedSize()
-            }
+                }            }
             .onChange(of: notificationSettings.globalSettings.notificationType) { _ in
                 notificationSettings.save()
                 vm.scheduleNotifications()
@@ -95,8 +94,7 @@ struct NotificationsSettingsView: View {
                     ForEach(NotificationStyle.allCases) { style in
                         Text(style.localized).tag(style)
                     }
-                }.fixedSize()
-            }
+                }            }
             .onChange(of: notificationSettings.globalSettings.notificationStyle) { _ in
                 notificationSettings.save()
                 vm.scheduleNotifications()
@@ -110,8 +108,7 @@ struct NotificationsSettingsView: View {
                         ForEach(NotificationTiming.allCases) { timing in
                             Text(timing.localized).tag(timing)
                         }
-                    }.fixedSize()
-                }
+                    }                }
                 .onChange(of: notificationSettings.globalSettings.prePrayerMinutes) { _ in
                     notificationSettings.save()
                     vm.scheduleNotifications()
@@ -199,8 +196,7 @@ struct PrayerNotificationRow: View {
                                 ForEach(NotificationType.allCases) { type in
                                     Text(type.localized).tag(type)
                                 }
-                            }.fixedSize()
-                        }
+                            }                        }
 
                         HStack {
                             Text("Style").font(.caption)
@@ -217,8 +213,7 @@ struct PrayerNotificationRow: View {
                                 ForEach(NotificationStyle.allCases) { style in
                                     Text(style.localized).tag(style)
                                 }
-                            }.fixedSize()
-                        }
+                            }                        }
 
                         if settings.notificationType == .beforePrayer || settings.notificationType == .both {
                             HStack {
@@ -236,12 +231,11 @@ struct PrayerNotificationRow: View {
                                     ForEach(NotificationTiming.allCases) { timing in
                                         Text(timing.localized).tag(timing)
                                     }
-                                }.fixedSize()
-                            }
+                                }                            }
                         }
                     } else {
                         Text("Using global settings")
-                            .font(.caption2)
+                            .font(.caption)
                             .foregroundColor(.secondary)
                             .italic()
                     }

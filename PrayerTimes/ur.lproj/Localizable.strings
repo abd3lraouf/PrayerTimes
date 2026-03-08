@@ -123,7 +123,7 @@
 
 /* Pre-Prayer Timing */
 "Remind Before" = "پہلے یاد دہانی";
-"minutes_before" = "%d منٹ پہلے";
+"minutes_before" = "%@ منٹ پہلے";
 "1 min before" = "۱ منٹ پہلے";
 "5 min before" = "۵ منٹ پہلے";
 "10 min before" = "۱۰ منٹ پہلے";
@@ -133,8 +133,8 @@
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "%@ نماز کا وقت ہو گیا ہے۔";
-"prayer_in_minutes_notification" = "نماز %d منٹ میں";
-"prayer_coming_in_minutes" = "نماز %d منٹ میں";
+"prayer_in_minutes_notification" = "نماز %@ منٹ میں";
+"prayer_coming_in_minutes" = "نماز %@ منٹ میں";
 "prayer_time_now" = "نماز کا وقت ہو گیا ہے";
 
 /* Full Screen Notification */
@@ -159,14 +159,53 @@
 "Break Time is Over" = "وقفے کا وقت ختم ہو گیا";
 "Time to begin your next activity." = "اپنی اگلی سرگرمی شروع کرنے کا وقت۔";
 
+/* Hijri Calendar */
+"Hijri Calendar" = "ہجری کیلنڈر";
+"Calendar Type" = "کیلنڈر کی قسم";
+"Day Correction" = "دن کی اصلاح";
+"Adjust if the Hijri date doesn't match your local moon sighting." = "اگر ہجری تاریخ آپ کی مقامی چاند کی رؤیت سے مطابقت نہیں رکھتی تو ایڈجسٹ کریں۔";
+"Islamic Event Notifications" = "اسلامی تقریبات کی اطلاعات";
+
+/* Hijri Calendar Types */
+"hijri_type_islamicUmmAlQura" = "ام القریٰ";
+"hijri_type_islamic" = "اسلامی";
+"hijri_type_islamicCivil" = "اسلامی مدنی";
+
+/* Hijri Month Names */
+"hijri_month_1" = "محرم";
+"hijri_month_2" = "صفر";
+"hijri_month_3" = "ربیع الاول";
+"hijri_month_4" = "ربیع الثانی";
+"hijri_month_5" = "جمادی الاولیٰ";
+"hijri_month_6" = "جمادی الثانیہ";
+"hijri_month_7" = "رجب";
+"hijri_month_8" = "شعبان";
+"hijri_month_9" = "رمضان";
+"hijri_month_10" = "شوال";
+"hijri_month_11" = "ذوالقعدہ";
+"hijri_month_12" = "ذوالحجہ";
+
+/* Islamic Events */
+"event_islamic_new_year" = "اسلامی نیا سال";
+"event_ashura" = "یوم عاشوراء";
+"event_mawlid" = "عید میلاد النبیﷺ";
+"event_isra_miraj" = "شب اسراء و معراج";
+"event_mid_shaban" = "شب برات";
+"event_ramadan_start" = "رمضان کا آغاز";
+"event_eid_fitr" = "عید الفطر";
+"event_arafah" = "یوم عرفہ";
+"event_eid_adha" = "عید الاضحیٰ";
+"event_tashreeq" = "ایام تشریق";
+"event_tomorrow_notification" = "%@ کل ہے";
+
 /* Fasting Mode */
 "Fasting Mode" = "روزے کا موڈ";
 "Suhoor" = "سحری";
 "Iftar" = "افطار";
 "Taraweeh" = "تراویح";
-"fasting_day_counter" = "دن %d از %d — رمضان";
+"fasting_day_counter" = "دن %@ از %@ — رمضان";
 "last_ten_nights_message" = "یہ آخری دس مبارک راتیں ہیں — شبِ قدر ان میں ہو سکتی ہے";
-"suhoor_ends_in_minutes" = "سحری %d منٹ میں ختم ہوگی";
+"suhoor_ends_in_minutes" = "سحری %@ منٹ میں ختم ہوگی";
 "iftar_time_body" = "روزہ افطار کرنے کا وقت ہو گیا ہے";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
@@ -176,6 +215,9 @@
 "Dua Reminders" = "دعا کی یاد دہانی";
 "Taraweeh Reminder" = "تراویح کی یاد دہانی";
 "After Isha" = "عشاء کے بعد";
+
+/* Short minute label for pickers */
+"x_min_short" = "%@ منٹ";
 
 /* Language Options */
 "English" = "انگریزی";

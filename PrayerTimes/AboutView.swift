@@ -10,7 +10,7 @@ struct AboutView: View {
     @State private var isHeaderHovering = false
 
     private var viewWidth: CGFloat {
-        vm.useCompactLayout ? 220 : 260
+        vm.useCompactLayout ? 280 : 330
     }
 
     private var appVersion: String {
@@ -164,7 +164,7 @@ private struct CreditCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
                     Text(label)
-                        .font(.caption2)
+                        .font(.caption)
                         .foregroundColor(Color("SecondaryTextColor"))
                 }
 

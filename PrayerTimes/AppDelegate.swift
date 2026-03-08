@@ -8,6 +8,7 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDelegate, UNUserNotificationCenterDelegate {
     let vm = PrayerTimeViewModel()
     let languageManager = LanguageManager()
+    let hijriManager = HijriCalendarManager()
     let fastingManager = FastingModeManager()
     
     var menuBarExtra: FluidMenuBarExtra?
@@ -22,10 +23,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         UNUserNotificationCenter.current().delegate = self
         NotificationManager.requestPermission()
 
+        UserDefaults.standard.register(defaults: [StorageKeys.islamicEventNotifications: true])
+
         setupMenuBar()
         vm.fastingManager = fastingManager
         vm.startLocationProcess()
         fastingManager.checkAndAutoEnable()
+
+        // Schedule Islamic event notifications after a short delay to allow setup
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            NotificationManager.scheduleIslamicEventNotifications(hijriManager: self.hijriManager)
+        }
 
         vm.$menuTitle.debounce(for: .milliseconds(100), scheduler: RunLoop.main).sink { [weak self] newTitle in self?.menuBarExtra?.updateTitle(to: newTitle) }.store(in: &cancellables)
         NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
@@ -104,6 +112,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 ContentView()
                     .environmentObject(self.vm)
                     .environmentObject(self.vm.notificationSettings)
+                    .environmentObject(self.hijriManager)
                     .environmentObject(self.fastingManager)
                     .environmentObject(NavigationModel())
             }
@@ -135,6 +144,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             OnboardingView()
                 .environmentObject(vm)
                 .environmentObject(vm.notificationSettings)
+                .environmentObject(hijriManager)
                 .environmentObject(fastingManager)
                 .environmentObject(NavigationModel())
         }
@@ -142,7 +152,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let hostingController = NSHostingController(rootView: onboardingView)
         let window = NSWindow(contentViewController: hostingController)
         
-        window.setContentSize(NSSize(width: 380, height: 490))
+        window.setContentSize(NSSize(width: 420, height: 520))
         window.styleMask.remove(.resizable)
         window.center()
         

@@ -13,7 +13,7 @@ enum NotificationTiming: Int, CaseIterable, Identifiable, Codable {
     
     var localized: String {
         let format = NSLocalizedString("minutes_before", comment: "")
-        return String(format: format, rawValue)
+        return String(format: format, LanguageManager.formatNumberStatic(rawValue))
     }
 }
 

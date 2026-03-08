@@ -43,7 +43,7 @@ struct TextFieldStepper: View {
                     updateValue(from: textValue)
                     onCommit()
                 })
-                .font(.system(.body, design: .monospaced))
+                .font(.system(.body).monospacedDigit())
                 .textFieldStyle(.plain)
                 .multilineTextAlignment(.center)
                 .frame(width: 45)
@@ -80,7 +80,10 @@ struct TextFieldStepper: View {
     }
 
     private func formatValue(_ val: Double) -> String {
-        return String(format: "%+.0f", val)
+        let intVal = Int(val)
+        let sign = intVal > 0 ? "+" : (intVal < 0 ? "-" : "")
+        let formatted = LanguageManager.formatNumberStatic(abs(intVal))
+        return "\(sign)\(formatted)"
     }
 
     private func updateValue(from text: String) {
