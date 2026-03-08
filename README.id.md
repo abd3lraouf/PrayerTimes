@@ -43,8 +43,17 @@ Pilih tampilan waktu shalat di menu bar Anda:
 
 **Membutuhkan macOS Ventura (13.0) atau lebih baru.** Berjalan di Mac Apple Silicon maupun Intel.
 
+### Homebrew
+
+```bash
+brew tap abd3lraouf/prayertimes
+brew install --cask prayertimes
+```
+
+### Manual
+
 1. Unduh file `.dmg` terbaru dari [Rilis](https://github.com/abd3lraouf/PrayerTimes/releases)
-2. Buka DMG dan seret PrayerTimes ke Applications
+2. Buka DMG dan seret **PrayerTimes** ke **Applications**
 3. Klik kanan aplikasi di Applications dan pilih **Open** (diperlukan saat pertama kali karena aplikasi belum dinotarisasi)
 
 <details>

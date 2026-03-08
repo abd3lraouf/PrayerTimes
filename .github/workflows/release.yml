@@ -64,47 +64,15 @@ jobs:
             MARKETING_VERSION="$APP_VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 
-      - name: Create app bundle
-        run: |
-          mkdir -p release/dmg-contents
-          cp -r build/Build/Products/Release/PrayerTimes.app release/dmg-contents/
-          cp "assets/Open PrayerTimes.command" release/dmg-contents/
-          # Re-sign with ad-hoc signature and hardened runtime
-          codesign --force --deep --sign - --options runtime release/dmg-contents/PrayerTimes.app
-
       - name: Create DMG
+        env:
+          APP_VERSION: ${{ steps.get_version.outputs.VERSION }}
+          BUILD_NUMBER: ${{ github.run_number }}
+          SKIP_BUILD: true
+          CI: true
         run: |
-          brew install create-dmg
-
-          create-dmg \
-            --volname "PrayerTimes" \
-            --volicon "PrayerTimes/Assets.xcassets/AppIcon.appiconset/256.png" \
-            --window-pos 200 120 \
-            --window-size 660 400 \
-            --icon-size 100 \
-            --icon "PrayerTimes.app" 180 170 \
-            --hide-extension "PrayerTimes.app" \
-            --app-drop-link 480 170 \
-            --icon "Open PrayerTimes.command" 330 310 \
-            --background "assets/dmg-background.png" \
-            "release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg" \
-            "release/dmg-contents/" || \
-          create-dmg \
-            --volname "PrayerTimes" \
-            --window-pos 200 120 \
-            --window-size 660 400 \
-            --icon-size 100 \
-            --icon "PrayerTimes.app" 180 170 \
-            --hide-extension "PrayerTimes.app" \
-            --app-drop-link 480 170 \
-            --icon "Open PrayerTimes.command" 330 310 \
-            "release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg" \
-            "release/dmg-contents/"
-
-      - name: Generate checksum
-        run: |
-          cd release
-          shasum -a 256 PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg > PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256
+          chmod +x scripts/build-dmg.sh
+          ./scripts/build-dmg.sh "$APP_VERSION" "$BUILD_NUMBER"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -120,9 +88,7 @@ jobs:
             2. Open the DMG and drag **PrayerTimes** to **Applications**
             3. **First launch:** Right-click the app → select **Open** → click **Open** in the dialog
 
-            > **Tip:** If macOS blocks the app, double-click `Open PrayerTimes.command` inside the DMG — it removes the quarantine flag and launches the app for you.
-            >
-            > Alternatively, run in Terminal: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
+            > **Tip:** If macOS blocks the app, run in Terminal: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
           files: |
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256

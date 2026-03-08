@@ -43,8 +43,17 @@
 
 **نیاز به macOS Ventura (13.0) یا بالاتر دارد.** روی مک‌های Apple Silicon و Intel کار می‌کند.
 
+### Homebrew
+
+```bash
+brew tap abd3lraouf/prayertimes
+brew install --cask prayertimes
+```
+
+### دستی
+
 1. آخرین فایل `.dmg` را از [انتشارها](https://github.com/abd3lraouf/PrayerTimes/releases) دانلود کنید
-2. فایل DMG را باز کرده و PrayerTimes را به پوشه Applications بکشید
+2. فایل DMG را باز کرده و **PrayerTimes** را به **Applications** بکشید
 3. روی برنامه در Applications راست‌کلیک کرده و **Open** را انتخاب کنید (برای بار اول لازم است چون برنامه تایید نشده است)
 
 <details>
