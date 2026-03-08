@@ -66,10 +66,11 @@ jobs:
 
       - name: Create app bundle
         run: |
-          mkdir -p release
-          cp -r build/Build/Products/Release/PrayerTimes.app release/
+          mkdir -p release/dmg-contents
+          cp -r build/Build/Products/Release/PrayerTimes.app release/dmg-contents/
+          cp "assets/Open PrayerTimes.command" release/dmg-contents/
           # Re-sign with ad-hoc signature and hardened runtime
-          codesign --force --deep --sign - --options runtime release/PrayerTimes.app
+          codesign --force --deep --sign - --options runtime release/dmg-contents/PrayerTimes.app
 
       - name: Create DMG
         run: |
@@ -84,9 +85,10 @@ jobs:
             --icon "PrayerTimes.app" 180 170 \
             --hide-extension "PrayerTimes.app" \
             --app-drop-link 480 170 \
+            --icon "Open PrayerTimes.command" 330 310 \
             --background "assets/dmg-background.png" \
             "release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg" \
-            "release/PrayerTimes.app" || \
+            "release/dmg-contents/" || \
           create-dmg \
             --volname "PrayerTimes" \
             --window-pos 200 120 \
@@ -95,8 +97,9 @@ jobs:
             --icon "PrayerTimes.app" 180 170 \
             --hide-extension "PrayerTimes.app" \
             --app-drop-link 480 170 \
+            --icon "Open PrayerTimes.command" 330 310 \
             "release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg" \
-            "release/PrayerTimes.app"
+            "release/dmg-contents/"
 
       - name: Generate checksum
         run: |
@@ -114,10 +117,12 @@ jobs:
 
             ### Installation
             1. Download `PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg`
-            2. Open the DMG file
-            3. Drag PrayerTimes to your Applications folder
-            4. If macOS says the app is "damaged", run: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
-            5. Right-click the app and select "Open" (first time only)
+            2. Open the DMG and drag **PrayerTimes** to **Applications**
+            3. **First launch:** Right-click the app → select **Open** → click **Open** in the dialog
+
+            > **Tip:** If macOS blocks the app, double-click `Open PrayerTimes.command` inside the DMG — it removes the quarantine flag and launches the app for you.
+            >
+            > Alternatively, run in Terminal: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
           files: |
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256

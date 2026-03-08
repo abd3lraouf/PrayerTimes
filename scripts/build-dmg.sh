@@ -25,11 +25,12 @@ xcodebuild -project PrayerTimes.xcodeproj \
   CODE_SIGNING_ALLOWED=NO
 
 # Create release directory
-mkdir -p release
+mkdir -p release/dmg-contents
 
-# Copy app bundle
-echo "Copying app bundle..."
-cp -r build/Build/Products/Release/PrayerTimes.app release/
+# Copy app bundle and helper script
+echo "Copying app bundle and helper script..."
+cp -r build/Build/Products/Release/PrayerTimes.app release/dmg-contents/
+cp "assets/Open PrayerTimes.command" release/dmg-contents/
 
 # Create DMG
 echo "Creating DMG..."
@@ -42,12 +43,25 @@ if command -v create-dmg &> /dev/null; then
       --icon "PrayerTimes.app" 180 170 \
       --hide-extension "PrayerTimes.app" \
       --app-drop-link 480 170 \
+      --icon "Open PrayerTimes.command" 330 310 \
+      --background "assets/dmg-background.png" \
       "release/PrayerTimes-$VERSION.dmg" \
-      "release/PrayerTimes.app"
+      "release/dmg-contents/" || \
+    create-dmg \
+      --volname "PrayerTimes" \
+      --window-pos 200 120 \
+      --window-size 660 400 \
+      --icon-size 100 \
+      --icon "PrayerTimes.app" 180 170 \
+      --hide-extension "PrayerTimes.app" \
+      --app-drop-link 480 170 \
+      --icon "Open PrayerTimes.command" 330 310 \
+      "release/PrayerTimes-$VERSION.dmg" \
+      "release/dmg-contents/"
 else
     echo "create-dmg not found, creating simple DMG..."
     hdiutil create -volname "PrayerTimes" \
-      -srcfolder release/PrayerTimes.app \
+      -srcfolder release/dmg-contents \
       -ov -format UDZO \
       "release/PrayerTimes-$VERSION.dmg"
 fi
