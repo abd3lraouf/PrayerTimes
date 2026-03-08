@@ -77,10 +77,12 @@
 "Language" = "زبان";
 "Menu Bar Style" = "مینو بار انداز";
 "Compact View" = "مختصر نظارہ";
-"24-Hour Time" = "24 گھنٹے وقت";
+"24-Hour Time" = "۲۴ گھنٹے وقت";
 "Minimal Menu Bar" = "کم سے کم مینو بار";
 "Accent Color" = "نمایاں رنگ";
+"Native Numerals" = "مقامی ہندسے";
 "Show Sunnah Prayers" = "سنت نمازیں دکھائیں";
+"Always Show Menu Bar Icon" = "مینو بار آئیکن ہمیشہ دکھائیں";
 
 /* Menu Bar Style Options */
 "Countdown" = "الٹی گنتی";
@@ -122,12 +124,12 @@
 /* Pre-Prayer Timing */
 "Remind Before" = "پہلے یاد دہانی";
 "minutes_before" = "%d منٹ پہلے";
-"1 min before" = "1 منٹ پہلے";
-"5 min before" = "5 منٹ پہلے";
-"10 min before" = "10 منٹ پہلے";
-"20 min before" = "20 منٹ پہلے";
-"25 min before" = "25 منٹ پہلے";
-"30 min before" = "30 منٹ پہلے";
+"1 min before" = "۱ منٹ پہلے";
+"5 min before" = "۵ منٹ پہلے";
+"10 min before" = "۱۰ منٹ پہلے";
+"20 min before" = "۲۰ منٹ پہلے";
+"25 min before" = "۲۵ منٹ پہلے";
+"30 min before" = "۳۰ منٹ پہلے";
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "%@ نماز کا وقت ہو گیا ہے۔";
@@ -195,6 +197,24 @@
 "event_eid_adha" = "عید الاضحیٰ";
 "event_tashreeq" = "ایام تشریق";
 "event_tomorrow_notification" = "%@ کل ہے";
+
+/* Fasting Mode */
+"Fasting Mode" = "روزے کا موڈ";
+"Suhoor" = "سحری";
+"Iftar" = "افطار";
+"Taraweeh" = "تراویح";
+"fasting_day_counter" = "دن %d از %d — رمضان";
+"last_ten_nights_message" = "یہ آخری دس مبارک راتیں ہیں — شبِ قدر ان میں ہو سکتی ہے";
+"suhoor_ends_in_minutes" = "سحری %d منٹ میں ختم ہوگی";
+"iftar_time_body" = "روزہ افطار کرنے کا وقت ہو گیا ہے";
+"dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
+"dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
+"taraweeh_reminder_body" = "تراویح نماز کا وقت ہو گیا ہے";
+"Suhoor Alert" = "سحری کا الرٹ";
+"Iftar Notification" = "افطار کی اطلاع";
+"Dua Reminders" = "دعا کی یاد دہانی";
+"Taraweeh Reminder" = "تراویح کی یاد دہانی";
+"After Isha" = "عشاء کے بعد";
 
 /* Language Options */
 "English" = "انگریزی";

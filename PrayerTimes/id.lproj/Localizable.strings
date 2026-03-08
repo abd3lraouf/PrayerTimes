@@ -81,7 +81,9 @@
 "24-Hour Time" = "Waktu 24 Jam";
 "Minimal Menu Bar" = "Bilah Menu Ringkas";
 "Accent Color" = "Warna Aksen";
+"Native Numerals" = "Angka Asli";
 "Show Sunnah Prayers" = "Tampilkan Shalat Sunnah";
+"Always Show Menu Bar Icon" = "Selalu Tampilkan Ikon Bilah Menu";
 
 /* Menu Bar Style Options */
 "Countdown" = "Hitung Mundur";
@@ -230,6 +232,24 @@
 "event_eid_adha" = "Idul Adha";
 "event_tashreeq" = "Hari Tasyrik";
 "event_tomorrow_notification" = "%@ besok";
+
+/* Fasting Mode */
+"Fasting Mode" = "Mode Puasa";
+"Suhoor" = "Sahur";
+"Iftar" = "Berbuka";
+"Taraweeh" = "Tarawih";
+"fasting_day_counter" = "Hari %d dari %d — Ramadan";
+"last_ten_nights_message" = "Ini adalah 10 malam terakhir yang penuh berkah — Lailatul Qadr mungkin ada di antaranya";
+"suhoor_ends_in_minutes" = "Sahur berakhir dalam %d menit";
+"iftar_time_body" = "Saatnya berbuka puasa";
+"dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
+"dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
+"taraweeh_reminder_body" = "Saatnya shalat Tarawih";
+"Suhoor Alert" = "Peringatan Sahur";
+"Iftar Notification" = "Notifikasi Berbuka";
+"Dua Reminders" = "Pengingat Doa";
+"Taraweeh Reminder" = "Pengingat Tarawih";
+"After Isha" = "Setelah Isya";
 
 /* Language Options */
 "English" = "Inggris";

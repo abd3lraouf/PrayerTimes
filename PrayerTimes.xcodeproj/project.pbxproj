@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		47B734E85DD43195F8E5838A /* HijriCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96520964EACA477706D20F71 /* HijriCalendarView.swift */; };
-		5260C655081AC36061E77472 /* HijriCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8351BFC1F2829633FB8D22 /* HijriCalendarManager.swift */; };
+		016C6E29FE6809424777457A /* IslamicEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E050B467AE13BA8195B50C /* IslamicEvents.swift */; };
+		11904E833EE8B0BF29458794 /* FastingModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 702633727DED1373BD6210F9 /* FastingModeSettingsView.swift */; };
+		5D8E46AB34C1469E90F68E8C /* HijriCalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C3D1B3882FEB9108678491 /* HijriCalendarManager.swift */; };
 		72D39EEA4CFC526312926D73 /* ScreenshotGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */; };
-		8629C38C878FA6560A033D22 /* IslamicEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D25A2ADF201B54D7F3CAED /* IslamicEvents.swift */; };
 		87382AD183826E6994B5B0A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF8791719A5203476792F6E /* Foundation.framework */; };
 		CC07FC602E63FD5800924451 /* LocationAndCalcSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */; };
 		CC07FC662E64122F00924451 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = CC07FC652E64122F00924451 /* NavigationStack */; };
@@ -61,11 +61,13 @@
 		CCED21862E65F9770066D0EB /* NavigationAnimation+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCED21852E65F9770066D0EB /* NavigationAnimation+Custom.swift */; };
 		CCED21882E65FE650066D0EB /* AnimationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCED21872E65FE650066D0EB /* AnimationType.swift */; };
 		CCFD21DA2E62BEEB00A80402 /* PrayerTimeCorrectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */; };
-		CF0177EA2B63DA24EE1ADAA0 /* HijriCalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA9A538B51F50FBBEEDA0D3 /* HijriCalendarSettingsView.swift */; };
+		D3311CB91BF00E39D5607CD6 /* HijriCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */; };
+		E540B73AD9E7315C46D7AA19 /* FastingModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D329B7601767339D948D68 /* FastingModeManager.swift */; };
 		F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */; };
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
+		FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,11 +95,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3FA9A538B51F50FBBEEDA0D3 /* HijriCalendarSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarSettingsView.swift; sourceTree = "<group>"; };
-		48D25A2ADF201B54D7F3CAED /* IslamicEvents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IslamicEvents.swift; sourceTree = "<group>"; };
+		06C3D1B3882FEB9108678491 /* HijriCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarManager.swift; sourceTree = "<group>"; };
+		43E050B467AE13BA8195B50C /* IslamicEvents.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IslamicEvents.swift; sourceTree = "<group>"; };
+		45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarSettingsView.swift; sourceTree = "<group>"; };
+		702633727DED1373BD6210F9 /* FastingModeSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FastingModeSettingsView.swift; sourceTree = "<group>"; };
 		7FF8791719A5203476792F6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		96520964EACA477706D20F71 /* HijriCalendarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarView.swift; sourceTree = "<group>"; };
-		9D8351BFC1F2829633FB8D22 /* HijriCalendarManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarManager.swift; sourceTree = "<group>"; };
+		8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HijriCalendarView.swift; sourceTree = "<group>"; };
 		CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScreenshotGenerator.swift; sourceTree = "<group>"; };
 		CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndCalcSettingsView.swift; sourceTree = "<group>"; };
 		CC4659602E661CC400159A83 /* TextFieldStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStepper.swift; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		CCED21872E65FE650066D0EB /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeCorrectionView.swift; sourceTree = "<group>"; };
 		CE24B45B25C2F5B6FBD79DE7 /* PrayerTimesScreenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesScreenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E6D329B7601767339D948D68 /* FastingModeManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FastingModeManager.swift; sourceTree = "<group>"; };
 		F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNotificationView.swift; sourceTree = "<group>"; };
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
@@ -291,10 +295,12 @@
 				F45FA15E2F5B512200C702DC /* NotificationSettings.swift */,
 				F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */,
 				F45FA1602F5B512200C702DC /* SystemSettingsView.swift */,
-				9D8351BFC1F2829633FB8D22 /* HijriCalendarManager.swift */,
-				48D25A2ADF201B54D7F3CAED /* IslamicEvents.swift */,
-				96520964EACA477706D20F71 /* HijriCalendarView.swift */,
-				3FA9A538B51F50FBBEEDA0D3 /* HijriCalendarSettingsView.swift */,
+				06C3D1B3882FEB9108678491 /* HijriCalendarManager.swift */,
+				E6D329B7601767339D948D68 /* FastingModeManager.swift */,
+				702633727DED1373BD6210F9 /* FastingModeSettingsView.swift */,
+				8876F4F8F9C73F1380CC2DC1 /* HijriCalendarView.swift */,
+				45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */,
+				43E050B467AE13BA8195B50C /* IslamicEvents.swift */,
 			);
 			path = PrayerTimes;
 			sourceTree = "<group>";
@@ -567,10 +573,12 @@
 				CCE1BA3B2E61852B003AF03C /* RootViewModifier.swift in Sources */,
 				CC786E522E6353F1007299F3 /* ManualLocationSheetView.swift in Sources */,
 				CC786E562E635ADA007299F3 /* AlertWindowManager.swift in Sources */,
-				5260C655081AC36061E77472 /* HijriCalendarManager.swift in Sources */,
-				8629C38C878FA6560A033D22 /* IslamicEvents.swift in Sources */,
-				47B734E85DD43195F8E5838A /* HijriCalendarView.swift in Sources */,
-				CF0177EA2B63DA24EE1ADAA0 /* HijriCalendarSettingsView.swift in Sources */,
+				5D8E46AB34C1469E90F68E8C /* HijriCalendarManager.swift in Sources */,
+				E540B73AD9E7315C46D7AA19 /* FastingModeManager.swift in Sources */,
+				11904E833EE8B0BF29458794 /* FastingModeSettingsView.swift in Sources */,
+				D3311CB91BF00E39D5607CD6 /* HijriCalendarView.swift in Sources */,
+				FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */,
+				016C6E29FE6809424777457A /* IslamicEvents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

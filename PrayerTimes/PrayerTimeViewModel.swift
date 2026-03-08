@@ -38,6 +38,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var isRequestingLocation: Bool = false
 
     let notificationSettings = NotificationSettings()
+    var fastingManager: FastingModeManager?
     private let languageManager = LanguageManager()
     private var automaticLocationCache: (name: String, coordinates: CLLocationCoordinate2D)?
     private var tomorrowFajrTime: Date?
@@ -58,11 +59,12 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @AppStorage(StorageKeys.asrCorrection) var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.maghribCorrection) var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.ishaCorrection) var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.alwaysShowMenuBarIcon) var alwaysShowMenuBarIcon: Bool = true
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
             UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
-            if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
+            if menuBarTextMode == .hidden { useMinimalMenuBarText = false; alwaysShowMenuBarIcon = true }
             startTimer()
             updateMenuTitle()
         }
@@ -94,6 +96,15 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         setupNotificationObserver()
         NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
             self?.updateCountdown()
+        }
+        NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            let currentNumeralLocale = self.languageManager.numeralLocale.identifier
+            if self._cachedNumberFormatter?.locale.identifier != currentNumeralLocale {
+                self._cachedNumberFormatter = nil
+                self._cachedDateFormatter = nil
+                self.updateCountdown()
+            }
         }
     }
     
@@ -445,10 +456,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let diff = Int(nextDate.timeIntervalSince(Date()))
         isPrayerImminent = (diff <= 600 && diff > 0)
 
-        let currentLang = languageManager.language
-        if _cachedNumberFormatter == nil || _cachedNumberFormatter?.locale.identifier != currentLang {
+        let numeralLocaleId = languageManager.numeralLocale.identifier
+        if _cachedNumberFormatter == nil || _cachedNumberFormatter?.locale.identifier != numeralLocaleId {
             let nf = NumberFormatter()
-            nf.locale = Locale(identifier: currentLang)
+            nf.locale = languageManager.numeralLocale
             _cachedNumberFormatter = nf
         }
         let numberFormatter = _cachedNumberFormatter!
@@ -523,7 +534,15 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
         
         var textToShow = ""
-        let localizedPrayerName = NSLocalizedString(nextPrayerName, comment: "")
+        let isFasting = fastingManager?.isFastingModeEnabled == true && fastingManager?.currentFastingDay != nil
+        let localizedPrayerName: String
+        if isFasting && nextPrayerName == "Fajr" {
+            localizedPrayerName = NSLocalizedString("Suhoor", comment: "")
+        } else if isFasting && nextPrayerName == "Maghrib" {
+            localizedPrayerName = NSLocalizedString("Iftar", comment: "")
+        } else {
+            localizedPrayerName = NSLocalizedString(nextPrayerName, comment: "")
+        }
         
         switch menuBarTextMode {
         case .hidden:
@@ -559,10 +578,11 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     var dateFormatter: DateFormatter {
-        if let cached = _cachedDateFormatter { return cached }
+        if let cached = _cachedDateFormatter,
+           cached.locale.identifier == languageManager.numeralLocale.identifier { return cached }
         let formatter = DateFormatter()
         formatter.timeZone = self.locationTimeZone
-        formatter.locale = Locale(identifier: languageManager.language)
+        formatter.locale = languageManager.numeralLocale
         if useMinimalMenuBarText {
             formatter.dateFormat = use24HourFormat ? "H.mm" : "h.mm"
         } else {
@@ -592,16 +612,21 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     private func updateNotifications() {
-        guard notificationSettings.prayerNotificationsEnabled, !todayTimes.isEmpty else {
-            NotificationManager.cancelPrayerNotifications()
-            return
+        NotificationManager.cancelPrayerNotifications()
+        guard !todayTimes.isEmpty else { return }
+
+        if notificationSettings.prayerNotificationsEnabled {
+            var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
+            if showSunnahPrayers {
+                if todayTimes.keys.contains("Tahajud") { prayersToNotify.insert("Tahajud", at: 0) }
+                if todayTimes.keys.contains("Dhuha") { prayersToNotify.insert("Dhuha", at: prayersToNotify.firstIndex(of: "Dhuhr") ?? 2) }
+            }
+            NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
         }
-        var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
-        if showSunnahPrayers {
-            if todayTimes.keys.contains("Tahajud") { prayersToNotify.insert("Tahajud", at: 0) }
-            if todayTimes.keys.contains("Dhuha") { prayersToNotify.insert("Dhuha", at: prayersToNotify.firstIndex(of: "Dhuhr") ?? 2) }
+
+        if let fm = fastingManager, fm.isFastingModeEnabled {
+            NotificationManager.scheduleFastingNotifications(prayerTimes: todayTimes, fastingManager: fm)
         }
-        NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
     }
     
     var isPrayerDataAvailable: Bool { !todayTimes.isEmpty }
@@ -617,6 +642,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
             if let lastDate = self.lastCalculationDate,
                !Calendar.current.isDate(lastDate, inSameDayAs: Date()) {
+                self.fastingManager?.checkAndAutoEnable()
                 self.updatePrayerTimes()
             } else {
                 self.updateCountdown()

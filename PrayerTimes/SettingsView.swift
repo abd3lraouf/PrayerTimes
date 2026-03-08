@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var isNotifHovering = false
     @State private var isSystemHovering = false
     @State private var isHijriHovering = false
+    @State private var isFastingHovering = false
 
     private var viewWidth: CGFloat {
         return vm.useCompactLayout ? 220 : 260
@@ -43,10 +44,16 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Display").font(.caption).foregroundColor(Color("SecondaryTextColor"))
                     HStack { Text("Language").font(.subheadline); Spacer(); Picker("", selection: $languageManager.language) { Text("English").tag("en"); Text("العربية").tag("ar"); Text("Indonesia").tag("id"); Text("فارسی").tag("fa"); Text("اردو").tag("ur") }.fixedSize() }
+                    if languageManager.supportsNativeNumerals {
+                        StyledToggle(label: "Native Numerals", isOn: $languageManager.useNativeNumerals)
+                    }
                     HStack { Text("Menu Bar Style").font(.subheadline); Spacer(); Picker("", selection: $vm.menuBarTextMode) { ForEach(MenuBarTextMode.allCases) { mode in Text(mode.localized).tag(mode) } }.fixedSize() }
                     StyledToggle(label: "Compact View", isOn: $vm.useCompactLayout)
                     StyledToggle(label: "24-Hour Time", isOn: $vm.use24HourFormat)
                     StyledToggle(label: "Minimal Menu Bar", isOn: $vm.useMinimalMenuBarText).disabled(vm.menuBarTextMode == .hidden)
+                    if vm.menuBarTextMode != .hidden {
+                        StyledToggle(label: "Always Show Menu Bar Icon", isOn: $vm.alwaysShowMenuBarIcon)
+                    }
                     StyledToggle(label: "Accent Color", isOn: $vm.useAccentColor)
                     StyledToggle(label: "Show Sunnah Prayers", isOn: $vm.showSunnahPrayers)
                 }
@@ -91,6 +98,17 @@ struct SettingsView: View {
                         }
                         .padding(.vertical, 5).padding(.horizontal, 8).background(isHijriHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                     }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isHijriHovering = hovering }
+
+                    Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { FastingModeSettingsView() } }) {
+                        HStack {
+                            Text("Fasting Mode").font(.subheadline)
+                            Spacer()
+                            Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                                .font(.caption.weight(.bold))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 5).padding(.horizontal, 8).background(isFastingHovering ? Color("HoverColor") : .clear).cornerRadius(5)
+                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isFastingHovering = hovering }
 
                     Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { SystemSettingsView() } }) {
                         HStack { 

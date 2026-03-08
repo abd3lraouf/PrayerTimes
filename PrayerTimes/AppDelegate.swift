@@ -9,6 +9,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     let vm = PrayerTimeViewModel()
     let languageManager = LanguageManager()
     let hijriManager = HijriCalendarManager()
+    let fastingManager = FastingModeManager()
     
     var menuBarExtra: FluidMenuBarExtra?
     private var cancellables = Set<AnyCancellable>()
@@ -25,7 +26,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         UserDefaults.standard.register(defaults: [StorageKeys.islamicEventNotifications: true])
 
         setupMenuBar()
+        vm.fastingManager = fastingManager
         vm.startLocationProcess()
+        fastingManager.checkAndAutoEnable()
 
         // Schedule Islamic event notifications after a short delay to allow setup
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -110,6 +113,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                     .environmentObject(self.vm)
                     .environmentObject(self.vm.notificationSettings)
                     .environmentObject(self.hijriManager)
+                    .environmentObject(self.fastingManager)
                     .environmentObject(NavigationModel())
             }
         }
@@ -141,6 +145,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 .environmentObject(vm)
                 .environmentObject(vm.notificationSettings)
                 .environmentObject(hijriManager)
+                .environmentObject(fastingManager)
                 .environmentObject(NavigationModel())
         }
 
@@ -181,11 +186,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     
     private func updateIconForMode(_ mode: MenuBarTextMode) {
         let isIconOnly = (mode == .hidden)
-        if vm.useMinimalMenuBarText {
-            menuBarExtra?.statusItem.button?.image = nil
-        }
-        else {
-            menuBarExtra?.statusItem.button?.image = isIconOnly ? NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: "PrayerTimes Pro") : nil
-        }
+        let shouldShowIcon = vm.alwaysShowMenuBarIcon || isIconOnly
+        menuBarExtra?.statusItem.button?.image = shouldShowIcon ? NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: "PrayerTimes Pro") : nil
     }
 }	

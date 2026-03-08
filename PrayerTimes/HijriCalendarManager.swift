@@ -89,4 +89,35 @@ class HijriCalendarManager: ObservableObject {
         let gregorianDate = self.gregorianDate(fromHijri: components)
         return Calendar.current.component(.weekday, from: gregorianDate)
     }
+
+    // MARK: - Static Ramadan helpers (used by FastingModeManager)
+
+    private static let staticHijriCalendar: Calendar = {
+        var cal = Calendar(identifier: .islamicUmmAlQura)
+        cal.locale = Locale(identifier: "en")
+        return cal
+    }()
+
+    static func isRamadan(on date: Date = Date()) -> Bool {
+        staticHijriDate(from: date).month == 9
+    }
+
+    static func currentRamadanDay(on date: Date = Date()) -> Int? {
+        let components = staticHijriDate(from: date)
+        guard components.month == 9 else { return nil }
+        return components.day
+    }
+
+    static func daysInCurrentRamadan(on date: Date = Date()) -> Int {
+        let components = staticHijriDate(from: date)
+        guard components.month == 9,
+              let range = staticHijriCalendar.range(of: .day, in: .month, for: date) else {
+            return 30
+        }
+        return range.count
+    }
+
+    private static func staticHijriDate(from date: Date) -> DateComponents {
+        staticHijriCalendar.dateComponents([.year, .month, .day], from: date)
+    }
 }

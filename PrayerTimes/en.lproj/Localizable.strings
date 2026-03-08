@@ -81,7 +81,9 @@
 "24-Hour Time" = "24-Hour Time";
 "Minimal Menu Bar" = "Minimal Menu Bar";
 "Accent Color" = "Accent Color";
+"Native Numerals" = "Native Numerals";
 "Show Sunnah Prayers" = "Show Sunnah Prayers";
+"Always Show Menu Bar Icon" = "Always Show Menu Bar Icon";
 
 /* Menu Bar Style Options */
 "Countdown" = "Countdown";
@@ -230,6 +232,24 @@
 "event_eid_adha" = "Eid al-Adha";
 "event_tashreeq" = "Days of Tashreeq";
 "event_tomorrow_notification" = "%@ is tomorrow";
+
+/* Fasting Mode */
+"Fasting Mode" = "Fasting Mode";
+"Suhoor" = "Suhoor";
+"Iftar" = "Iftar";
+"Taraweeh" = "Taraweeh";
+"fasting_day_counter" = "Day %d of %d — Ramadan";
+"last_ten_nights_message" = "These are the blessed last 10 nights — Laylat al-Qadr may be among them";
+"suhoor_ends_in_minutes" = "Suhoor ends in %d minutes";
+"iftar_time_body" = "It's time to break your fast";
+"dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
+"dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
+"taraweeh_reminder_body" = "Time for Taraweeh prayer";
+"Suhoor Alert" = "Suhoor Alert";
+"Iftar Notification" = "Iftar Notification";
+"Dua Reminders" = "Dua Reminders";
+"Taraweeh Reminder" = "Taraweeh Reminder";
+"After Isha" = "After Isha";
 
 /* Language Options */
 "English" = "English";
