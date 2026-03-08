@@ -192,6 +192,45 @@
 "Switch" = "Ganti";
 "Keep Current" = "Pertahankan";
 
+/* Hijri Calendar */
+"Hijri Calendar" = "Kalender Hijriah";
+"Calendar Type" = "Jenis Kalender";
+"Day Correction" = "Koreksi Hari";
+"Adjust if the Hijri date doesn't match your local moon sighting." = "Sesuaikan jika tanggal Hijriah tidak sesuai dengan pengamatan hilal lokal Anda.";
+"Islamic Event Notifications" = "Notifikasi Peristiwa Islam";
+
+/* Hijri Calendar Types */
+"hijri_type_islamicUmmAlQura" = "Ummul Qura";
+"hijri_type_islamic" = "Islam";
+"hijri_type_islamicCivil" = "Islam Sipil";
+
+/* Hijri Month Names */
+"hijri_month_1" = "Muharram";
+"hijri_month_2" = "Safar";
+"hijri_month_3" = "Rabiul Awal";
+"hijri_month_4" = "Rabiul Akhir";
+"hijri_month_5" = "Jumadil Awal";
+"hijri_month_6" = "Jumadil Akhir";
+"hijri_month_7" = "Rajab";
+"hijri_month_8" = "Sya'ban";
+"hijri_month_9" = "Ramadan";
+"hijri_month_10" = "Syawal";
+"hijri_month_11" = "Dzulqa'dah";
+"hijri_month_12" = "Dzulhijjah";
+
+/* Islamic Events */
+"event_islamic_new_year" = "Tahun Baru Islam";
+"event_ashura" = "Hari Asyura";
+"event_mawlid" = "Maulid Nabi";
+"event_isra_miraj" = "Isra Mi'raj";
+"event_mid_shaban" = "Nisfu Sya'ban";
+"event_ramadan_start" = "Awal Ramadan";
+"event_eid_fitr" = "Idul Fitri";
+"event_arafah" = "Hari Arafah";
+"event_eid_adha" = "Idul Adha";
+"event_tashreeq" = "Hari Tasyrik";
+"event_tomorrow_notification" = "%@ besok";
+
 /* Language Options */
 "English" = "Inggris";
 "العربية" = "Arab";

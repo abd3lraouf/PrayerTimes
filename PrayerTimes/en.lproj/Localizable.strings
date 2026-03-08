@@ -192,6 +192,45 @@
 "Switch" = "Switch";
 "Keep Current" = "Keep Current";
 
+/* Hijri Calendar */
+"Hijri Calendar" = "Hijri Calendar";
+"Calendar Type" = "Calendar Type";
+"Day Correction" = "Day Correction";
+"Adjust if the Hijri date doesn't match your local moon sighting." = "Adjust if the Hijri date doesn't match your local moon sighting.";
+"Islamic Event Notifications" = "Islamic Event Notifications";
+
+/* Hijri Calendar Types */
+"hijri_type_islamicUmmAlQura" = "Umm al-Qura";
+"hijri_type_islamic" = "Islamic";
+"hijri_type_islamicCivil" = "Islamic Civil";
+
+/* Hijri Month Names */
+"hijri_month_1" = "Muharram";
+"hijri_month_2" = "Safar";
+"hijri_month_3" = "Rabi al-Awwal";
+"hijri_month_4" = "Rabi al-Thani";
+"hijri_month_5" = "Jumada al-Ula";
+"hijri_month_6" = "Jumada al-Thani";
+"hijri_month_7" = "Rajab";
+"hijri_month_8" = "Sha'ban";
+"hijri_month_9" = "Ramadan";
+"hijri_month_10" = "Shawwal";
+"hijri_month_11" = "Dhul Qi'dah";
+"hijri_month_12" = "Dhul Hijjah";
+
+/* Islamic Events */
+"event_islamic_new_year" = "Islamic New Year";
+"event_ashura" = "Day of Ashura";
+"event_mawlid" = "Mawlid an-Nabi";
+"event_isra_miraj" = "Isra & Mi'raj";
+"event_mid_shaban" = "Mid-Sha'ban";
+"event_ramadan_start" = "Start of Ramadan";
+"event_eid_fitr" = "Eid al-Fitr";
+"event_arafah" = "Day of Arafah";
+"event_eid_adha" = "Eid al-Adha";
+"event_tashreeq" = "Days of Tashreeq";
+"event_tomorrow_notification" = "%@ is tomorrow";
+
 /* Language Options */
 "English" = "English";
 "العربية" = "العربية";

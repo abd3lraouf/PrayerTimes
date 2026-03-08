@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var isCalcHovering = false
     @State private var isNotifHovering = false
     @State private var isSystemHovering = false
+    @State private var isHijriHovering = false
 
     private var viewWidth: CGFloat {
         return vm.useCompactLayout ? 220 : 260
@@ -80,6 +81,17 @@ struct SettingsView: View {
                         .padding(.vertical, 5).padding(.horizontal, 8).background(isCalcHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                     }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isCalcHovering = hovering }
                     
+                    Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { HijriCalendarSettingsView() } }) {
+                        HStack {
+                            Text("Hijri Calendar").font(.subheadline)
+                            Spacer()
+                            Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                                .font(.caption.weight(.bold))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 5).padding(.horizontal, 8).background(isHijriHovering ? Color("HoverColor") : .clear).cornerRadius(5)
+                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isHijriHovering = hovering }
+
                     Button(action: { navigationModel.showView(Self.id, animation: vm.forwardAnimation()) { SystemSettingsView() } }) {
                         HStack { 
                             Text("System").font(.subheadline)

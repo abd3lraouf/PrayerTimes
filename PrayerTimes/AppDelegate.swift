@@ -8,6 +8,7 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDelegate, UNUserNotificationCenterDelegate {
     let vm = PrayerTimeViewModel()
     let languageManager = LanguageManager()
+    let hijriManager = HijriCalendarManager()
     
     var menuBarExtra: FluidMenuBarExtra?
     private var cancellables = Set<AnyCancellable>()
@@ -21,8 +22,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         UNUserNotificationCenter.current().delegate = self
         NotificationManager.requestPermission()
 
+        UserDefaults.standard.register(defaults: [StorageKeys.islamicEventNotifications: true])
+
         setupMenuBar()
         vm.startLocationProcess()
+
+        // Schedule Islamic event notifications after a short delay to allow setup
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            NotificationManager.scheduleIslamicEventNotifications(hijriManager: self.hijriManager)
+        }
 
         vm.$menuTitle.debounce(for: .milliseconds(100), scheduler: RunLoop.main).sink { [weak self] newTitle in self?.menuBarExtra?.updateTitle(to: newTitle) }.store(in: &cancellables)
         NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
@@ -101,6 +109,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 ContentView()
                     .environmentObject(self.vm)
                     .environmentObject(self.vm.notificationSettings)
+                    .environmentObject(self.hijriManager)
                     .environmentObject(NavigationModel())
             }
         }
@@ -131,6 +140,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             OnboardingView()
                 .environmentObject(vm)
                 .environmentObject(vm.notificationSettings)
+                .environmentObject(hijriManager)
                 .environmentObject(NavigationModel())
         }
 

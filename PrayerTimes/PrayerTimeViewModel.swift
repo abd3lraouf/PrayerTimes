@@ -593,7 +593,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     
     private func updateNotifications() {
         guard notificationSettings.prayerNotificationsEnabled, !todayTimes.isEmpty else {
-            NotificationManager.cancelNotifications()
+            NotificationManager.cancelPrayerNotifications()
             return
         }
         var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]

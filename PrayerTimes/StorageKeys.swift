@@ -26,4 +26,7 @@ enum StorageKeys {
     static let isPrayerTimerEnabled = "isPrayerTimerEnabled"
     static let prayerTimerDuration = "prayerTimerDuration"
     static let launchAtLogin = "launchAtLogin"
+    static let hijriCalendarType = "hijriCalendarType"
+    static let hijriDayCorrection = "hijriDayCorrection"
+    static let islamicEventNotifications = "islamicEventNotifications"
 }

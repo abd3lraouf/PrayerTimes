@@ -192,6 +192,45 @@
 "Switch" = "تبديل";
 "Keep Current" = "الإبقاء على الحالي";
 
+/* Hijri Calendar */
+"Hijri Calendar" = "التقويم الهجري";
+"Calendar Type" = "نوع التقويم";
+"Day Correction" = "تصحيح اليوم";
+"Adjust if the Hijri date doesn't match your local moon sighting." = "عدّل إذا لم يتطابق التاريخ الهجري مع رؤية الهلال المحلية.";
+"Islamic Event Notifications" = "إشعارات المناسبات الإسلامية";
+
+/* Hijri Calendar Types */
+"hijri_type_islamicUmmAlQura" = "أم القرى";
+"hijri_type_islamic" = "إسلامي";
+"hijri_type_islamicCivil" = "إسلامي مدني";
+
+/* Hijri Month Names */
+"hijri_month_1" = "محرم";
+"hijri_month_2" = "صفر";
+"hijri_month_3" = "ربيع الأول";
+"hijri_month_4" = "ربيع الثاني";
+"hijri_month_5" = "جمادى الأولى";
+"hijri_month_6" = "جمادى الثانية";
+"hijri_month_7" = "رجب";
+"hijri_month_8" = "شعبان";
+"hijri_month_9" = "رمضان";
+"hijri_month_10" = "شوال";
+"hijri_month_11" = "ذو القعدة";
+"hijri_month_12" = "ذو الحجة";
+
+/* Islamic Events */
+"event_islamic_new_year" = "رأس السنة الهجرية";
+"event_ashura" = "يوم عاشوراء";
+"event_mawlid" = "المولد النبوي";
+"event_isra_miraj" = "الإسراء والمعراج";
+"event_mid_shaban" = "ليلة النصف من شعبان";
+"event_ramadan_start" = "بداية رمضان";
+"event_eid_fitr" = "عيد الفطر";
+"event_arafah" = "يوم عرفة";
+"event_eid_adha" = "عيد الأضحى";
+"event_tashreeq" = "أيام التشريق";
+"event_tomorrow_notification" = "%@ غدًا";
+
 /* Language Options */
 "English" = "الإنجليزية";
 "العربية" = "العربية";

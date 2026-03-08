@@ -6,9 +6,11 @@ struct MainView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var languageManager: LanguageManager
     @EnvironmentObject var navigationModel: NavigationModel
+    @EnvironmentObject var hijriManager: HijriCalendarManager
     @Environment(\.layoutDirection) var layoutDirection
     @State private var isSettingsHovering = false
     @State private var isAboutHovering = false
+    @State private var isCalendarHovering = false
     @State private var isQuitHovering = false
     private var viewWidth: CGFloat { return vm.useCompactLayout ? 220 : 260 }
 
@@ -66,11 +68,31 @@ struct MainView: View {
                 .accessibilityIdentifier("MainView.settingsButton")
 
                 Button(action: {
+                    navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { HijriCalendarView() }
+                }) {
+                    HStack {
+                        Text("Hijri Calendar");
+                        Spacer();
+                        Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
+                            .font(.caption.weight(.bold))
+                            .foregroundColor(.secondary)
+                    }
+                        .padding(.vertical, 5).padding(.horizontal, 8)
+                        .background(isCalendarHovering ? Color("HoverColor") : .clear)
+                        .cornerRadius(5)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 5)
+                .onHover { hovering in isCalendarHovering = hovering }
+                .focusable(false)
+                .accessibilityIdentifier("MainView.calendarButton")
+
+                Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { AboutView() }
                 }) {
-                    HStack { 
-                        Text("About"); 
-                        Spacer(); 
+                    HStack {
+                        Text("About");
+                        Spacer();
                         Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
                             .font(.caption.weight(.bold))
                             .foregroundColor(.secondary)
@@ -108,6 +130,7 @@ struct MainView: View {
 
 struct PrayerListView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var hijriManager: HijriCalendarManager
     private var prayerOrder: [String] {
         let defaultOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
         let sunnahOrder = ["Tahajud", "Fajr", "Dhuha", "Dhuhr", "Asr", "Maghrib", "Isha"]
@@ -121,6 +144,7 @@ struct PrayerListView: View {
             if vm.isUsingManualLocation && !vm.locationInfoText.isEmpty {
                 Text(vm.locationInfoText).font(.caption2).foregroundColor(Color("SecondaryTextColor")).padding(.horizontal, 12).lineLimit(2).fixedSize(horizontal: false, vertical: true)
             }
+            HijriDateBadge(hijriManager: hijriManager)
             VStack(spacing: 0) {
                 ForEach(prayerOrder, id: \.self) { prayerName in
                     if let prayerTime = vm.todayTimes[prayerName] {
@@ -183,5 +207,35 @@ struct PermissionRequestView: View {
                 }.buttonStyle(.plain).onHover { hovering in isManualHovering = hovering }
             }.padding(.top, 4).padding(.horizontal).animation(.easeInOut, value: vm.isRequestingLocation)
         }.frame(maxWidth: .infinity)
+    }
+}
+
+struct HijriDateBadge: View {
+    @ObservedObject var hijriManager: HijriCalendarManager
+
+    var body: some View {
+        let now = Date()
+        let components = hijriManager.hijriDate(from: now)
+        let dateString = hijriManager.hijriDateString(from: now)
+        let todayEvents = IslamicEvents.events(forMonth: components.month ?? 0, day: components.day ?? 0)
+
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 4) {
+                Image(systemName: "calendar")
+                Text(dateString)
+                Spacer()
+            }
+            .font(.caption)
+            .foregroundColor(Color("SecondaryTextColor"))
+
+            if let event = todayEvents.first {
+                HStack(spacing: 4) {
+                    Circle().fill(Color.accentColor).frame(width: 5, height: 5)
+                    Text(event.localizedName).font(.caption2).foregroundColor(.accentColor)
+                    Spacer()
+                }
+            }
+        }
+        .padding(.horizontal, 12)
     }
 }
