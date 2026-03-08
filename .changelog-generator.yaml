@@ -1,0 +1,23 @@
+sort: asc
+abbrev: 8
+
+groups:
+  - title: Breaking Changes
+    order: 0
+    regexp: '!:'
+  - title: Features
+    order: 1
+    regexp: '^(feat)'
+  - title: Fixes
+    order: 2
+    regexp: '^(fix|perf)'
+  - title: Others
+    order: 998
+
+filters:
+  exclude:
+    - "^docs"
+    - "^test"
+    - "^chore"
+    - "^ci"
+    - "^refactor"

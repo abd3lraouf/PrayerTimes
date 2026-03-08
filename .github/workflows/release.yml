@@ -12,23 +12,29 @@ jobs:
   build:
     name: Build and Release
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+        with:
+          fetch-depth: 0
+
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '16.0'
-          
+
       - name: Get version from tag
         id: get_version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Building version: $VERSION"
-          
+
+      - name: Generate changelog
+        uses: gabe565/changelog-generator@v1
+        id: changelog
+
       - name: Build app
         env:
           APP_VERSION: ${{ steps.get_version.outputs.VERSION }}
@@ -40,20 +46,22 @@ jobs:
             -derivedDataPath build \
             clean build \
             CODE_SIGN_IDENTITY="-" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=YES \
+            CODE_SIGNING_ALLOWED=YES \
             MARKETING_VERSION="$APP_VERSION" \
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
-            
+
       - name: Create app bundle
         run: |
           mkdir -p release
           cp -r build/Build/Products/Release/PrayerTimes.app release/
-          
+          # Re-sign with ad-hoc signature and hardened runtime
+          codesign --force --deep --sign - --options runtime release/PrayerTimes.app
+
       - name: Create DMG
         run: |
           brew install create-dmg
-          
+
           create-dmg \
             --volname "PrayerTimes" \
             --volicon "PrayerTimes/Assets.xcassets/AppIcon.appiconset/256.png" \
@@ -76,32 +84,27 @@ jobs:
             --app-drop-link 480 170 \
             "release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg" \
             "release/PrayerTimes.app"
-            
+
       - name: Generate checksum
         run: |
           cd release
           shasum -a 256 PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg > PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256
-          
+
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: PrayerTimes ${{ steps.get_version.outputs.VERSION }}
           body: |
-            ## PrayerTimes ${{ steps.get_version.outputs.VERSION }}
-            
-            ### What's Changed
-            See [CHANGELOG.md](CHANGELOG.md) for details.
-            
+            ${{ steps.changelog.outputs.changelog }}
+
+            ---
+
             ### Installation
             1. Download `PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg`
             2. Open the DMG file
             3. Drag PrayerTimes to your Applications folder
             4. If macOS says the app is "damaged", run: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
             5. Right-click the app and select "Open" (first time only)
-            
-            ### Checksum
-            See `PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256`
-            
           files: |
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg
             release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg.sha256
@@ -109,7 +112,7 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
