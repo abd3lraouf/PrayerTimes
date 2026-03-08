@@ -11,6 +11,25 @@ class LanguageManager: ObservableObject {
         }
     }
 
+    @AppStorage(StorageKeys.useNativeNumerals) var useNativeNumerals: Bool = true {
+        didSet {
+            objectWillChange.send()
+        }
+    }
+
+    static let nativeNumeralLanguages = ["ar", "fa", "ur"]
+
+    var supportsNativeNumerals: Bool {
+        return Self.nativeNumeralLanguages.contains(language)
+    }
+
+    var numeralLocale: Locale {
+        if supportsNativeNumerals && !useNativeNumerals {
+            return Locale(identifier: "en")
+        }
+        return Locale(identifier: language)
+    }
+
     init() {
         if let langOverride = ProcessInfo.processInfo.environment["SCREENSHOT_LANGUAGE"] {
             language = langOverride
