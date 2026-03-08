@@ -38,6 +38,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @Published var isRequestingLocation: Bool = false
 
     let notificationSettings = NotificationSettings()
+    var fastingManager: FastingModeManager?
     private let languageManager = LanguageManager()
     private var automaticLocationCache: (name: String, coordinates: CLLocationCoordinate2D)?
     private var tomorrowFajrTime: Date?
@@ -533,7 +534,15 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
         
         var textToShow = ""
-        let localizedPrayerName = NSLocalizedString(nextPrayerName, comment: "")
+        let isFasting = fastingManager?.isFastingModeEnabled == true && fastingManager?.currentFastingDay != nil
+        let localizedPrayerName: String
+        if isFasting && nextPrayerName == "Fajr" {
+            localizedPrayerName = NSLocalizedString("Suhoor", comment: "")
+        } else if isFasting && nextPrayerName == "Maghrib" {
+            localizedPrayerName = NSLocalizedString("Iftar", comment: "")
+        } else {
+            localizedPrayerName = NSLocalizedString(nextPrayerName, comment: "")
+        }
         
         switch menuBarTextMode {
         case .hidden:
@@ -603,16 +612,21 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     private func updateNotifications() {
-        guard notificationSettings.prayerNotificationsEnabled, !todayTimes.isEmpty else {
-            NotificationManager.cancelNotifications()
-            return
+        NotificationManager.cancelNotifications()
+        guard !todayTimes.isEmpty else { return }
+
+        if notificationSettings.prayerNotificationsEnabled {
+            var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
+            if showSunnahPrayers {
+                if todayTimes.keys.contains("Tahajud") { prayersToNotify.insert("Tahajud", at: 0) }
+                if todayTimes.keys.contains("Dhuha") { prayersToNotify.insert("Dhuha", at: prayersToNotify.firstIndex(of: "Dhuhr") ?? 2) }
+            }
+            NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
         }
-        var prayersToNotify = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
-        if showSunnahPrayers {
-            if todayTimes.keys.contains("Tahajud") { prayersToNotify.insert("Tahajud", at: 0) }
-            if todayTimes.keys.contains("Dhuha") { prayersToNotify.insert("Dhuha", at: prayersToNotify.firstIndex(of: "Dhuhr") ?? 2) }
+
+        if let fm = fastingManager, fm.isFastingModeEnabled {
+            NotificationManager.scheduleFastingNotifications(prayerTimes: todayTimes, fastingManager: fm)
         }
-        NotificationManager.scheduleNotifications(for: todayTimes, prayerOrder: prayersToNotify, settings: notificationSettings)
     }
     
     var isPrayerDataAvailable: Bool { !todayTimes.isEmpty }
@@ -628,6 +642,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
             if let lastDate = self.lastCalculationDate,
                !Calendar.current.isDate(lastDate, inSameDayAs: Date()) {
+                self.fastingManager?.checkAndAutoEnable()
                 self.updatePrayerTimes()
             } else {
                 self.updateCountdown()

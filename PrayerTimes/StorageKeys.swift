@@ -28,4 +28,12 @@ enum StorageKeys {
     static let launchAtLogin = "launchAtLogin"
     static let useNativeNumerals = "useNativeNumerals"
     static let alwaysShowMenuBarIcon = "alwaysShowMenuBarIcon"
+
+    // Fasting Mode
+    static let fastingModeEnabled = "fastingModeEnabled"
+    static let suhoorPreAlertMinutes = "suhoorPreAlertMinutes"
+    static let iftarNotificationEnabled = "iftarNotificationEnabled"
+    static let duaRemindersEnabled = "duaRemindersEnabled"
+    static let taraweehReminderEnabled = "taraweehReminderEnabled"
+    static let taraweehMinutesAfterIsha = "taraweehMinutesAfterIsha"
 }

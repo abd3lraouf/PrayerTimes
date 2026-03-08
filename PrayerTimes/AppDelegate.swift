@@ -8,6 +8,7 @@ import UserNotifications
 class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDelegate, UNUserNotificationCenterDelegate {
     let vm = PrayerTimeViewModel()
     let languageManager = LanguageManager()
+    let fastingManager = FastingModeManager()
     
     var menuBarExtra: FluidMenuBarExtra?
     private var cancellables = Set<AnyCancellable>()
@@ -22,7 +23,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         NotificationManager.requestPermission()
 
         setupMenuBar()
+        vm.fastingManager = fastingManager
         vm.startLocationProcess()
+        fastingManager.checkAndAutoEnable()
 
         vm.$menuTitle.debounce(for: .milliseconds(100), scheduler: RunLoop.main).sink { [weak self] newTitle in self?.menuBarExtra?.updateTitle(to: newTitle) }.store(in: &cancellables)
         NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
@@ -101,6 +104,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 ContentView()
                     .environmentObject(self.vm)
                     .environmentObject(self.vm.notificationSettings)
+                    .environmentObject(self.fastingManager)
                     .environmentObject(NavigationModel())
             }
         }
@@ -131,6 +135,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
             OnboardingView()
                 .environmentObject(vm)
                 .environmentObject(vm.notificationSettings)
+                .environmentObject(fastingManager)
                 .environmentObject(NavigationModel())
         }
 

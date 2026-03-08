@@ -194,6 +194,24 @@
 "Switch" = "تبديل";
 "Keep Current" = "الإبقاء على الحالي";
 
+/* Fasting Mode */
+"Fasting Mode" = "وضع الصيام";
+"Suhoor" = "السحور";
+"Iftar" = "الإفطار";
+"Taraweeh" = "التراويح";
+"fasting_day_counter" = "اليوم %d من %d — رمضان";
+"last_ten_nights_message" = "هذه العشر الأواخر المباركة — ليلة القدر قد تكون فيها";
+"suhoor_ends_in_minutes" = "ينتهي السحور بعد %d دقيقة";
+"iftar_time_body" = "حان وقت الإفطار";
+"dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ";
+"dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ";
+"taraweeh_reminder_body" = "حان وقت صلاة التراويح";
+"Suhoor Alert" = "تنبيه السحور";
+"Iftar Notification" = "إشعار الإفطار";
+"Dua Reminders" = "تذكير بالدعاء";
+"Taraweeh Reminder" = "تذكير بالتراويح";
+"After Isha" = "بعد العشاء";
+
 /* Language Options */
 "English" = "الإنجليزية";
 "العربية" = "العربية";
