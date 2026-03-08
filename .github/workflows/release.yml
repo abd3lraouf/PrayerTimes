@@ -96,7 +96,7 @@ jobs:
             1. Download `PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg`
             2. Open the DMG file
             3. Drag PrayerTimes to your Applications folder
-            4. If macOS says the app is "damaged", run: `xattr -cr /Applications/PrayerTimes.app`
+            4. If macOS says the app is "damaged", run: `xattr -r -d com.apple.quarantine /Applications/PrayerTimes.app`
             5. Right-click the app and select "Open" (first time only)
             
             ### Checksum
