@@ -29,7 +29,6 @@ enum StorageKeys {
 
     // Fasting Mode
     static let fastingModeEnabled = "fastingModeEnabled"
-    static let fastingAutoDetect = "fastingAutoDetect"
     static let suhoorPreAlertMinutes = "suhoorPreAlertMinutes"
     static let iftarNotificationEnabled = "iftarNotificationEnabled"
     static let duaRemindersEnabled = "duaRemindersEnabled"

@@ -41,7 +41,6 @@ struct FastingModeSettingsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     StyledToggle(label: "Fasting Mode", isOn: $fastingManager.isFastingModeEnabled)
-                    StyledToggle(label: "Auto-detect Ramadan", isOn: $fastingManager.isAutoDetectEnabled)
 
                     Rectangle().fill(Color("DividerColor")).frame(height: 0.5)
 

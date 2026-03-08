@@ -6,10 +6,6 @@ class FastingModeManager: ObservableObject {
         didSet { UserDefaults.standard.set(isFastingModeEnabled, forKey: StorageKeys.fastingModeEnabled) }
     }
 
-    @Published var isAutoDetectEnabled: Bool {
-        didSet { UserDefaults.standard.set(isAutoDetectEnabled, forKey: StorageKeys.fastingAutoDetect) }
-    }
-
     var currentFastingDay: Int? {
         guard isFastingModeEnabled else { return nil }
         return HijriCalendarManager.currentRamadanDay()
@@ -26,11 +22,9 @@ class FastingModeManager: ObservableObject {
 
     init() {
         self.isFastingModeEnabled = UserDefaults.standard.bool(forKey: StorageKeys.fastingModeEnabled)
-        self.isAutoDetectEnabled = UserDefaults.standard.object(forKey: StorageKeys.fastingAutoDetect) as? Bool ?? true
     }
 
     func checkAndAutoEnable() {
-        guard isAutoDetectEnabled else { return }
         let isRamadan = HijriCalendarManager.isRamadan()
         if isRamadan && !isFastingModeEnabled {
             isFastingModeEnabled = true

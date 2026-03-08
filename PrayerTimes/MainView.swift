@@ -15,16 +15,19 @@ struct MainView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("PrayerTimes").font(.body).fontWeight(.bold)
+                Text("PrayerTimes").font(.system(size: 13, weight: .semibold))
                 Spacer()
                 if vm.isPrayerDataAvailable && vm.menuBarTextMode == .hidden {
                     let format = NSLocalizedString("prayer_in_countdown", comment: "")
                     let localizedPrayerName = NSLocalizedString(vm.nextPrayerName, comment: "")
-                    Text(String(format: format, localizedPrayerName, vm.countdown)).font(.body).foregroundColor(vm.isPrayerImminent ? .red : Color("SecondaryTextColor")).transition(.opacity.animation(.easeInOut))
+                    Text(String(format: format, localizedPrayerName, vm.countdown))
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(vm.isPrayerImminent ? .red : Color("SecondaryTextColor"))
+                        .transition(.opacity.animation(.easeInOut))
                 }
             }
             .padding(.horizontal, 12).padding(.top, 4)
-            
+
             Rectangle()
                 .fill(Color("DividerColor"))
                 .frame(height: 0.5)
@@ -38,7 +41,7 @@ struct MainView: View {
                 PermissionRequestView()
                 Spacer()
             }
-            
+
             VStack(alignment: .leading, spacing: 0) {
                 Rectangle()
                     .fill(Color("DividerColor"))
@@ -49,11 +52,11 @@ struct MainView: View {
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { SettingsView() }
                 }) {
-                    HStack { 
-                        Text("Settings"); 
-                        Spacer(); 
+                    HStack {
+                        Text("Settings").font(.system(size: 13))
+                        Spacer();
                         Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
-                            .font(.caption.weight(.bold))
+                            .font(.caption2.weight(.semibold))
                             .foregroundColor(.secondary)
                     }
                         .padding(.vertical, 5).padding(.horizontal, 8)
@@ -69,11 +72,11 @@ struct MainView: View {
                 Button(action: {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { AboutView() }
                 }) {
-                    HStack { 
-                        Text("About"); 
-                        Spacer(); 
+                    HStack {
+                        Text("About").font(.system(size: 13))
+                        Spacer();
                         Image(systemName: layoutDirection == .rightToLeft ? "chevron.left" : "chevron.right")
-                            .font(.caption.weight(.bold))
+                            .font(.caption2.weight(.semibold))
                             .foregroundColor(.secondary)
                     }
                         .padding(.vertical, 5).padding(.horizontal, 8)
@@ -93,7 +96,7 @@ struct MainView: View {
                     .padding(.vertical, 2)
 
                 Button(action: { NSApp.terminate(nil) }) {
-                    HStack { Text("Quit"); Spacer() }
+                    HStack { Text("Quit").font(.system(size: 13)); Spacer() }
                         .padding(.vertical, 5).padding(.horizontal, 8)
                         .background(isQuitHovering ? Color("HoverColor") : .clear)
                         .cornerRadius(5)
@@ -106,6 +109,19 @@ struct MainView: View {
         }.padding(.vertical, 8).frame(width: viewWidth)
     }
 }
+
+// MARK: - Fasting Colors
+
+enum FastingColors {
+    static let suhoor = Color("SuhoorColor")
+    static let suhoorBg = Color("SuhoorBgColor")
+    static let iftar = Color("IftarColor")
+    static let iftarBg = Color("IftarBgColor")
+    static let banner = Color("FastingBannerColor")
+    static let bannerBg = Color("FastingBannerBgColor")
+}
+
+// MARK: - Prayer List
 
 struct PrayerListView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
@@ -120,12 +136,21 @@ struct PrayerListView: View {
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack { Image(systemName: "location.fill"); Text(vm.locationStatusText); Spacer() }
-                .font(.caption).foregroundColor(Color("SecondaryTextColor")).padding(.horizontal, 12)
-            if vm.isUsingManualLocation && !vm.locationInfoText.isEmpty {
-                Text(vm.locationInfoText).font(.caption2).foregroundColor(Color("SecondaryTextColor")).padding(.horizontal, 12).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            HStack(spacing: 4) {
+                Image(systemName: "location.fill").font(.system(size: 9))
+                Text(vm.locationStatusText).font(.system(size: 11))
+                Spacer()
             }
-            VStack(spacing: 0) {
+            .foregroundColor(Color("SecondaryTextColor")).padding(.horizontal, 12)
+
+            if vm.isUsingManualLocation && !vm.locationInfoText.isEmpty {
+                Text(vm.locationInfoText)
+                    .font(.system(size: 10))
+                    .foregroundColor(Color("SecondaryTextColor"))
+                    .padding(.horizontal, 12).lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            VStack(spacing: 1) {
                 ForEach(prayerOrder, id: \.self) { prayerName in
                     if let prayerTime = vm.todayTimes[prayerName] {
                         let isNextPrayer = prayerName == vm.nextPrayerName
@@ -146,22 +171,31 @@ struct PrayerListView: View {
                             }
                             else { return (.clear, .primary) }
                         }()
-                        HStack {
-                            Text(LocalizedStringKey(prayerName)); Spacer()
-                            if prayerName == "Tahajud" || prayerName == "Dhuha" { Text("Around").font(.caption).foregroundColor(isNextPrayer ? textColor.opacity(0.8) : Color("SecondaryTextColor")) }
-                            Text(vm.dateFormatter.string(from: prayerTime)).font(.system(.body, design: .monospaced))
-                        }
-                        .foregroundColor(textColor).fontWeight(isNextPrayer ? .bold : .regular).padding(.horizontal, 12).padding(.vertical, 5).background(RoundedRectangle(cornerRadius: 6).fill(highlightColor))
+                        PrayerRow(
+                            prayerName: prayerName,
+                            prayerTime: prayerTime,
+                            isNextPrayer: isNextPrayer,
+                            isHighlighted: isNextPrayer,
+                            highlightColor: highlightColor,
+                            textColor: textColor,
+                            fastingManager: fastingManager,
+                            dateFormatter: vm.dateFormatter
+                        )
 
                         // Show Taraweeh time after Isha when fasting mode active
                         if prayerName == "Isha" && fastingManager.isFastingModeEnabled && taraweehReminderEnabled,
                            let taraweeh = fastingManager.taraweehTime(from: vm.todayTimes, minutesAfterIsha: taraweehMinutesAfterIsha) {
                             HStack {
-                                Text(LocalizedStringKey("Taraweeh")); Spacer()
-                                Text("Around").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-                                Text(vm.dateFormatter.string(from: taraweeh)).font(.system(.body, design: .monospaced))
+                                Text(LocalizedStringKey("Taraweeh"))
+                                    .font(.system(size: 13))
+                                Spacer()
+                                Text("Around").font(.system(size: 10, weight: .medium))
+                                    .foregroundColor(Color("SecondaryTextColor"))
+                                Text(vm.dateFormatter.string(from: taraweeh))
+                                    .font(.system(size: 13, design: .monospaced))
                             }
-                            .foregroundColor(.primary).padding(.horizontal, 12).padding(.vertical, 5)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 12).padding(.vertical, 5)
                         }
                     }
                 }
@@ -170,52 +204,128 @@ struct PrayerListView: View {
     }
 }
 
+// MARK: - Prayer Row
+
+struct PrayerRow: View {
+    let prayerName: String
+    let prayerTime: Date
+    let isNextPrayer: Bool
+    let isHighlighted: Bool
+    let highlightColor: Color
+    let textColor: Color
+    let fastingManager: FastingModeManager
+    let dateFormatter: DateFormatter
+
+    private var fastingLabel: String? {
+        guard fastingManager.isFastingModeEnabled, fastingManager.currentFastingDay != nil else { return nil }
+        if prayerName == "Fajr" { return "Suhoor" }
+        if prayerName == "Maghrib" { return "Iftar" }
+        return nil
+    }
+
+    private var fastingColor: Color {
+        prayerName == "Fajr" ? FastingColors.suhoor : FastingColors.iftar
+    }
+
+    private var fastingBgColor: Color {
+        prayerName == "Fajr" ? FastingColors.suhoorBg : FastingColors.iftarBg
+    }
+
+    private var rowBackground: Color {
+        if isHighlighted { return highlightColor }
+        if fastingLabel != nil { return fastingBgColor }
+        return .clear
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            if let label = fastingLabel {
+                Text(LocalizedStringKey(label))
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(isNextPrayer ? textColor : fastingColor)
+                Text(" / ")
+                    .font(.system(size: 11))
+                    .foregroundColor(isNextPrayer ? textColor.opacity(0.5) : Color("SecondaryTextColor"))
+            }
+            Text(LocalizedStringKey(prayerName))
+                .font(.system(size: 13, weight: isNextPrayer ? .semibold : (fastingLabel != nil ? .medium : .regular)))
+            Spacer()
+            if prayerName == "Tahajud" || prayerName == "Dhuha" {
+                Text("Around")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(isNextPrayer ? textColor.opacity(0.7) : Color("SecondaryTextColor"))
+                    .padding(.trailing, 4)
+            }
+            Text(dateFormatter.string(from: prayerTime))
+                .font(.system(size: 13, weight: isNextPrayer ? .semibold : .regular, design: .monospaced))
+        }
+        .foregroundColor(textColor)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 5)
+        .background(RoundedRectangle(cornerRadius: 6).fill(rowBackground))
+    }
+}
+
+// MARK: - Fasting Banner
+
 struct FastingBannerView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
     @EnvironmentObject var fastingManager: FastingModeManager
 
     var body: some View {
         if fastingManager.isFastingModeEnabled, let day = fastingManager.currentFastingDay {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 6) {
                     Image(systemName: "moon.stars.fill")
-                        .foregroundColor(.orange)
+                        .font(.system(size: 11))
+                        .foregroundColor(FastingColors.banner)
                     Text(String(format: NSLocalizedString("fasting_day_counter", comment: ""), day, fastingManager.totalFastingDays))
-                        .font(.caption).fontWeight(.semibold)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.primary)
                     Spacer()
                 }
 
-                HStack(spacing: 12) {
+                HStack(spacing: 14) {
                     if let suhoor = fastingManager.suhoorTime(from: vm.todayTimes) {
-                        Label(vm.dateFormatter.string(from: suhoor), systemImage: "sunrise.fill")
-                            .font(.caption2)
-                            .foregroundColor(.blue)
+                        HStack(spacing: 3) {
+                            Image(systemName: "sunrise.fill")
+                                .font(.system(size: 9))
+                            Text(vm.dateFormatter.string(from: suhoor))
+                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+                        }
+                        .foregroundColor(FastingColors.suhoor)
                     }
                     if let iftar = fastingManager.iftarTime(from: vm.todayTimes) {
-                        Label(vm.dateFormatter.string(from: iftar), systemImage: "sunset.fill")
-                            .font(.caption2)
-                            .foregroundColor(.orange)
+                        HStack(spacing: 3) {
+                            Image(systemName: "sunset.fill")
+                                .font(.system(size: 9))
+                            Text(vm.dateFormatter.string(from: iftar))
+                                .font(.system(size: 11, weight: .medium, design: .monospaced))
+                        }
+                        .foregroundColor(FastingColors.iftar)
                     }
                 }
 
                 if fastingManager.isLastTenNights {
                     Text(NSLocalizedString("last_ten_nights_message", comment: ""))
-                        .font(.caption2)
+                        .font(.system(size: 10, weight: .regular))
                         .foregroundColor(.secondary)
                         .italic()
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 7)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.orange.opacity(0.1))
+                    .fill(FastingColors.bannerBg)
             )
             .padding(.horizontal, 5)
         }
     }
 }
+
+// MARK: - Permission Request
 
 struct PermissionRequestView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
@@ -224,12 +334,16 @@ struct PermissionRequestView: View {
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "location.slash.circle.fill").font(.system(size: 28)).foregroundColor(.secondary)
-            Text("Location Required").font(.headline)
-            Text("To provide accurate prayer times, PrayerTimes Pro needs to know your location.").font(.caption).multilineTextAlignment(.center).foregroundColor(Color("SecondaryTextColor")).padding(.horizontal)
+            Text("Location Required").font(.system(size: 14, weight: .semibold))
+            Text("To provide accurate prayer times, PrayerTimes Pro needs to know your location.")
+                .font(.system(size: 12))
+                .multilineTextAlignment(.center)
+                .foregroundColor(Color("SecondaryTextColor"))
+                .padding(.horizontal)
             VStack(spacing: 8) {
                 if vm.isRequestingLocation {
                     ProgressView().padding(.vertical, 4)
-                    Text("Requesting Permission...").font(.caption).foregroundColor(.secondary)
+                    Text("Requesting Permission...").font(.system(size: 11)).foregroundColor(.secondary)
                 } else if vm.authorizationStatus == .denied {
                     Button("Open System Settings", action: vm.openLocationSettings).buttonStyle(.borderedProminent).controlSize(.regular)
                 } else {
@@ -239,6 +353,7 @@ struct PermissionRequestView: View {
                     navigationModel.showView(ContentView.id, animation: vm.forwardAnimation()) { ManualLocationView(isModal: true) }
                 }) {
                     Text("Or, set location manually")
+                        .font(.system(size: 12))
                         .padding(.vertical, 3).padding(.horizontal, 8)
                         .background(isManualHovering ? Color("HoverColor") : .clear)
                         .cornerRadius(5)
