@@ -83,6 +83,7 @@
 "Accent Color" = "لون مميز";
 "Native Numerals" = "الأرقام العربية";
 "Show Sunnah Prayers" = "إظهار صلوات السنن";
+"Always Show Menu Bar Icon" = "إظهار أيقونة شريط القائمة دائمًا";
 
 /* Menu Bar Style Options */
 "Countdown" = "العد التنازلي";
