@@ -43,8 +43,17 @@ Choose how prayer times appear in your menu bar:
 
 **Requires macOS Ventura (13.0) or later.** Works on both Apple Silicon and Intel Macs.
 
+### Homebrew
+
+```bash
+brew tap abd3lraouf/prayertimes
+brew install --cask prayertimes
+```
+
+### Manual
+
 1. Download the latest `.dmg` from [Releases](https://github.com/abd3lraouf/PrayerTimes/releases)
-2. Open the DMG and drag PrayerTimes to Applications
+2. Open the DMG and drag **PrayerTimes** to **Applications**
 3. Right-click the app in Applications and select **Open** (needed the first time since the app isn't notarized)
 
 <details>

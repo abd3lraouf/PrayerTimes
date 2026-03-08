@@ -1,76 +1,75 @@
 #!/bin/bash
 
-# Script to build and create DMG for PrayerTimes
+# Script to build and create DMG for PrayerTimes using sindresorhus/create-dmg
 
 set -e
 
 VERSION=${1:-"1.0.0"}
 BUILD_NUMBER=${2:-"1"}
+SKIP_BUILD=${SKIP_BUILD:-false}
 
-echo "Building PrayerTimes version $VERSION (build $BUILD_NUMBER)"
+echo "✦ Building PrayerTimes version $VERSION (build $BUILD_NUMBER)"
 
-# Update Info.plist with version
-/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" PrayerTimes/Info.plist
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" PrayerTimes/Info.plist
+# Ensure we are in the project root
+cd "$(dirname "$0")/.."
 
-# Build the app
-echo "Building app..."
-xcodebuild -project PrayerTimes.xcodeproj \
-  -scheme PrayerTimes \
-  -configuration Release \
-  -derivedDataPath build \
-  clean build \
-  CODE_SIGN_IDENTITY="-" \
-  CODE_SIGNING_REQUIRED=NO \
-  CODE_SIGNING_ALLOWED=NO
-
-# Create release directory
-mkdir -p release/dmg-contents
-
-# Copy app bundle and helper script
-echo "Copying app bundle and helper script..."
-cp -r build/Build/Products/Release/PrayerTimes.app release/dmg-contents/
-cp "assets/Open PrayerTimes.command" release/dmg-contents/
-
-# Create DMG
-echo "Creating DMG..."
-if command -v create-dmg &> /dev/null; then
-    create-dmg \
-      --volname "PrayerTimes" \
-      --window-pos 200 120 \
-      --window-size 660 400 \
-      --icon-size 100 \
-      --icon "PrayerTimes.app" 180 170 \
-      --hide-extension "PrayerTimes.app" \
-      --app-drop-link 480 170 \
-      --icon "Open PrayerTimes.command" 330 310 \
-      --background "assets/dmg-background.png" \
-      "release/PrayerTimes-$VERSION.dmg" \
-      "release/dmg-contents/" || \
-    create-dmg \
-      --volname "PrayerTimes" \
-      --window-pos 200 120 \
-      --window-size 660 400 \
-      --icon-size 100 \
-      --icon "PrayerTimes.app" 180 170 \
-      --hide-extension "PrayerTimes.app" \
-      --app-drop-link 480 170 \
-      --icon "Open PrayerTimes.command" 330 310 \
-      "release/PrayerTimes-$VERSION.dmg" \
-      "release/dmg-contents/"
-else
-    echo "create-dmg not found, creating simple DMG..."
-    hdiutil create -volname "PrayerTimes" \
-      -srcfolder release/dmg-contents \
-      -ov -format UDZO \
-      "release/PrayerTimes-$VERSION.dmg"
+# Build the app if not skipped
+if [ "$SKIP_BUILD" = false ]; then
+    echo "✦ Building app bundle..."
+    xcodebuild -project PrayerTimes.xcodeproj \
+      -scheme PrayerTimes \
+      -configuration Release \
+      -derivedDataPath build \
+      clean build \
+      CODE_SIGN_IDENTITY="${CODE_SIGN_IDENTITY:--}" \
+      CODE_SIGNING_REQUIRED="${CODE_SIGNING_REQUIRED:-NO}" \
+      CODE_SIGNING_ALLOWED="${CODE_SIGNING_ALLOWED:-NO}" \
+      MARKETING_VERSION="$VERSION" \
+      CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
 fi
 
-# Generate checksum
-echo "Generating checksum..."
-cd release
-shasum -a 256 PrayerTimes-$VERSION.dmg > PrayerTimes-$VERSION.dmg.sha256
+# Create release directory
+mkdir -p release
+rm -rf release/*.dmg release/*.sha256
 
-echo "✅ Build complete!"
-echo "DMG location: release/PrayerTimes-$VERSION.dmg"
-echo "Checksum: release/PrayerTimes-$VERSION.dmg.sha256"
+# Get the path to the built app
+APP_PATH="build/Build/Products/Release/PrayerTimes.app"
+
+if [ ! -d "$APP_PATH" ]; then
+    echo "❌ Error: PrayerTimes.app not found in $APP_PATH"
+    exit 1
+fi
+
+# Ensure the new create-dmg tool is installed
+if ! command -v create-dmg &> /dev/null; then
+    echo "✦ create-dmg not found. Installing via npm..."
+    npm install --global create-dmg
+fi
+
+echo "✦ Creating a beautiful, clean DMG using create-dmg..."
+# create-dmg takes the app path and an optional destination
+# It automatically handles the background, arrow, and Application link in a standard way
+create-dmg "$APP_PATH" release --overwrite
+
+# Find the generated DMG (it uses "App Name 1.0.0.dmg" format)
+GENERATED_DMG="release/PrayerTimes $VERSION.dmg"
+
+# Rename to our standard format (hyphenated) for consistency if needed, 
+# but create-dmg's default is also very clean. 
+# Let's keep its default but ensure we know the filename for the checksum.
+if [ -f "$GENERATED_DMG" ]; then
+    FINAL_DMG="release/PrayerTimes-$VERSION.dmg"
+    mv "$GENERATED_DMG" "$FINAL_DMG"
+    
+    # Generate checksum
+    echo "✦ Generating checksum..."
+    shasum -a 256 "$FINAL_DMG" > "$FINAL_DMG.sha256"
+    
+    echo "✅ DMG build complete!"
+    echo "📍 Location: $FINAL_DMG"
+    echo "📄 Checksum: $FINAL_DMG.sha256"
+else
+    echo "❌ Error: DMG was not generated at expected path: $GENERATED_DMG"
+    ls -R release
+    exit 1
+fi
