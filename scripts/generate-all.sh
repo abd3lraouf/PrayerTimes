@@ -49,7 +49,7 @@ if [ "$SKIP_TESTS" = false ]; then
         -scheme "$SCHEME" \
         -destination 'platform=macOS' \
         -derivedDataPath "$PROJECT_DIR/build" \
-        -only-testing:"PrayerTimesUITests/ScreenshotGenerator/testGenerateAllScreenshots" \
+        -only-testing:"PrayerTimesScreenshots/ScreenshotGenerator/testGenerateAllScreenshots" \
         -quiet \
         CODE_SIGN_IDENTITY="-" \
         CODE_SIGNING_REQUIRED=NO \

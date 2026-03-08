@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72D39EEA4CFC526312926D73 /* ScreenshotGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */; };
+		87382AD183826E6994B5B0A8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF8791719A5203476792F6E /* Foundation.framework */; };
 		CC07FC602E63FD5800924451 /* LocationAndCalcSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */; };
 		CC07FC662E64122F00924451 /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = CC07FC652E64122F00924451 /* NavigationStack */; };
 		CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4659602E661CC400159A83 /* TextFieldStepper.swift */; };
@@ -60,10 +62,16 @@
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
-		3FED8B9EA6E246AEB8278230 /* ScreenshotGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		415E32C11A4FBDBE0851D5DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC969C6C2E60857A00C8630A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC969C732E60857A00C8630A;
+			remoteInfo = PrayerTimes;
+		};
 		CC969C862E60857E00C8630A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CC969C6C2E60857A00C8630A /* Project object */;
@@ -81,6 +89,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7FF8791719A5203476792F6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScreenshotGenerator.swift; sourceTree = "<group>"; };
 		CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAndCalcSettingsView.swift; sourceTree = "<group>"; };
 		CC4659602E661CC400159A83 /* TextFieldStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStepper.swift; sourceTree = "<group>"; };
 		CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesStepper.swift; sourceTree = "<group>"; };
@@ -136,14 +146,22 @@
 		CCED21852E65F9770066D0EB /* NavigationAnimation+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationAnimation+Custom.swift"; sourceTree = "<group>"; };
 		CCED21872E65FE650066D0EB /* AnimationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationType.swift; sourceTree = "<group>"; };
 		CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimeCorrectionView.swift; sourceTree = "<group>"; };
+		CE24B45B25C2F5B6FBD79DE7 /* PrayerTimesScreenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesScreenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNotificationView.swift; sourceTree = "<group>"; };
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
-		8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		68ECB7F49EA4DBB967D307B0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				87382AD183826E6994B5B0A8 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CC969C712E60857A00C8630A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -170,6 +188,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02B386F55F06B875E9856530 /* PrayerTimesScreenshots */ = {
+			isa = PBXGroup;
+			children = (
+				CBEC4455F55C9D0482C3DFD4 /* ScreenshotGenerator.swift */,
+			);
+			name = PrayerTimesScreenshots;
+			path = PrayerTimesScreenshots;
+			sourceTree = "<group>";
+		};
+		1B52B2B3D1593CEF013286F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9E15482272C3C6419C79C58 /* OS X */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CC786E592E6369EA007299F3 /* TimeZoneLocate */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +221,8 @@
 				CC969C882E60857E00C8630A /* PrayerTimesTests */,
 				CC969C922E60857E00C8630A /* PrayerTimesUITests */,
 				CC969C752E60857A00C8630A /* Products */,
+				02B386F55F06B875E9856530 /* PrayerTimesScreenshots */,
+				1B52B2B3D1593CEF013286F3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -195,6 +232,7 @@
 				CC969C742E60857A00C8630A /* PrayerTimes.app */,
 				CC969C852E60857E00C8630A /* PrayerTimesTests.xctest */,
 				CC969C8F2E60857E00C8630A /* PrayerTimesUITests.xctest */,
+				CE24B45B25C2F5B6FBD79DE7 /* PrayerTimesScreenshots.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -270,8 +308,6 @@
 			children = (
 				CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */,
 				CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */,
-			
-				8C96E17640C24E798CDD0BFD /* ScreenshotGenerator.swift */,
 			);
 			path = PrayerTimesUITests;
 			sourceTree = "<group>";
@@ -289,9 +325,35 @@
 			path = FluidMenuBar;
 			sourceTree = "<group>";
 		};
+		F9E15482272C3C6419C79C58 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				7FF8791719A5203476792F6E /* Foundation.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C2B2724121B3AE87587E3E82 /* PrayerTimesScreenshots */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D821AE266C873D8254AFDC17 /* Build configuration list for PBXNativeTarget "PrayerTimesScreenshots" */;
+			buildPhases = (
+				A0174F2B28B0E61F558EA447 /* Sources */,
+				68ECB7F49EA4DBB967D307B0 /* Frameworks */,
+				F3D755A2D0F75B8997B71B9A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4C9A0E02F3D61F23775912E7 /* PBXTargetDependency */,
+			);
+			name = PrayerTimesScreenshots;
+			productName = PrayerTimesScreenshots;
+			productReference = CE24B45B25C2F5B6FBD79DE7 /* PrayerTimesScreenshots.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		CC969C732E60857A00C8630A /* PrayerTimes */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CC969C992E60857E00C8630A /* Build configuration list for PBXNativeTarget "PrayerTimes" */;
@@ -396,6 +458,7 @@
 				CC969C732E60857A00C8630A /* PrayerTimes */,
 				CC969C842E60857E00C8630A /* PrayerTimesTests */,
 				CC969C8E2E60857E00C8630A /* PrayerTimesUITests */,
+				C2B2724121B3AE87587E3E82 /* PrayerTimesScreenshots */,
 			);
 		};
 /* End PBXProject section */
@@ -427,9 +490,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F3D755A2D0F75B8997B71B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A0174F2B28B0E61F558EA447 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				72D39EEA4CFC526312926D73 /* ScreenshotGenerator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CC969C702E60857A00C8630A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -494,14 +572,18 @@
 			files = (
 				CC969C962E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift in Sources */,
 				CC969C942E60857E00C8630A /* PrayerTimesUITests.swift in Sources */,
-			
-				3FED8B9EA6E246AEB8278230 /* ScreenshotGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4C9A0E02F3D61F23775912E7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PrayerTimes;
+			target = CC969C732E60857A00C8630A /* PrayerTimes */;
+			targetProxy = 415E32C11A4FBDBE0851D5DC /* PBXContainerItemProxy */;
+		};
 		CC969C872E60857E00C8630A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CC969C732E60857A00C8630A /* PrayerTimes */;
@@ -530,6 +612,30 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		162FFDC3E9BB3D7FE4F1CA2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesScreenshots;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PrayerTimes;
+			};
+			name = Release;
+		};
+		68650370DD95D0EDD7801FEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesScreenshots;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = PrayerTimes;
+			};
+			name = Debug;
+		};
 		CC969C972E60857E00C8630A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -810,6 +916,15 @@
 			buildConfigurations = (
 				CC969CA02E60857E00C8630A /* Debug */,
 				CC969CA12E60857E00C8630A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D821AE266C873D8254AFDC17 /* Build configuration list for PBXNativeTarget "PrayerTimesScreenshots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				162FFDC3E9BB3D7FE4F1CA2B /* Release */,
+				68650370DD95D0EDD7801FEF /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
