@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   build:
@@ -32,8 +33,12 @@ jobs:
           echo "Building version: $VERSION"
 
       - name: Generate changelog
-        uses: gabe565/changelog-generator@v1
+        uses: saadmk11/changelog-ci@v1.2.0
         id: changelog
+        with:
+          release_version: ${{ steps.get_version.outputs.VERSION }}
+          config_file: changelog-ci-config.yaml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build app
         env:
