@@ -568,7 +568,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     var dateFormatter: DateFormatter {
-        if let cached = _cachedDateFormatter { return cached }
+        if let cached = _cachedDateFormatter,
+           cached.locale.identifier == languageManager.numeralLocale.identifier { return cached }
         let formatter = DateFormatter()
         formatter.timeZone = self.locationTimeZone
         formatter.locale = languageManager.numeralLocale
