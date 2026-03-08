@@ -26,5 +26,6 @@ enum StorageKeys {
     static let isPrayerTimerEnabled = "isPrayerTimerEnabled"
     static let prayerTimerDuration = "prayerTimerDuration"
     static let launchAtLogin = "launchAtLogin"
+    static let useNativeNumerals = "useNativeNumerals"
     static let alwaysShowMenuBarIcon = "alwaysShowMenuBarIcon"
 }

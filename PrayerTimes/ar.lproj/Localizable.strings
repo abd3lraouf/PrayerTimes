@@ -81,6 +81,7 @@
 "24-Hour Time" = "تنسيق 24 ساعة";
 "Minimal Menu Bar" = "شريط قوائم مصغّر";
 "Accent Color" = "لون مميز";
+"Native Numerals" = "الأرقام العربية";
 "Show Sunnah Prayers" = "إظهار صلوات السنن";
 "Always Show Menu Bar Icon" = "إظهار أيقونة شريط القائمة دائمًا";
 
@@ -125,11 +126,11 @@
 "Remind Before" = "تذكير قبل";
 "minutes_before" = "قبل %d دقيقة";
 "1 min before" = "قبل دقيقة واحدة";
-"5 min before" = "قبل 5 دقائق";
-"10 min before" = "قبل 10 دقائق";
-"20 min before" = "قبل 20 دقيقة";
-"25 min before" = "قبل 25 دقيقة";
-"30 min before" = "قبل 30 دقيقة";
+"5 min before" = "قبل ٥ دقائق";
+"10 min before" = "قبل ١٠ دقائق";
+"20 min before" = "قبل ٢٠ دقيقة";
+"25 min before" = "قبل ٢٥ دقيقة";
+"30 min before" = "قبل ٣٠ دقيقة";
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "حان وقت صلاة %@.";

@@ -77,9 +77,10 @@
 "Language" = "زبان";
 "Menu Bar Style" = "مینو بار انداز";
 "Compact View" = "مختصر نظارہ";
-"24-Hour Time" = "24 گھنٹے وقت";
+"24-Hour Time" = "۲۴ گھنٹے وقت";
 "Minimal Menu Bar" = "کم سے کم مینو بار";
 "Accent Color" = "نمایاں رنگ";
+"Native Numerals" = "مقامی ہندسے";
 "Show Sunnah Prayers" = "سنت نمازیں دکھائیں";
 "Always Show Menu Bar Icon" = "مینو بار آئیکن ہمیشہ دکھائیں";
 
@@ -123,12 +124,12 @@
 /* Pre-Prayer Timing */
 "Remind Before" = "پہلے یاد دہانی";
 "minutes_before" = "%d منٹ پہلے";
-"1 min before" = "1 منٹ پہلے";
-"5 min before" = "5 منٹ پہلے";
-"10 min before" = "10 منٹ پہلے";
-"20 min before" = "20 منٹ پہلے";
-"25 min before" = "25 منٹ پہلے";
-"30 min before" = "30 منٹ پہلے";
+"1 min before" = "۱ منٹ پہلے";
+"5 min before" = "۵ منٹ پہلے";
+"10 min before" = "۱۰ منٹ پہلے";
+"20 min before" = "۲۰ منٹ پہلے";
+"25 min before" = "۲۵ منٹ پہلے";
+"30 min before" = "۳۰ منٹ پہلے";
 
 /* Notification Messages */
 "It's time for the %@ prayer." = "%@ نماز کا وقت ہو گیا ہے۔";
