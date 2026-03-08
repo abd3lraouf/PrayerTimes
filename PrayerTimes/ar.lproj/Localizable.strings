@@ -82,6 +82,7 @@
 "Minimal Menu Bar" = "شريط قوائم مصغّر";
 "Accent Color" = "لون مميز";
 "Show Sunnah Prayers" = "إظهار صلوات السنن";
+"Always Show Menu Bar Icon" = "إظهار أيقونة شريط القائمة دائمًا";
 
 /* Menu Bar Style Options */
 "Countdown" = "العد التنازلي";
