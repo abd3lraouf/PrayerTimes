@@ -31,6 +31,7 @@ struct MainView: View {
                 .padding(.horizontal, 12)
 
             if vm.isPrayerDataAvailable {
+                FastingBannerView()
                 PrayerListView()
             } else {
                 Spacer()
@@ -108,6 +109,9 @@ struct MainView: View {
 
 struct PrayerListView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var fastingManager: FastingModeManager
+    @AppStorage(StorageKeys.taraweehReminderEnabled) private var taraweehReminderEnabled: Bool = false
+    @AppStorage(StorageKeys.taraweehMinutesAfterIsha) private var taraweehMinutesAfterIsha: Int = 30
     private var prayerOrder: [String] {
         let defaultOrder = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
         let sunnahOrder = ["Tahajud", "Fajr", "Dhuha", "Dhuhr", "Asr", "Maghrib", "Isha"]
@@ -148,9 +152,67 @@ struct PrayerListView: View {
                             Text(vm.dateFormatter.string(from: prayerTime)).font(.system(.body, design: .monospaced))
                         }
                         .foregroundColor(textColor).fontWeight(isNextPrayer ? .bold : .regular).padding(.horizontal, 12).padding(.vertical, 5).background(RoundedRectangle(cornerRadius: 6).fill(highlightColor))
+
+                        // Show Taraweeh time after Isha when fasting mode active
+                        if prayerName == "Isha" && fastingManager.isFastingModeEnabled && taraweehReminderEnabled,
+                           let taraweeh = fastingManager.taraweehTime(from: vm.todayTimes, minutesAfterIsha: taraweehMinutesAfterIsha) {
+                            HStack {
+                                Text(LocalizedStringKey("Taraweeh")); Spacer()
+                                Text("Around").font(.caption).foregroundColor(Color("SecondaryTextColor"))
+                                Text(vm.dateFormatter.string(from: taraweeh)).font(.system(.body, design: .monospaced))
+                            }
+                            .foregroundColor(.primary).padding(.horizontal, 12).padding(.vertical, 5)
+                        }
                     }
                 }
             }.padding(.horizontal, 5).padding(.top, 4)
+        }
+    }
+}
+
+struct FastingBannerView: View {
+    @EnvironmentObject var vm: PrayerTimeViewModel
+    @EnvironmentObject var fastingManager: FastingModeManager
+
+    var body: some View {
+        if fastingManager.isFastingModeEnabled, let day = fastingManager.currentFastingDay {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Image(systemName: "moon.stars.fill")
+                        .foregroundColor(.orange)
+                    Text(String(format: NSLocalizedString("fasting_day_counter", comment: ""), day, fastingManager.totalFastingDays))
+                        .font(.caption).fontWeight(.semibold)
+                    Spacer()
+                }
+
+                HStack(spacing: 12) {
+                    if let suhoor = fastingManager.suhoorTime(from: vm.todayTimes) {
+                        Label(vm.dateFormatter.string(from: suhoor), systemImage: "sunrise.fill")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                    }
+                    if let iftar = fastingManager.iftarTime(from: vm.todayTimes) {
+                        Label(vm.dateFormatter.string(from: iftar), systemImage: "sunset.fill")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                    }
+                }
+
+                if fastingManager.isLastTenNights {
+                    Text(NSLocalizedString("last_ten_nights_message", comment: ""))
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .italic()
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.orange.opacity(0.1))
+            )
+            .padding(.horizontal, 5)
         }
     }
 }

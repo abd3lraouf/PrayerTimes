@@ -157,6 +157,25 @@
 "Break Time is Over" = "وقفے کا وقت ختم ہو گیا";
 "Time to begin your next activity." = "اپنی اگلی سرگرمی شروع کرنے کا وقت۔";
 
+/* Fasting Mode */
+"Fasting Mode" = "روزے کا موڈ";
+"Auto-detect Ramadan" = "رمضان خودکار معلوم کریں";
+"Suhoor" = "سحری";
+"Iftar" = "افطار";
+"Taraweeh" = "تراویح";
+"fasting_day_counter" = "دن %d از %d — رمضان";
+"last_ten_nights_message" = "یہ آخری دس مبارک راتیں ہیں — شبِ قدر ان میں ہو سکتی ہے";
+"suhoor_ends_in_minutes" = "سحری %d منٹ میں ختم ہوگی";
+"iftar_time_body" = "روزہ افطار کرنے کا وقت ہو گیا ہے";
+"dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
+"dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
+"taraweeh_reminder_body" = "تراویح نماز کا وقت ہو گیا ہے";
+"Suhoor Alert" = "سحری کا الرٹ";
+"Iftar Notification" = "افطار کی اطلاع";
+"Dua Reminders" = "دعا کی یاد دہانی";
+"Taraweeh Reminder" = "تراویح کی یاد دہانی";
+"After Isha" = "عشاء کے بعد";
+
 /* Language Options */
 "English" = "انگریزی";
 "العربية" = "عربی";

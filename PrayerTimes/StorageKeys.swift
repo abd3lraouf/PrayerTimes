@@ -26,4 +26,13 @@ enum StorageKeys {
     static let isPrayerTimerEnabled = "isPrayerTimerEnabled"
     static let prayerTimerDuration = "prayerTimerDuration"
     static let launchAtLogin = "launchAtLogin"
+
+    // Fasting Mode
+    static let fastingModeEnabled = "fastingModeEnabled"
+    static let fastingAutoDetect = "fastingAutoDetect"
+    static let suhoorPreAlertMinutes = "suhoorPreAlertMinutes"
+    static let iftarNotificationEnabled = "iftarNotificationEnabled"
+    static let duaRemindersEnabled = "duaRemindersEnabled"
+    static let taraweehReminderEnabled = "taraweehReminderEnabled"
+    static let taraweehMinutesAfterIsha = "taraweehMinutesAfterIsha"
 }

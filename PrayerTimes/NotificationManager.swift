@@ -44,10 +44,6 @@ struct NotificationManager {
         prayerOrder: [String],
         settings: NotificationSettings
     ) {
-        cancelNotifications()
-
-        guard settings.prayerNotificationsEnabled else { return }
-
         // Schedule full-screen notifications (no permission needed, uses polling)
         scheduleFullScreenTimers(for: prayerTimes, prayerOrder: prayerOrder, settings: settings)
 
@@ -262,6 +258,98 @@ struct NotificationManager {
                     minutesBefore: n.minutesBefore
                 )
             }
+        }
+    }
+
+    // MARK: - Fasting Mode Notifications
+
+    static func scheduleFastingNotifications(
+        prayerTimes: [String: Date],
+        fastingManager: FastingModeManager
+    ) {
+        guard fastingManager.isFastingModeEnabled else { return }
+
+        let suhoorMinutes = UserDefaults.standard.object(forKey: StorageKeys.suhoorPreAlertMinutes) as? Int ?? 30
+        let iftarEnabled = UserDefaults.standard.object(forKey: StorageKeys.iftarNotificationEnabled) as? Bool ?? true
+        let duaEnabled = UserDefaults.standard.bool(forKey: StorageKeys.duaRemindersEnabled)
+        let taraweehEnabled = UserDefaults.standard.bool(forKey: StorageKeys.taraweehReminderEnabled)
+        let taraweehMinutes = UserDefaults.standard.object(forKey: StorageKeys.taraweehMinutesAfterIsha) as? Int ?? 30
+
+        // Suhoor pre-alert (X minutes before Fajr)
+        if let fajr = fastingManager.suhoorTime(from: prayerTimes) {
+            if let preTime = Calendar.current.date(byAdding: .minute, value: -suhoorMinutes, to: fajr),
+               preTime > Date() {
+                scheduleSimpleNotification(
+                    id: "fasting_suhoor_pre",
+                    title: NSLocalizedString("Suhoor", comment: ""),
+                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), suhoorMinutes),
+                    at: preTime
+                )
+            }
+
+            // Dua at actual Fajr/Suhoor time
+            if duaEnabled, fajr > Date() {
+                scheduleSimpleNotification(
+                    id: "fasting_dua_suhoor",
+                    title: NSLocalizedString("Suhoor", comment: ""),
+                    body: NSLocalizedString("dua_beginning_fast", comment: ""),
+                    at: fajr
+                )
+            }
+        }
+
+        // Iftar alert (at Maghrib)
+        if iftarEnabled,
+           let maghrib = fastingManager.iftarTime(from: prayerTimes),
+           maghrib > Date() {
+            scheduleSimpleNotification(
+                id: "fasting_iftar",
+                title: NSLocalizedString("Iftar", comment: ""),
+                body: NSLocalizedString("iftar_time_body", comment: ""),
+                at: maghrib
+            )
+
+            if duaEnabled {
+                scheduleSimpleNotification(
+                    id: "fasting_dua_iftar",
+                    title: NSLocalizedString("Iftar", comment: ""),
+                    body: NSLocalizedString("dua_breaking_fast", comment: ""),
+                    at: maghrib
+                )
+            }
+        }
+
+        // Taraweeh reminder
+        if taraweehEnabled,
+           let taraweeh = fastingManager.taraweehTime(from: prayerTimes, minutesAfterIsha: taraweehMinutes),
+           taraweeh > Date() {
+            scheduleSimpleNotification(
+                id: "fasting_taraweeh",
+                title: NSLocalizedString("Taraweeh", comment: ""),
+                body: NSLocalizedString("taraweeh_reminder_body", comment: ""),
+                at: taraweeh
+            )
+        }
+    }
+
+    private static func scheduleSimpleNotification(id: String, title: String, body: String, at date: Date) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            #if DEBUG
+            if let error = error {
+                print("Failed to schedule \(id): \(error.localizedDescription)")
+            } else {
+                print("Scheduled fasting notification: \(id) at \(date)")
+            }
+            #endif
         }
     }
 
