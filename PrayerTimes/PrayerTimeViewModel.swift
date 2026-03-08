@@ -59,11 +59,12 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     @AppStorage(StorageKeys.asrCorrection) var asrCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.maghribCorrection) var maghribCorrection: Double = 0 { didSet { updatePrayerTimes() } }
     @AppStorage(StorageKeys.ishaCorrection) var ishaCorrection: Double = 0 { didSet { updatePrayerTimes() } }
+    @AppStorage(StorageKeys.alwaysShowMenuBarIcon) var alwaysShowMenuBarIcon: Bool = true
 
     @Published var menuBarTextMode: MenuBarTextMode {
         didSet {
             UserDefaults.standard.set(menuBarTextMode.rawValue, forKey: StorageKeys.menuBarTextMode)
-            if menuBarTextMode == .hidden { useMinimalMenuBarText = false }
+            if menuBarTextMode == .hidden { useMinimalMenuBarText = false; alwaysShowMenuBarIcon = true }
             startTimer()
             updateMenuTitle()
         }
@@ -95,6 +96,15 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         setupNotificationObserver()
         NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
             self?.updateCountdown()
+        }
+        NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+            guard let self = self else { return }
+            let currentNumeralLocale = self.languageManager.numeralLocale.identifier
+            if self._cachedNumberFormatter?.locale.identifier != currentNumeralLocale {
+                self._cachedNumberFormatter = nil
+                self._cachedDateFormatter = nil
+                self.updateCountdown()
+            }
         }
     }
     
@@ -446,10 +456,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let diff = Int(nextDate.timeIntervalSince(Date()))
         isPrayerImminent = (diff <= 600 && diff > 0)
 
-        let currentLang = languageManager.language
-        if _cachedNumberFormatter == nil || _cachedNumberFormatter?.locale.identifier != currentLang {
+        let numeralLocaleId = languageManager.numeralLocale.identifier
+        if _cachedNumberFormatter == nil || _cachedNumberFormatter?.locale.identifier != numeralLocaleId {
             let nf = NumberFormatter()
-            nf.locale = Locale(identifier: currentLang)
+            nf.locale = languageManager.numeralLocale
             _cachedNumberFormatter = nf
         }
         let numberFormatter = _cachedNumberFormatter!
@@ -568,10 +578,11 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     }
     
     var dateFormatter: DateFormatter {
-        if let cached = _cachedDateFormatter { return cached }
+        if let cached = _cachedDateFormatter,
+           cached.locale.identifier == languageManager.numeralLocale.identifier { return cached }
         let formatter = DateFormatter()
         formatter.timeZone = self.locationTimeZone
-        formatter.locale = Locale(identifier: languageManager.language)
+        formatter.locale = languageManager.numeralLocale
         if useMinimalMenuBarText {
             formatter.dateFormat = use24HourFormat ? "H.mm" : "h.mm"
         } else {

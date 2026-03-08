@@ -80,7 +80,9 @@
 "24-Hour Time" = "ساعت ۲۴";
 "Minimal Menu Bar" = "نوار منوی کمینه";
 "Accent Color" = "رنگ تأکیدی";
+"Native Numerals" = "اعداد فارسی";
 "Show Sunnah Prayers" = "نمایش نمازهای سنت";
+"Always Show Menu Bar Icon" = "همیشه آیکون نوار منو نمایش داده شود";
 
 /* Menu Bar Style Options */
 "Countdown" = "شمارش معکوس";

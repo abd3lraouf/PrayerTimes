@@ -43,10 +43,16 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Display").font(.caption).foregroundColor(Color("SecondaryTextColor"))
                     HStack { Text("Language").font(.subheadline); Spacer(); Picker("", selection: $languageManager.language) { Text("English").tag("en"); Text("العربية").tag("ar"); Text("Indonesia").tag("id"); Text("فارسی").tag("fa"); Text("اردو").tag("ur") }.fixedSize() }
+                    if languageManager.supportsNativeNumerals {
+                        StyledToggle(label: "Native Numerals", isOn: $languageManager.useNativeNumerals)
+                    }
                     HStack { Text("Menu Bar Style").font(.subheadline); Spacer(); Picker("", selection: $vm.menuBarTextMode) { ForEach(MenuBarTextMode.allCases) { mode in Text(mode.localized).tag(mode) } }.fixedSize() }
                     StyledToggle(label: "Compact View", isOn: $vm.useCompactLayout)
                     StyledToggle(label: "24-Hour Time", isOn: $vm.use24HourFormat)
                     StyledToggle(label: "Minimal Menu Bar", isOn: $vm.useMinimalMenuBarText).disabled(vm.menuBarTextMode == .hidden)
+                    if vm.menuBarTextMode != .hidden {
+                        StyledToggle(label: "Always Show Menu Bar Icon", isOn: $vm.alwaysShowMenuBarIcon)
+                    }
                     StyledToggle(label: "Accent Color", isOn: $vm.useAccentColor)
                     StyledToggle(label: "Show Sunnah Prayers", isOn: $vm.showSunnahPrayers)
                 }
