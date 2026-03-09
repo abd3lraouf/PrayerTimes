@@ -39,6 +39,14 @@ struct NotificationManager {
         }
     }
 
+    static func getAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus)
+            }
+        }
+    }
+
     static func scheduleNotifications(
         for prayerTimes: [String: Date],
         prayerOrder: [String],
