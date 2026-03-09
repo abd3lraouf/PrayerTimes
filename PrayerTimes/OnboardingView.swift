@@ -1,6 +1,7 @@
 // MARK: - GANTI SELURUH FILE: OnboardingView.swift (DENGAN EFEK HOVER UNDERLINE)
 
 import SwiftUI
+import UserNotifications
 
 struct OnboardingView: View {
     @EnvironmentObject var vm: PrayerTimeViewModel
@@ -14,6 +15,8 @@ struct OnboardingView: View {
     @State private var isHoveringChangeManual = false
     @State private var isHoveringSwitchToAuto = false
     @State private var isHoveringSetManually = false
+    @State private var notificationStatus: UNAuthorizationStatus = .notDetermined
+    @State private var isHoveringOpenSettings = false
 
     var body: some View {
         ZStack {
@@ -109,6 +112,48 @@ struct OnboardingView: View {
                             .frame(height: 0.5)
                             .padding(.horizontal, 20)
 
+                        VStack(spacing: 8) {
+                            if notificationStatus == .authorized {
+                                InfoStatusView(
+                                    text: "Notifications are enabled.",
+                                    icon: "bell.badge.fill",
+                                    color: .green
+                                )
+                            } else if notificationStatus == .denied {
+                                InfoStatusView(
+                                    text: "Notifications are disabled. Please enable in System Settings.",
+                                    icon: "bell.slash.fill",
+                                    color: .red
+                                )
+                                Button("Open System Settings") {
+                                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
+                                        NSWorkspace.shared.open(url)
+                                    }
+                                }
+                                .buttonStyle(.link)
+                                .underline(isHoveringOpenSettings)
+                                .onHover { isHoveringOpenSettings = $0 }
+                            } else {
+                                Text("Enable notifications to get prayer time alerts.")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .multilineTextAlignment(.center)
+                                Button("Enable Notifications") {
+                                    NotificationManager.requestPermission { granted in
+                                        notificationStatus = granted ? .authorized : .denied
+                                    }
+                                }
+                                .controlSize(.large)
+                                .tint(.accentColor)
+                            }
+                        }
+                        .padding(.horizontal, 40)
+
+                        Rectangle()
+                            .fill(Color("DividerColor"))
+                            .frame(height: 0.5)
+                            .padding(.horizontal, 20)
+
                         HStack {
                             Text("Calculation Method")
                                 .font(.subheadline)
@@ -161,7 +206,12 @@ struct OnboardingView: View {
                 .padding(.bottom, 30)
             }
         }
-        .frame(width: 420, height: 520)
+        .onAppear {
+            NotificationManager.getAuthorizationStatus { status in
+                notificationStatus = status
+            }
+        }
+        .frame(width: 420, height: 580)
         .sheet(isPresented: $showingManualLocationSheet) {
             LanguageManagerView(manager: languageManager) {
                 ManualLocationSheetView().environmentObject(vm)
