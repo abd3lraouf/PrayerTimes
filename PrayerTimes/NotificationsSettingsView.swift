@@ -56,9 +56,7 @@ struct NotificationsSettingsView: View {
                                 .foregroundColor(.secondary)
                             Spacer()
                             Button("Open Settings") {
-                                if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
-                                    NSWorkspace.shared.open(url)
-                                }
+                                NSWorkspace.shared.open(NotificationManager.notificationSettingsURL)
                             }
                             .font(.caption)
                             .buttonStyle(.link)

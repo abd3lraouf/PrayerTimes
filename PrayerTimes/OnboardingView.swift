@@ -113,7 +113,7 @@ struct OnboardingView: View {
                             .padding(.horizontal, 20)
 
                         VStack(spacing: 8) {
-                            if notificationStatus == .authorized {
+                            if notificationStatus == .authorized || notificationStatus == .provisional {
                                 InfoStatusView(
                                     text: "Notifications are enabled.",
                                     icon: "bell.badge.fill",
@@ -126,9 +126,7 @@ struct OnboardingView: View {
                                     color: .red
                                 )
                                 Button("Open System Settings") {
-                                    if let url = URL(string: "x-apple.systempreferences:com.apple.preference.notifications") {
-                                        NSWorkspace.shared.open(url)
-                                    }
+                                    NSWorkspace.shared.open(NotificationManager.notificationSettingsURL)
                                 }
                                 .buttonStyle(.link)
                                 .underline(isHoveringOpenSettings)
