@@ -34,7 +34,9 @@ class FastingModeManager: ObservableObject {
     }
 
     func suhoorTime(from prayerTimes: [String: Date]) -> Date? {
-        prayerTimes["Fajr"]
+        guard let fajr = prayerTimes["Fajr"] else { return nil }
+        let offsetMinutes = UserDefaults.standard.object(forKey: StorageKeys.imsakOffsetMinutes) as? Int ?? 10
+        return Calendar.current.date(byAdding: .minute, value: -offsetMinutes, to: fajr)
     }
 
     func iftarTime(from prayerTimes: [String: Date]) -> Date? {
