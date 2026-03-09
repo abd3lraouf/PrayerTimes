@@ -46,13 +46,9 @@ struct SystemSettingsView: View {
                             }
                         }
 
-                    HStack {
-                        Text("Animation Style").font(.subheadline)
-                        Spacer()
-                        Picker("", selection: $vm.animationType) {
-                            ForEach(AnimationType.allCases) { type in
-                                Text(type.localized).tag(type)
-                            }
+                    StyledPicker(label: "Animation Style", selection: $vm.animationType) {
+                        ForEach(AnimationType.allCases) { type in
+                            Text(type.localized).tag(type)
                         }
                     }
                 }

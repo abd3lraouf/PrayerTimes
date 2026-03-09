@@ -40,7 +40,7 @@ struct LocationAndCalcSettingsView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Group {
                             Text("Calculation").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-                            HStack { Text("Method").font(.subheadline); Spacer(); Picker("", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.localizedName).tag(method) } } }
+                            StyledPicker(label: "Method", selection: $vm.method) { ForEach(PrayerTimesCalculationMethod.allCases) { method in Text(method.localizedName).tag(method) } }
                             if let suggested = vm.suggestedMethod {
                                 VStack(alignment: .leading, spacing: 6) {
                                     HStack(spacing: 4) {

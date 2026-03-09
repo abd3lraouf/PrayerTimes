@@ -36,13 +36,9 @@ struct HijriCalendarSettingsView: View {
 
             VStack(alignment: .leading, spacing: 12) {
                 // Calendar type picker
-                HStack {
-                    Text("Calendar Type").font(.subheadline)
-                    Spacer()
-                    Picker("", selection: $hijriManager.selectedCalendarType) {
-                        ForEach(HijriCalendarType.allCases) { type in
-                            Text(type.localized).tag(type)
-                        }
+                StyledPicker(label: "Calendar Type", selection: $hijriManager.selectedCalendarType) {
+                    ForEach(HijriCalendarType.allCases) { type in
+                        Text(type.localized).tag(type)
                     }
                 }
 

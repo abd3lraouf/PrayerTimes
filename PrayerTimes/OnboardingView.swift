@@ -152,14 +152,9 @@ struct OnboardingView: View {
                             .frame(height: 0.5)
                             .padding(.horizontal, 20)
 
-                        HStack {
-                            Text("Calculation Method")
-                                .font(.subheadline)
-                            Spacer()
-                            Picker("", selection: $vm.method) {
-                                ForEach(PrayerTimesCalculationMethod.allCases) { method in
-                                    Text(method.localizedName).tag(method)
-                                }
+                        StyledPicker(label: "Calculation Method", selection: $vm.method) {
+                            ForEach(PrayerTimesCalculationMethod.allCases) { method in
+                                Text(method.localizedName).tag(method)
                             }
                         }
                         .padding(.horizontal, 40)

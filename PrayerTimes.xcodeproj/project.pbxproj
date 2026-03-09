@@ -56,6 +56,7 @@
 		CCE1BA3F2E61852B003AF03C /* FluidMenuBarExtraWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1BA322E61839F003AF03C /* FluidMenuBarExtraWindow.swift */; };
 		CCE1BA452E6198C1003AF03C /* ManualLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1BA442E6198C1003AF03C /* ManualLocationView.swift */; };
 		CCE1BA472E620757003AF03C /* StyledToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE1BA462E620757003AF03C /* StyledToggle.swift */; };
+		485E4E3FE764400000000001 /* StyledPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 485E4E3FE764400000000002 /* StyledPicker.swift */; };
 		CCEC0E3F2E60A3A0001E9B1E /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = CCEC0E3E2E60A3A0001E9B1E /* Adhan */; };
 		CCEC0E412E60A899001E9B1E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEC0E402E60A899001E9B1E /* MainView.swift */; };
 		CCEC0E452E60B08D001E9B1E /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCEC0E442E60B08D001E9B1E /* AboutView.swift */; };
@@ -158,6 +159,7 @@
 		CCE1BA332E6183A0003AF03C /* RootViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewModifier.swift; sourceTree = "<group>"; };
 		CCE1BA442E6198C1003AF03C /* ManualLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualLocationView.swift; sourceTree = "<group>"; };
 		CCE1BA462E620757003AF03C /* StyledToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledToggle.swift; sourceTree = "<group>"; };
+		485E4E3FE764400000000002 /* StyledPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledPicker.swift; sourceTree = "<group>"; };
 		CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageKeys.swift; sourceTree = "<group>"; };
 		CCEC0E402E60A899001E9B1E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		CCEC0E442E60B08D001E9B1E /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				CC9C2F002E61385B00BAE49A /* AppDelegate.swift */,
 				CCE867F6D2D7F94DD5BEEC3E /* StorageKeys.swift */,
 				CCE1BA462E620757003AF03C /* StyledToggle.swift */,
+				485E4E3FE764400000000002 /* StyledPicker.swift */,
 				CCE1BA212E618251003AF03C /* FluidMenuBar */,
 				CCFD21D92E62BEEB00A80402 /* PrayerTimeCorrectionView.swift */,
 				CC786E4D2E634B65007299F3 /* OnboardingView.swift */,
@@ -568,6 +571,7 @@
 				CC786E582E635B46007299F3 /* PrayerTimerAlertView.swift in Sources */,
 				CCDEFEE62E65231F005D6B45 /* TimePreviewPopover.swift in Sources */,
 				CCE1BA472E620757003AF03C /* StyledToggle.swift in Sources */,
+				485E4E3FE764400000000001 /* StyledPicker.swift in Sources */,
 				CC786E722E63BB26007299F3 /* LanguageManager.swift in Sources */,
 				CC4659612E661CC400159A83 /* TextFieldStepper.swift in Sources */,
 				CCE1BA452E6198C1003AF03C /* ManualLocationView.swift in Sources */,

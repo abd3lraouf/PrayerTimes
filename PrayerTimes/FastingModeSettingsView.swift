@@ -43,13 +43,9 @@ struct FastingModeSettingsView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     StyledToggle(label: "Fasting Mode", isOn: $fastingManager.isFastingModeEnabled)
 
-                    HStack {
-                        Text("Imsak Offset").font(.subheadline)
-                        Spacer()
-                        Picker("", selection: $imsakOffsetMinutes) {
-                            ForEach([5, 10, 15, 20], id: \.self) { mins in
-                                Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
-                            }
+                    StyledPicker(label: "Imsak Offset", selection: $imsakOffsetMinutes) {
+                        ForEach([5, 10, 15, 20], id: \.self) { mins in
+                            Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
                         }
                     }
 
@@ -57,13 +53,9 @@ struct FastingModeSettingsView: View {
 
                     Text("Notifications").font(.caption).foregroundColor(Color("SecondaryTextColor"))
 
-                    HStack {
-                        Text("Suhoor Alert").font(.subheadline)
-                        Spacer()
-                        Picker("", selection: $suhoorPreAlertMinutes) {
-                            ForEach([30, 45, 60], id: \.self) { mins in
-                                Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
-                            }
+                    StyledPicker(label: "Suhoor Alert", selection: $suhoorPreAlertMinutes) {
+                        ForEach([30, 45, 60], id: \.self) { mins in
+                            Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
                         }
                     }
 
@@ -72,13 +64,9 @@ struct FastingModeSettingsView: View {
                     StyledToggle(label: "Taraweeh Reminder", isOn: $taraweehReminderEnabled)
 
                     if taraweehReminderEnabled {
-                        HStack {
-                            Text("After Isha").font(.subheadline)
-                            Spacer()
-                            Picker("", selection: $taraweehMinutesAfterIsha) {
-                                ForEach([15, 30, 45, 60], id: \.self) { mins in
-                                    Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
-                                }
+                        StyledPicker(label: "After Isha", selection: $taraweehMinutesAfterIsha) {
+                            ForEach([15, 30, 45, 60], id: \.self) { mins in
+                                Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
                             }
                         }
                     }

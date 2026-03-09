@@ -106,41 +106,32 @@ struct NotificationsSettingsView: View {
 
     private var globalSettingsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Type").font(.subheadline)
-                Spacer()
-                Picker("", selection: $notificationSettings.globalSettings.notificationType) {
-                    ForEach(NotificationType.allCases) { type in
-                        Text(type.localized).tag(type)
-                    }
-                }            }
+            StyledPicker(label: "Type", selection: $notificationSettings.globalSettings.notificationType) {
+                ForEach(NotificationType.allCases) { type in
+                    Text(type.localized).tag(type)
+                }
+            }
             .onChange(of: notificationSettings.globalSettings.notificationType) { _ in
                 notificationSettings.save()
                 vm.scheduleNotifications()
             }
 
-            HStack {
-                Text("Style").font(.subheadline)
-                Spacer()
-                Picker("", selection: $notificationSettings.globalSettings.notificationStyle) {
-                    ForEach(NotificationStyle.allCases) { style in
-                        Text(style.localized).tag(style)
-                    }
-                }            }
+            StyledPicker(label: "Style", selection: $notificationSettings.globalSettings.notificationStyle) {
+                ForEach(NotificationStyle.allCases) { style in
+                    Text(style.localized).tag(style)
+                }
+            }
             .onChange(of: notificationSettings.globalSettings.notificationStyle) { _ in
                 notificationSettings.save()
                 vm.scheduleNotifications()
             }
 
             if notificationSettings.globalSettings.notificationType == .beforePrayer || notificationSettings.globalSettings.notificationType == .both {
-                HStack {
-                    Text("Remind Before").font(.subheadline)
-                    Spacer()
-                    Picker("", selection: $notificationSettings.globalSettings.prePrayerMinutes) {
-                        ForEach(NotificationTiming.allCases) { timing in
-                            Text(timing.localized).tag(timing)
-                        }
-                    }                }
+                StyledPicker(label: "Remind Before", selection: $notificationSettings.globalSettings.prePrayerMinutes) {
+                    ForEach(NotificationTiming.allCases) { timing in
+                        Text(timing.localized).tag(timing)
+                    }
+                }
                 .onChange(of: notificationSettings.globalSettings.prePrayerMinutes) { _ in
                     notificationSettings.save()
                     vm.scheduleNotifications()
@@ -213,57 +204,48 @@ struct PrayerNotificationRow: View {
                     }
 
                     if !settings.useGlobalSettings {
-                        HStack {
-                            Text("Type").font(.caption)
-                            Spacer()
-                            Picker("", selection: Binding(
-                                get: { settings.notificationType },
-                                set: { newValue in
-                                    var s = settings
-                                    s.notificationType = newValue
-                                    notificationSettings.updateSettings(for: prayerName, settings: s)
-                                    vm.scheduleNotifications()
-                                }
-                            )) {
-                                ForEach(NotificationType.allCases) { type in
-                                    Text(type.localized).tag(type)
-                                }
-                            }                        }
+                        StyledPicker(label: "Type", selection: Binding(
+                            get: { settings.notificationType },
+                            set: { newValue in
+                                var s = settings
+                                s.notificationType = newValue
+                                notificationSettings.updateSettings(for: prayerName, settings: s)
+                                vm.scheduleNotifications()
+                            }
+                        )) {
+                            ForEach(NotificationType.allCases) { type in
+                                Text(type.localized).tag(type)
+                            }
+                        }
 
-                        HStack {
-                            Text("Style").font(.caption)
-                            Spacer()
-                            Picker("", selection: Binding(
-                                get: { settings.notificationStyle },
-                                set: { newValue in
-                                    var s = settings
-                                    s.notificationStyle = newValue
-                                    notificationSettings.updateSettings(for: prayerName, settings: s)
-                                    vm.scheduleNotifications()
-                                }
-                            )) {
-                                ForEach(NotificationStyle.allCases) { style in
-                                    Text(style.localized).tag(style)
-                                }
-                            }                        }
+                        StyledPicker(label: "Style", selection: Binding(
+                            get: { settings.notificationStyle },
+                            set: { newValue in
+                                var s = settings
+                                s.notificationStyle = newValue
+                                notificationSettings.updateSettings(for: prayerName, settings: s)
+                                vm.scheduleNotifications()
+                            }
+                        )) {
+                            ForEach(NotificationStyle.allCases) { style in
+                                Text(style.localized).tag(style)
+                            }
+                        }
 
                         if settings.notificationType == .beforePrayer || settings.notificationType == .both {
-                            HStack {
-                                Text("Remind Before").font(.caption)
-                                Spacer()
-                                Picker("", selection: Binding(
-                                    get: { settings.prePrayerMinutes },
-                                    set: { newValue in
-                                        var s = settings
-                                        s.prePrayerMinutes = newValue
-                                        notificationSettings.updateSettings(for: prayerName, settings: s)
-                                        vm.scheduleNotifications()
-                                    }
-                                )) {
-                                    ForEach(NotificationTiming.allCases) { timing in
-                                        Text(timing.localized).tag(timing)
-                                    }
-                                }                            }
+                            StyledPicker(label: "Remind Before", selection: Binding(
+                                get: { settings.prePrayerMinutes },
+                                set: { newValue in
+                                    var s = settings
+                                    s.prePrayerMinutes = newValue
+                                    notificationSettings.updateSettings(for: prayerName, settings: s)
+                                    vm.scheduleNotifications()
+                                }
+                            )) {
+                                ForEach(NotificationTiming.allCases) { timing in
+                                    Text(timing.localized).tag(timing)
+                                }
+                            }
                         }
                     } else {
                         Text("Using global settings")
