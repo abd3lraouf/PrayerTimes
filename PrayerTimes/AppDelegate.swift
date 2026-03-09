@@ -33,6 +33,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         }
 
         UserDefaults.standard.register(defaults: [StorageKeys.islamicEventNotifications: true])
+        StartupManager.syncLoginItemState()
 
         setupMenuBar()
         vm.fastingManager = fastingManager

@@ -40,7 +40,10 @@ struct SystemSettingsView: View {
                     Text("System").font(.caption).foregroundColor(Color("SecondaryTextColor"))
                     StyledToggle(label: "Run at Login", isOn: $launchAtLogin)
                         .onChange(of: launchAtLogin) { newValue in
-                            StartupManager.toggleLaunchAtLogin(isEnabled: newValue)
+                            if !StartupManager.toggleLaunchAtLogin(isEnabled: newValue) {
+                                // Revert toggle if system call failed
+                                launchAtLogin = !newValue
+                            }
                         }
 
                     HStack {
