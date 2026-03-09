@@ -46,7 +46,7 @@ struct NotificationsSettingsView: View {
                             vm.scheduleNotifications()
                         }
 
-                    if notificationPermissionDenied {
+                    if notificationPermissionDenied && notificationSettings.prayerNotificationsEnabled {
                         HStack(spacing: 6) {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .foregroundColor(.orange)
@@ -95,6 +95,11 @@ struct NotificationsSettingsView: View {
         .padding(.vertical, 8)
         .frame(width: viewWidth)
         .onAppear {
+            NotificationManager.getAuthorizationStatus { status in
+                notificationPermissionDenied = (status == .denied)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             NotificationManager.getAuthorizationStatus { status in
                 notificationPermissionDenied = (status == .denied)
             }

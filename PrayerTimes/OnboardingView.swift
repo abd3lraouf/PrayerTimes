@@ -211,6 +211,11 @@ struct OnboardingView: View {
                 notificationStatus = status
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            NotificationManager.getAuthorizationStatus { status in
+                notificationStatus = status
+            }
+        }
         .frame(width: 420, height: 580)
         .sheet(isPresented: $showingManualLocationSheet) {
             LanguageManagerView(manager: languageManager) {
