@@ -277,17 +277,22 @@ struct PrayerRow: View {
         return nil
     }
 
+    private var isFastingRow: Bool {
+        guard fastingManager.isFastingModeEnabled, fastingManager.currentFastingDay != nil else { return false }
+        return prayerName == "Fajr" || prayerName == "Maghrib"
+    }
+
     private var fastingColor: Color {
-        FastingColors.iftar
+        prayerName == "Fajr" ? FastingColors.suhoor : FastingColors.iftar
     }
 
     private var fastingBgColor: Color {
-        FastingColors.iftarBg
+        prayerName == "Fajr" ? FastingColors.suhoorBg : FastingColors.iftarBg
     }
 
     private var rowBackground: Color {
         if isHighlighted { return highlightColor }
-        if fastingLabel != nil { return fastingBgColor }
+        if fastingLabel != nil || isFastingRow { return fastingBgColor }
         return .clear
     }
 
