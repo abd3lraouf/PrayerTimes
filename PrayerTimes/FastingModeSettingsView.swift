@@ -9,6 +9,7 @@ struct FastingModeSettingsView: View {
     @State private var isHeaderHovering = false
 
     @AppStorage(StorageKeys.suhoorPreAlertMinutes) private var suhoorPreAlertMinutes: Int = 30
+    @AppStorage(StorageKeys.imsakOffsetMinutes) private var imsakOffsetMinutes: Int = 10
     @AppStorage(StorageKeys.iftarNotificationEnabled) private var iftarNotificationEnabled: Bool = true
     @AppStorage(StorageKeys.duaRemindersEnabled) private var duaRemindersEnabled: Bool = false
     @AppStorage(StorageKeys.taraweehReminderEnabled) private var taraweehReminderEnabled: Bool = false
@@ -45,6 +46,16 @@ struct FastingModeSettingsView: View {
                     Rectangle().fill(Color("DividerColor")).frame(height: 0.5)
 
                     Text("Notifications").font(.caption).foregroundColor(Color("SecondaryTextColor"))
+
+                    HStack {
+                        Text("Imsak Offset").font(.subheadline)
+                        Spacer()
+                        Picker("", selection: $imsakOffsetMinutes) {
+                            ForEach([5, 10, 15, 20], id: \.self) { mins in
+                                Text(String(format: NSLocalizedString("x_min_short", comment: ""), LanguageManager.formatNumberStatic(mins))).tag(mins)
+                            }
+                        }
+                    }
 
                     HStack {
                         Text("Suhoor Alert").font(.subheadline)
