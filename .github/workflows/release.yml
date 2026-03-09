@@ -102,3 +102,22 @@ jobs:
         with:
           name: PrayerTimes-${{ steps.get_version.outputs.VERSION }}
           path: release/PrayerTimes-${{ steps.get_version.outputs.VERSION }}.dmg
+
+      - name: Update Homebrew cask
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.VERSION }}
+        run: |
+          SHA256=$(awk '{print $1}' "release/PrayerTimes-${VERSION}.dmg.sha256")
+
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/abd3lraouf/homebrew-prayertimes.git" tap-repo
+          cd tap-repo
+
+          sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/prayertimes.rb
+          sed -i '' "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Casks/prayertimes.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/prayertimes.rb
+          git commit -m "Update PrayerTimes to ${VERSION}"
+          git push
