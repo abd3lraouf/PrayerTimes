@@ -528,7 +528,8 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let isRTL = languageManager.isRTLEnabled
 
         var attributes: [NSAttributedString.Key: Any] = [
-            .paragraphStyle: isRTL ? rtlParagraphStyle : ltrParagraphStyle
+            .paragraphStyle: isRTL ? rtlParagraphStyle : ltrParagraphStyle,
+            .font: NSFont.menuBarFont(ofSize: 0)
         ]
 
         if let color = color {
@@ -596,7 +597,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             }
         }
         
-        let color: NSColor? = isPrayerImminent ? .systemRed : nil
+        let color: NSColor? = isPrayerImminent ? NSColor(named: "ImminentColor") : nil
         self.menuTitle = createMenuTitle(textToShow, color: color)
     }
     

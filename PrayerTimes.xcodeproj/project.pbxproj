@@ -40,6 +40,7 @@
 		CC969C7C2E60857D00C8630A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC969C7B2E60857D00C8630A /* Assets.xcassets */; };
 		CC969C7F2E60857D00C8630A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC969C7E2E60857D00C8630A /* Preview Assets.xcassets */; };
 		CC969C8A2E60857E00C8630A /* PrayerTimesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C892E60857E00C8630A /* PrayerTimesTests.swift */; };
+		38DFE3755C90931B1465F8F4 /* ColorContrastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */; };
 		CC969C942E60857E00C8630A /* PrayerTimesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */; };
 		CC969C962E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */; };
 		CC969CA32E6085F200C8630A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC969CA22E6085F200C8630A /* Info.plist */; };
@@ -141,6 +142,7 @@
 		CC969C802E60857D00C8630A /* PrayerTimes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrayerTimes.entitlements; sourceTree = "<group>"; };
 		CC969C852E60857E00C8630A /* PrayerTimesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC969C892E60857E00C8630A /* PrayerTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesTests.swift; sourceTree = "<group>"; };
+		B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorContrastTests.swift; sourceTree = "<group>"; };
 		CC969C8F2E60857E00C8630A /* PrayerTimesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesUITests.swift; sourceTree = "<group>"; };
 		CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				CC969C892E60857E00C8630A /* PrayerTimesTests.swift */,
+				B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */,
 			);
 			path = PrayerTimesTests;
 			sourceTree = "<group>";
@@ -620,6 +623,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC969C8A2E60857E00C8630A /* PrayerTimesTests.swift in Sources */,
+				38DFE3755C90931B1465F8F4 /* ColorContrastTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

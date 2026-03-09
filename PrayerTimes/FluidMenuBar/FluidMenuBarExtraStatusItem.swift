@@ -125,12 +125,22 @@ public final class FluidMenuBarExtraStatusItem: NSObject, NSWindowDelegate {
     convenience init(title: String, image: String, window: NSWindow) {
         self.init(window: window)
         statusItem.button?.setAccessibilityTitle(title)
-        statusItem.button?.image = NSImage(named: image)
+        if let img = NSImage(named: image) {
+            img.isTemplate = true
+            img.size = NSSize(width: 16, height: 16)
+            statusItem.button?.image = img
+            statusItem.button?.imagePosition = .imageLeading
+        }
     }
     convenience init(title: String, systemImage: String, window: NSWindow) {
         self.init(window: window)
         statusItem.button?.setAccessibilityTitle(title)
-        statusItem.button?.image = NSImage(systemSymbolName: systemImage, accessibilityDescription: title)
+        let config = NSImage.SymbolConfiguration(pointSize: 12, weight: .medium)
+        if let image = NSImage(systemSymbolName: systemImage, accessibilityDescription: title)?.withSymbolConfiguration(config) {
+            image.isTemplate = true
+            statusItem.button?.image = image
+            statusItem.button?.imagePosition = .imageLeading
+        }
     }
 }
 

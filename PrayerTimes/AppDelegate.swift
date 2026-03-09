@@ -117,7 +117,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let showInDock = UserDefaults.standard.bool(forKey: StorageKeys.showInDock)
         NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
         
-        self.menuBarExtra = FluidMenuBarExtra(title: vm.menuTitle.string, systemImage: "moon.zzz.fill") {
+        self.menuBarExtra = FluidMenuBarExtra(title: vm.menuTitle.string, image: "MenuBarIcon") {
             LanguageManagerView(manager: self.languageManager) {
                 ContentView()
                     .environmentObject(self.vm)
@@ -197,6 +197,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     private func updateIconForMode(_ mode: MenuBarTextMode) {
         let isIconOnly = (mode == .hidden)
         let shouldShowIcon = vm.alwaysShowMenuBarIcon || isIconOnly
-        menuBarExtra?.statusItem.button?.image = shouldShowIcon ? NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: "PrayerTimes Pro") : nil
+        guard let button = menuBarExtra?.statusItem.button else { return }
+        if shouldShowIcon {
+            if let image = NSImage(named: "MenuBarIcon") {
+                image.isTemplate = true
+                image.size = NSSize(width: 16, height: 16)
+                button.image = image
+                button.imagePosition = .imageLeading
+            }
+        } else {
+            button.image = nil
+        }
     }
 }	

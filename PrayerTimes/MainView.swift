@@ -24,7 +24,7 @@ struct MainView: View {
                     let localizedPrayerName = NSLocalizedString(vm.nextPrayerName, comment: "")
                     Text(String(format: format, localizedPrayerName, vm.countdown))
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(vm.isPrayerImminent ? .red : Color("SecondaryTextColor"))
+                        .foregroundColor(vm.isPrayerImminent ? Color("ImminentColor") : Color("SecondaryTextColor"))
                         .transition(.opacity.animation(.easeInOut))
                 }
             }
@@ -167,9 +167,9 @@ struct PrayerListView: View {
                         let (highlightColor, textColor): (Color, Color) = {
                             if isNextPrayer && vm.isPrayerImminent {
                                 if vm.useAccentColor {
-                                    return (Color.red, Color.white)
+                                    return (Color("ImminentFillColor"), Color.white)
                                 } else {
-                                    return (Color("HighlightColor"), .red)
+                                    return (Color("ImminentBgColor"), Color("ImminentColor"))
                                 }
                             }
                             else if isNextPrayer {
