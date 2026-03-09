@@ -17,6 +17,7 @@ eval "$(pyenv init - 2>/dev/null)" || true
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SCHEME="PrayerTimes"
+SCREENSHOT_SCHEME="PrayerTimesScreenshots"
 SKIP_TESTS=false
 RAW_DIR="$PROJECT_DIR/.raw"
 LANGUAGES=(en ar id fa ur)
@@ -36,7 +37,7 @@ if [ "$SKIP_TESTS" = false ]; then
     echo "Building for testing..."
     xcodebuild build-for-testing \
         -project "$PROJECT_DIR/PrayerTimes.xcodeproj" \
-        -scheme "$SCHEME" \
+        -scheme "$SCREENSHOT_SCHEME" \
         -destination 'platform=macOS' \
         -derivedDataPath "$PROJECT_DIR/build" \
         -quiet \
@@ -46,7 +47,7 @@ if [ "$SKIP_TESTS" = false ]; then
     echo "Running screenshot tests..."
     xcodebuild test-without-building \
         -project "$PROJECT_DIR/PrayerTimes.xcodeproj" \
-        -scheme "$SCHEME" \
+        -scheme "$SCREENSHOT_SCHEME" \
         -destination 'platform=macOS' \
         -derivedDataPath "$PROJECT_DIR/build" \
         -only-testing:"PrayerTimesScreenshots/ScreenshotGenerator/testGenerateAllScreenshots" \
