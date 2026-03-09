@@ -184,6 +184,7 @@ struct PrayerListView: View {
                         // Add Suhoor row before Fajr when fasting mode is active
                         if prayerName == "Fajr" && fastingManager.isFastingModeEnabled && fastingManager.currentFastingDay != nil,
                            let suhoorTime = fastingManager.suhoorTime(from: vm.todayTimes) {
+                            let suhoorPassed = suhoorTime <= Date()
                             HStack(spacing: 0) {
                                 Text(LocalizedStringKey("Suhoor"))
                                     .font(.system(size: 13, weight: .semibold))
@@ -196,6 +197,7 @@ struct PrayerListView: View {
                             .padding(.horizontal, 12)
                             .padding(.vertical, 5)
                             .background(RoundedRectangle(cornerRadius: 6).fill(FastingColors.suhoorBg))
+                            .opacity(suhoorPassed ? 0.4 : 1.0)
                         }
 
                         PrayerRow(
