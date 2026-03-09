@@ -109,6 +109,14 @@
 "Enable Prayer Notifications" = "فعال‌سازی اعلان نماز";
 "Prayer Notifications" = "اعلان‌های نماز";
 
+/* Notification Permission */
+"Notifications are enabled." = "اعلان‌ها فعال هستند.";
+"Notifications are disabled. Please enable in System Settings." = "اعلان‌ها غیرفعال هستند. لطفاً از تنظیمات سیستم فعال کنید.";
+"Enable notifications to get prayer time alerts." = "اعلان‌ها را فعال کنید تا هشدارهای اوقات نماز دریافت کنید.";
+"Enable Notifications" = "فعال‌سازی اعلان‌ها";
+"System notifications are disabled." = "اعلان‌های سیستم غیرفعال هستند.";
+"Open Settings" = "باز کردن تنظیمات";
+
 /* Notification Type */
 "At Time" = "در وقت";
 "Before" = "قبل";

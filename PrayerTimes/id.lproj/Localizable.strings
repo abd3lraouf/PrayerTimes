@@ -110,6 +110,14 @@
 "Enable Prayer Notifications" = "Aktifkan Notifikasi Shalat";
 "Prayer Notifications" = "Notifikasi Shalat";
 
+/* Notification Permission */
+"Notifications are enabled." = "Notifikasi telah diaktifkan.";
+"Notifications are disabled. Please enable in System Settings." = "Notifikasi dinonaktifkan. Silakan aktifkan di Pengaturan Sistem.";
+"Enable notifications to get prayer time alerts." = "Aktifkan notifikasi untuk mendapatkan pengingat waktu shalat.";
+"Enable Notifications" = "Aktifkan Notifikasi";
+"System notifications are disabled." = "Notifikasi sistem dinonaktifkan.";
+"Open Settings" = "Buka Pengaturan";
+
 /* Notification Type */
 "At Time" = "Saat Waktu";
 "Before" = "Sebelum";

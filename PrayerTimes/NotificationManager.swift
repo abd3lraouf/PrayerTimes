@@ -14,6 +14,8 @@ struct NotificationManager {
     private(set) static var scheduledFullScreenNotifications: [ScheduledFullScreenNotification] = []
     private static var hasPermission: Bool = false
 
+    static let notificationSettingsURL = URL(string: "x-apple.systempreferences:com.apple.preference.notifications")!
+
     static func requestPermission(completion: ((Bool) -> Void)? = nil) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             #if DEBUG
@@ -29,12 +31,10 @@ struct NotificationManager {
         }
     }
 
-    static func checkPermission(completion: @escaping (Bool) -> Void) {
+    static func getAuthorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
-            let granted = settings.authorizationStatus == .authorized
-            hasPermission = granted
             DispatchQueue.main.async {
-                completion(granted)
+                completion(settings.authorizationStatus)
             }
         }
     }

@@ -39,7 +39,13 @@ struct SystemSettingsView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     Text("System").font(.caption).foregroundColor(Color("SecondaryTextColor"))
                     StyledToggle(label: "Run at Login", isOn: $launchAtLogin)
-                    
+                        .onChange(of: launchAtLogin) { newValue in
+                            if !StartupManager.toggleLaunchAtLogin(isEnabled: newValue) {
+                                // Revert toggle if system call failed
+                                launchAtLogin = !newValue
+                            }
+                        }
+
                     HStack {
                         Text("Animation Style").font(.subheadline)
                         Spacer()

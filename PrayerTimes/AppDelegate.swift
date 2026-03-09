@@ -21,9 +21,19 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     func applicationDidFinishLaunching(_ notification: Notification) {
         Bundle.setLanguage(languageManager.language)
         UNUserNotificationCenter.current().delegate = self
-        NotificationManager.requestPermission()
+
+        // Only auto-request permission if onboarding is disabled.
+        // If onboarding is shown, it handles the permission request with proper context.
+        if !showOnboardingAtLaunch {
+            NotificationManager.getAuthorizationStatus { status in
+                if status == .notDetermined {
+                    NotificationManager.requestPermission()
+                }
+            }
+        }
 
         UserDefaults.standard.register(defaults: [StorageKeys.islamicEventNotifications: true])
+        StartupManager.syncLoginItemState()
 
         setupMenuBar()
         vm.fastingManager = fastingManager
@@ -152,7 +162,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let hostingController = NSHostingController(rootView: onboardingView)
         let window = NSWindow(contentViewController: hostingController)
         
-        window.setContentSize(NSSize(width: 420, height: 520))
+        window.setContentSize(NSSize(width: 420, height: 580))
         window.styleMask.remove(.resizable)
         window.center()
         

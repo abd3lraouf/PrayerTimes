@@ -1,5 +1,6 @@
 import SwiftUI
 import NavigationStack
+import UserNotifications
 
 struct NotificationsSettingsView: View {
     @EnvironmentObject var notificationSettings: NotificationSettings
@@ -7,6 +8,7 @@ struct NotificationsSettingsView: View {
     @EnvironmentObject var navigationModel: NavigationModel
     @Environment(\.layoutDirection) var layoutDirection
     @State private var isHeaderHovering = false
+    @State private var notificationPermissionDenied = false
 
     private let mainPrayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"]
     private let allPrayers = ["Tahajud", "Fajr", "Sunrise", "Dhuha", "Dhuhr", "Asr", "Maghrib", "Isha"]
@@ -44,6 +46,26 @@ struct NotificationsSettingsView: View {
                             vm.scheduleNotifications()
                         }
 
+                    if notificationPermissionDenied && notificationSettings.prayerNotificationsEnabled {
+                        HStack(spacing: 6) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.orange)
+                                .font(.caption)
+                            Text("System notifications are disabled.")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                            Button("Open Settings") {
+                                NSWorkspace.shared.open(NotificationManager.notificationSettingsURL)
+                            }
+                            .font(.caption)
+                            .buttonStyle(.link)
+                        }
+                        .padding(8)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(6)
+                    }
+
                     if notificationSettings.prayerNotificationsEnabled {
                         Text("Global Settings")
                             .font(.caption).fontWeight(.semibold)
@@ -70,6 +92,16 @@ struct NotificationsSettingsView: View {
         }
         .padding(.vertical, 8)
         .frame(width: viewWidth)
+        .onAppear {
+            NotificationManager.getAuthorizationStatus { status in
+                notificationPermissionDenied = (status == .denied)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            NotificationManager.getAuthorizationStatus { status in
+                notificationPermissionDenied = (status == .denied)
+            }
+        }
     }
 
     private var globalSettingsSection: some View {
