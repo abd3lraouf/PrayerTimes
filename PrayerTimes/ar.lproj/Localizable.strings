@@ -110,6 +110,14 @@
 "Enable Prayer Notifications" = "تفعيل إشعارات الصلاة";
 "Prayer Notifications" = "إشعارات الصلاة";
 
+/* Notification Permission */
+"Notifications are enabled." = "الإشعارات مفعّلة.";
+"Notifications are disabled. Please enable in System Settings." = "الإشعارات معطّلة. يرجى تفعيلها من إعدادات النظام.";
+"Enable notifications to get prayer time alerts." = "فعّل الإشعارات لتلقي تنبيهات أوقات الصلاة.";
+"Enable Notifications" = "تفعيل الإشعارات";
+"System notifications are disabled." = "إشعارات النظام معطّلة.";
+"Open Settings" = "فتح الإعدادات";
+
 /* Notification Type */
 "At Time" = "عند الوقت";
 "Before" = "قبل";

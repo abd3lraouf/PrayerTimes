@@ -110,6 +110,14 @@
 "Enable Prayer Notifications" = "Enable Prayer Notifications";
 "Prayer Notifications" = "Prayer Notifications";
 
+/* Notification Permission */
+"Notifications are enabled." = "Notifications are enabled.";
+"Notifications are disabled. Please enable in System Settings." = "Notifications are disabled. Please enable in System Settings.";
+"Enable notifications to get prayer time alerts." = "Enable notifications to get prayer time alerts.";
+"Enable Notifications" = "Enable Notifications";
+"System notifications are disabled." = "System notifications are disabled.";
+"Open Settings" = "Open Settings";
+
 /* Notification Type */
 "At Time" = "At Time";
 "Before" = "Before";
