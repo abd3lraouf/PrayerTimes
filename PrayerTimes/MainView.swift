@@ -181,6 +181,25 @@ struct PrayerListView: View {
                             }
                             else { return (.clear, .primary) }
                         }()
+                        // Add Suhoor row before Fajr when fasting mode is active
+                        if prayerName == "Fajr" && fastingManager.isFastingModeEnabled && fastingManager.currentFastingDay != nil,
+                           let suhoorTime = fastingManager.suhoorTime(from: vm.todayTimes) {
+                            let suhoorPassed = suhoorTime <= Date()
+                            HStack(spacing: 0) {
+                                Text(LocalizedStringKey("Suhoor"))
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(FastingColors.suhoor)
+                                Spacer()
+                                Text(vm.dateFormatter.string(from: suhoorTime))
+                                    .font(languageManager.numberFont(size: 13, weight: .regular))
+                                    .foregroundColor(FastingColors.suhoor)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 5)
+                            .background(RoundedRectangle(cornerRadius: 6).fill(FastingColors.suhoorBg))
+                            .opacity(suhoorPassed ? 0.4 : 1.0)
+                        }
+
                         PrayerRow(
                             prayerName: prayerName,
                             prayerTime: prayerTime,
@@ -256,9 +275,13 @@ struct PrayerRow: View {
 
     private var fastingLabel: String? {
         guard fastingManager.isFastingModeEnabled, fastingManager.currentFastingDay != nil else { return nil }
-        if prayerName == "Fajr" { return "Suhoor" }
         if prayerName == "Maghrib" { return "Iftar" }
         return nil
+    }
+
+    private var isFastingRow: Bool {
+        guard fastingManager.isFastingModeEnabled, fastingManager.currentFastingDay != nil else { return false }
+        return prayerName == "Fajr" || prayerName == "Maghrib"
     }
 
     private var fastingColor: Color {
@@ -271,7 +294,7 @@ struct PrayerRow: View {
 
     private var rowBackground: Color {
         if isHighlighted { return highlightColor }
-        if fastingLabel != nil { return fastingBgColor }
+        if fastingLabel != nil || isFastingRow { return fastingBgColor }
         return .clear
     }
 

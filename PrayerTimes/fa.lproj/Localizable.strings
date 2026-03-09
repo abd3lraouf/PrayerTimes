@@ -219,6 +219,7 @@
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
 "taraweeh_reminder_body" = "وقت نماز تراویح فرا رسیده است";
 "Suhoor Alert" = "هشدار سحری";
+"Imsak Offset" = "فاصله امساک";
 "Iftar Notification" = "اعلان افطار";
 "Dua Reminders" = "یادآوری دعا";
 "Taraweeh Reminder" = "یادآوری تراویح";

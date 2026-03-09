@@ -291,9 +291,9 @@ struct NotificationManager {
         let taraweehEnabled = UserDefaults.standard.bool(forKey: StorageKeys.taraweehReminderEnabled)
         let taraweehMinutes = UserDefaults.standard.object(forKey: StorageKeys.taraweehMinutesAfterIsha) as? Int ?? 30
 
-        // Suhoor pre-alert (X minutes before Fajr)
-        if let fajr = fastingManager.suhoorTime(from: prayerTimes) {
-            if let preTime = Calendar.current.date(byAdding: .minute, value: -suhoorMinutes, to: fajr),
+        // Suhoor pre-alert (X minutes before Imsak/Suhoor time)
+        if let suhoor = fastingManager.suhoorTime(from: prayerTimes) {
+            if let preTime = Calendar.current.date(byAdding: .minute, value: -suhoorMinutes, to: suhoor),
                preTime > Date() {
                 scheduleSimpleNotification(
                     id: "fasting_suhoor_pre",
@@ -302,16 +302,16 @@ struct NotificationManager {
                     at: preTime
                 )
             }
+        }
 
-            // Dua at actual Fajr/Suhoor time
-            if duaEnabled, fajr > Date() {
-                scheduleSimpleNotification(
-                    id: "fasting_dua_suhoor",
-                    title: NSLocalizedString("Suhoor", comment: ""),
-                    body: NSLocalizedString("dua_beginning_fast", comment: ""),
-                    at: fajr
-                )
-            }
+        // Dua at actual Fajr time (not Imsak)
+        if duaEnabled, let fajr = prayerTimes["Fajr"], fajr > Date() {
+            scheduleSimpleNotification(
+                id: "fasting_dua_suhoor",
+                title: NSLocalizedString("Fajr", comment: ""),
+                body: NSLocalizedString("dua_beginning_fast", comment: ""),
+                at: fajr
+            )
         }
 
         // Iftar alert (at Maghrib)

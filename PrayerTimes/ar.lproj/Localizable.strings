@@ -254,6 +254,7 @@
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ";
 "taraweeh_reminder_body" = "حان وقت صلاة التراويح";
 "Suhoor Alert" = "تنبيه السحور";
+"Imsak Offset" = "فارق الإمساك";
 "Iftar Notification" = "إشعار الإفطار";
 "Dua Reminders" = "تذكير بالدعاء";
 "Taraweeh Reminder" = "تذكير بالتراويح";
