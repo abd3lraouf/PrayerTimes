@@ -211,6 +211,7 @@
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
 "taraweeh_reminder_body" = "تراویح نماز کا وقت ہو گیا ہے";
 "Suhoor Alert" = "سحری کا الرٹ";
+"Imsak Offset" = "امساک آفسیٹ";
 "Iftar Notification" = "افطار کی اطلاع";
 "Dua Reminders" = "دعا کی یاد دہانی";
 "Taraweeh Reminder" = "تراویح کی یاد دہانی";
