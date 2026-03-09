@@ -278,11 +278,11 @@ struct PrayerRow: View {
     }
 
     private var fastingColor: Color {
-        prayerName == "Fajr" ? FastingColors.suhoor : FastingColors.iftar
+        FastingColors.iftar
     }
 
     private var fastingBgColor: Color {
-        prayerName == "Fajr" ? FastingColors.suhoorBg : FastingColors.iftarBg
+        FastingColors.iftarBg
     }
 
     private var rowBackground: Color {

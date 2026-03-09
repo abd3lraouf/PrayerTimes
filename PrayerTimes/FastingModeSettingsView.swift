@@ -43,10 +43,6 @@ struct FastingModeSettingsView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     StyledToggle(label: "Fasting Mode", isOn: $fastingManager.isFastingModeEnabled)
 
-                    Rectangle().fill(Color("DividerColor")).frame(height: 0.5)
-
-                    Text("Notifications").font(.caption).foregroundColor(Color("SecondaryTextColor"))
-
                     HStack {
                         Text("Imsak Offset").font(.subheadline)
                         Spacer()
@@ -56,6 +52,10 @@ struct FastingModeSettingsView: View {
                             }
                         }
                     }
+
+                    Rectangle().fill(Color("DividerColor")).frame(height: 0.5)
+
+                    Text("Notifications").font(.caption).foregroundColor(Color("SecondaryTextColor"))
 
                     HStack {
                         Text("Suhoor Alert").font(.subheadline)

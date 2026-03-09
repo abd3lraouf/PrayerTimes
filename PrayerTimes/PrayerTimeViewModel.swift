@@ -451,6 +451,14 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             nextPrayerDate = todayTimes[nextPrayerName]
         }
 
+        // When fasting and counting to Fajr, use Suhoor (Imsak) time if it hasn't passed
+        let isFastingCountdown = fastingManager?.isFastingModeEnabled == true && fastingManager?.currentFastingDay != nil
+        if isFastingCountdown && nextPrayerName == "Fajr",
+           let suhoorDate = fastingManager?.suhoorTime(from: todayTimes),
+           suhoorDate > Date() {
+            nextPrayerDate = suhoorDate
+        }
+
         guard let nextDate = nextPrayerDate else {
             countdown = "--:--"; updateMenuTitle(); return
         }
@@ -539,7 +547,12 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         let isFasting = fastingManager?.isFastingModeEnabled == true && fastingManager?.currentFastingDay != nil
         let localizedPrayerName: String
         if isFasting && nextPrayerName == "Fajr" {
-            localizedPrayerName = NSLocalizedString("Suhoor", comment: "")
+            // Show "Suhoor" only if Suhoor/Imsak time hasn't passed yet
+            if let suhoorDate = fastingManager?.suhoorTime(from: todayTimes), suhoorDate > Date() {
+                localizedPrayerName = NSLocalizedString("Suhoor", comment: "")
+            } else {
+                localizedPrayerName = NSLocalizedString("Fajr", comment: "")
+            }
         } else if isFasting && nextPrayerName == "Maghrib" {
             localizedPrayerName = NSLocalizedString("Iftar", comment: "")
         } else {
@@ -562,7 +575,14 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             } else {
                 nextPrayerDate = todayTimes[nextPrayerName]
             }
-            
+
+            // Use Suhoor/Imsak time when displaying exact time for Suhoor
+            if isFasting && nextPrayerName == "Fajr",
+               let suhoorDate = fastingManager?.suhoorTime(from: todayTimes),
+               suhoorDate > Date() {
+                nextPrayerDate = suhoorDate
+            }
+
             guard let nextDate = nextPrayerDate else {
                 textToShow = NSLocalizedString("PrayerTimes Pro", comment: "")
                 break
