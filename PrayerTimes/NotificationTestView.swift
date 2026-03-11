@@ -7,7 +7,7 @@ struct NotificationTestView: View {
     @State private var selectedMinutes: Int = 10
     @State private var testResult: (message: String, isError: Bool)?
 
-    private let prayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha", "Tahajud", "Dhuha"]
+    private let prayers = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha", "Tahajud", "Dhuha", "RamadanSuhoor", "RamadanIftar"]
     private let minuteOptions = [5, 10, 15, 20, 30]
 
     var body: some View {
@@ -16,7 +16,7 @@ struct NotificationTestView: View {
             HStack(spacing: 8) {
                 Picker(NSLocalizedString("Prayer", comment: ""), selection: $selectedPrayer) {
                     ForEach(prayers, id: \.self) { prayer in
-                        Text(LocalizedStringKey(prayer)).tag(prayer)
+                        Text(Self.pickerLabel(for: prayer)).tag(prayer)
                     }
                 }
                 .pickerStyle(.menu)
@@ -67,6 +67,16 @@ struct NotificationTestView: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
+    // MARK: - Helpers
+
+    private static func pickerLabel(for prayer: String) -> String {
+        switch prayer {
+        case "RamadanSuhoor": return "🌙 " + NSLocalizedString("Suhoor", comment: "") + " (Ramadan)"
+        case "RamadanIftar":  return "🌅 " + NSLocalizedString("Iftar", comment: "") + " (Ramadan)"
+        default:              return NSLocalizedString(prayer, comment: "")
+        }
+    }
+
     // MARK: - Components
 
     private func testButton(_ title: String, action: @escaping () -> Void) -> some View {
@@ -91,6 +101,15 @@ struct NotificationTestView: View {
         Date().addingTimeInterval(TimeInterval(selectedMinutes * 60))
     }
 
+    /// Maps Ramadan keys to their display name; standard prayers use NSLocalizedString directly.
+    private var displayName: String {
+        switch selectedPrayer {
+        case "RamadanSuhoor": return NSLocalizedString("Suhoor", comment: "")
+        case "RamadanIftar":  return NSLocalizedString("Iftar", comment: "")
+        default:              return NSLocalizedString(selectedPrayer, comment: "")
+        }
+    }
+
     private func showResult(_ message: String, isError: Bool = false) {
         withAnimation(.easeOut(duration: 0.2)) {
             testResult = (message, isError)
@@ -104,7 +123,7 @@ struct NotificationTestView: View {
 
     private func testFullScreenAtTime() {
         FullScreenNotificationManager.shared.showFullScreenNotification(
-            prayerName: NSLocalizedString(selectedPrayer, comment: ""),
+            prayerName: displayName,
             prayerKey: selectedPrayer,
             prayerTime: futureTime
         )
@@ -113,7 +132,7 @@ struct NotificationTestView: View {
 
     private func testFullScreenPre() {
         FullScreenNotificationManager.shared.showFullScreenNotification(
-            prayerName: NSLocalizedString(selectedPrayer, comment: ""),
+            prayerName: displayName,
             prayerKey: selectedPrayer,
             prayerTime: futureTime,
             isPreNotification: true,
@@ -124,7 +143,7 @@ struct NotificationTestView: View {
 
     private func testSystemNow() {
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString(selectedPrayer, comment: "")
+        content.title = displayName
         content.body = NSLocalizedString("prayer_time_now", comment: "")
         content.sound = .default
         content.categoryIdentifier = "PRAYER_TIME"
@@ -151,7 +170,7 @@ struct NotificationTestView: View {
 
     private func testSystemPre() {
         let content = UNMutableNotificationContent()
-        content.title = NSLocalizedString(selectedPrayer, comment: "")
+        content.title = displayName
         content.body = String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), String(selectedMinutes))
         content.sound = .default
         content.categoryIdentifier = "PRAYER_PRE"

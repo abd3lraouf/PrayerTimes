@@ -17,25 +17,6 @@ enum NotificationTiming: Int, CaseIterable, Identifiable, Codable {
     }
 }
 
-enum NotificationStyle: String, CaseIterable, Identifiable, Codable {
-    case system = "system"
-    case fullScreen = "full_screen"
-    case both = "both"
-    
-    var id: String { rawValue }
-    
-    var localized: String {
-        switch self {
-        case .system:
-            return NSLocalizedString("System", comment: "")
-        case .fullScreen:
-            return NSLocalizedString("Full Screen", comment: "")
-        case .both:
-            return NSLocalizedString("Both", comment: "")
-        }
-    }
-}
-
 enum NotificationType: String, CaseIterable, Identifiable, Codable {
     case atPrayerTime = "at_prayer_time"
     case beforePrayer = "before_prayer"
@@ -55,15 +36,69 @@ enum NotificationType: String, CaseIterable, Identifiable, Codable {
     }
 }
 
-struct PrayerNotificationSettings: Codable, Equatable {
+struct PrayerNotificationSettings: Equatable {
     var useGlobalSettings: Bool = true
     var isEnabled: Bool = true
     var notificationType: NotificationType = .both
-    var notificationStyle: NotificationStyle = .system
+    var systemNotificationEnabled: Bool = true
+    var fullScreenNotificationEnabled: Bool = false
     var prePrayerMinutes: NotificationTiming = .minutes_10
-    
+
     static let `default` = PrayerNotificationSettings()
-    static let disabled = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: .atPrayerTime, notificationStyle: .system, prePrayerMinutes: .minutes_10)
+    static let disabled = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: .atPrayerTime, systemNotificationEnabled: true, fullScreenNotificationEnabled: false, prePrayerMinutes: .minutes_10)
+}
+
+extension PrayerNotificationSettings: Codable {
+    enum CodingKeys: String, CodingKey {
+        case useGlobalSettings, isEnabled, notificationType
+        case systemNotificationEnabled, fullScreenNotificationEnabled
+        case prePrayerMinutes
+        // Legacy key for migration
+        case notificationStyle
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        useGlobalSettings = try container.decodeIfPresent(Bool.self, forKey: .useGlobalSettings) ?? true
+        isEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEnabled) ?? true
+        notificationType = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType) ?? .both
+        prePrayerMinutes = try container.decodeIfPresent(NotificationTiming.self, forKey: .prePrayerMinutes) ?? .minutes_10
+
+        // Try new fields first, fall back to legacy notificationStyle
+        if let system = try container.decodeIfPresent(Bool.self, forKey: .systemNotificationEnabled),
+           let fullScreen = try container.decodeIfPresent(Bool.self, forKey: .fullScreenNotificationEnabled) {
+            systemNotificationEnabled = system
+            fullScreenNotificationEnabled = fullScreen
+        } else if let legacyStyle = try container.decodeIfPresent(String.self, forKey: .notificationStyle) {
+            switch legacyStyle {
+            case "system":
+                systemNotificationEnabled = true
+                fullScreenNotificationEnabled = false
+            case "full_screen":
+                systemNotificationEnabled = false
+                fullScreenNotificationEnabled = true
+            case "both":
+                systemNotificationEnabled = true
+                fullScreenNotificationEnabled = true
+            default:
+                systemNotificationEnabled = true
+                fullScreenNotificationEnabled = false
+            }
+        } else {
+            systemNotificationEnabled = true
+            fullScreenNotificationEnabled = false
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(useGlobalSettings, forKey: .useGlobalSettings)
+        try container.encode(isEnabled, forKey: .isEnabled)
+        try container.encode(notificationType, forKey: .notificationType)
+        try container.encode(systemNotificationEnabled, forKey: .systemNotificationEnabled)
+        try container.encode(fullScreenNotificationEnabled, forKey: .fullScreenNotificationEnabled)
+        try container.encode(prePrayerMinutes, forKey: .prePrayerMinutes)
+    }
 }
 
 class NotificationSettings: ObservableObject, Codable {
@@ -165,7 +200,8 @@ class NotificationSettings: ObservableObject, Codable {
                 useGlobalSettings: true,
                 isEnabled: prayerSettings.isEnabled,
                 notificationType: globalSettings.notificationType,
-                notificationStyle: globalSettings.notificationStyle,
+                systemNotificationEnabled: globalSettings.systemNotificationEnabled,
+                fullScreenNotificationEnabled: globalSettings.fullScreenNotificationEnabled,
                 prePrayerMinutes: globalSettings.prePrayerMinutes
             )
         } else {
@@ -189,14 +225,15 @@ class NotificationSettings: ObservableObject, Codable {
     }
     
     func applyGlobalToAll() {
-        fajrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        dhuhrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        asrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        maghribNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        ishaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        sunriseNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        tahajudNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
-        dhuhaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: globalSettings.notificationType, notificationStyle: globalSettings.notificationStyle, prePrayerMinutes: globalSettings.prePrayerMinutes)
+        let g = globalSettings
+        fajrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        dhuhrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        asrNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        maghribNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        ishaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: true, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        sunriseNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        tahajudNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
+        dhuhaNotification = PrayerNotificationSettings(useGlobalSettings: true, isEnabled: false, notificationType: g.notificationType, systemNotificationEnabled: g.systemNotificationEnabled, fullScreenNotificationEnabled: g.fullScreenNotificationEnabled, prePrayerMinutes: g.prePrayerMinutes)
         save()
     }
 }

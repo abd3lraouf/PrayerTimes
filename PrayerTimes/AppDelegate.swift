@@ -16,9 +16,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     
     private var onboardingWindow: NSWindow?
 
+    private var isTestingMode: Bool {
+        ProcessInfo.processInfo.environment["TESTING"] != nil
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         Bundle.setLanguage(languageManager.language)
         UNUserNotificationCenter.current().delegate = self
+
+        // Apply test overrides before any other logic
+        if isTestingMode {
+            applyTestEnvironment()
+        }
 
         // Only auto-request permission if onboarding is disabled.
         // If onboarding is shown, it handles the permission request with proper context.
@@ -51,9 +60,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 self.updateIconForMode(self.vm.menuBarTextMode)
             }
             .store(in: &cancellables)
-    
+
         let isScreenshotMode = ProcessInfo.processInfo.environment["SCREENSHOT_LANGUAGE"] != nil
-        if self.showOnboardingAtLaunch && !isScreenshotMode {
+        if self.showOnboardingAtLaunch && !isScreenshotMode && !isTestingMode {
             self.showOnboardingWindow()
         }
 
@@ -88,6 +97,28 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         registerNotificationCategories()
     }
     
+    // MARK: - Test Environment
+
+    private func applyTestEnvironment() {
+        let env = ProcessInfo.processInfo.environment
+
+        // Skip onboarding
+        showOnboardingAtLaunch = false
+
+        // Inject a fake location: "TESTING_LOCATION=lat,lon" or "TESTING_LOCATION=lat,lon,CityName"
+        if let locationStr = env["TESTING_LOCATION"] {
+            let parts = locationStr.split(separator: ",", maxSplits: 2)
+            if parts.count >= 2,
+               let lat = Double(parts[0].trimmingCharacters(in: .whitespaces)),
+               let lon = Double(parts[1].trimmingCharacters(in: .whitespaces)) {
+                let name = parts.count >= 3 ? String(parts[2]).trimmingCharacters(in: .whitespaces) : "Test Location"
+                let manualData: [String: Any] = ["name": name, "latitude": lat, "longitude": lon]
+                UserDefaults.standard.set(manualData, forKey: StorageKeys.manualLocationData)
+                UserDefaults.standard.set(true, forKey: StorageKeys.isUsingManualLocation)
+            }
+        }
+    }
+
     // MARK: - Notification Categories
     
     private func registerNotificationCategories() {

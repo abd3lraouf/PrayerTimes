@@ -457,6 +457,243 @@ struct AfternoonSceneView: View {
     }
 }
 
+// MARK: - Ramadan Suhoor Scene (Pre-Fajr cannon)
+
+/// Deep pre-dawn sky with the iconic Ramadan cannon firing to announce
+/// the end of Suhoor. Dark indigo palette with cannon silhouette on dunes,
+/// muzzle flash, smoke, and arcing projectile.
+struct SuhoorCannonSceneView: View {
+    let size: CGSize
+    let appear: Bool
+
+    private let cannonScale: CGFloat = 1.6
+
+    private var cannonBase: CGPoint {
+        CGPoint(x: size.width * 0.68, y: size.height * 0.88)
+    }
+
+    private var muzzleTip: CGPoint {
+        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale)
+    }
+
+    var body: some View {
+        ZStack {
+            // Layers 0–7: atmosphere + cannon (rasterised for performance)
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.02, green: 0.02, blue: 0.10),
+                        Color(red: 0.05, green: 0.04, blue: 0.18),
+                        Color(red: 0.08, green: 0.06, blue: 0.22),
+                        Color(red: 0.12, green: 0.08, blue: 0.20)
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+
+                DesertDunes(
+                    layers: 3,
+                    colors: [
+                        Color(red: 0.06, green: 0.04, blue: 0.12),
+                        Color(red: 0.04, green: 0.03, blue: 0.09),
+                        Color(red: 0.03, green: 0.02, blue: 0.06)
+                    ],
+                    heightFraction: 0.16,
+                    size: size
+                )
+
+                TreeSilhouettes(
+                    count: 4,
+                    style: .palm,
+                    color: Color(red: 0.03, green: 0.02, blue: 0.06),
+                    opacityRange: 0.06...0.12,
+                    baseY: size.height * 0.87,
+                    size: size
+                )
+
+                MistLayer(
+                    color: Color(red: 0.12, green: 0.10, blue: 0.25),
+                    heightFraction: 0.07,
+                    opacity: 0.05,
+                    riseSpeed: 12,
+                    size: size
+                )
+
+                StarsField(
+                    count: 50,
+                    sizeRange: 1.0...3.5,
+                    opacityRange: 0.2...0.75,
+                    topHeavy: false,
+                    appear: appear,
+                    size: size
+                )
+
+                CelestialBody(
+                    bodyType: .crescent(radius: 18, shadowOffset: 12),
+                    glowRadius: 45,
+                    glowColor: Color(red: 0.4, green: 0.4, blue: 0.75),
+                    position: UnitPoint(x: 0.25, y: 0.12),
+                    pulseScale: 0.96...1.04,
+                    size: size
+                )
+
+                CloudLayer(
+                    width: size.width * 0.30, height: 7,
+                    color: Color(red: 0.35, green: 0.30, blue: 0.55),
+                    opacity: 0.04, yPosition: 0.30,
+                    driftSpeed: 20, driftDistance: 25, size: size
+                )
+                CloudLayer(
+                    width: size.width * 0.22, height: 5,
+                    color: Color(red: 0.30, green: 0.28, blue: 0.50),
+                    opacity: 0.03, yPosition: 0.45,
+                    driftSpeed: 24, driftDistance: 20, size: size
+                )
+
+                RamadanCannon(
+                    color: Color(red: 0.28, green: 0.24, blue: 0.38),
+                    highlightColor: Color(red: 0.50, green: 0.46, blue: 0.65),
+                    scale: cannonScale, position: cannonBase
+                )
+            }
+            .drawingGroup()
+
+            // Layer 8: SpriteKit cannon fire (own Metal pass)
+            CannonFireEffect(
+                muzzlePosition: muzzleTip,
+                fireAngle: 145,
+                flashColor: Color(red: 1.0, green: 0.85, blue: 0.3),
+                smokeColor: Color(red: 0.5, green: 0.5, blue: 0.6),
+                size: size
+            )
+        }
+    }
+}
+
+// MARK: - Ramadan Iftar Scene (Maghrib cannon)
+
+/// Dramatic sunset sky with the Ramadan cannon firing to announce Iftar.
+/// Fiery orange-magenta palette, cannon silhouette against the glowing horizon,
+/// muzzle flash, smoke, and arcing projectile.
+struct IftarCannonSceneView: View {
+    let size: CGSize
+    let appear: Bool
+
+    private let cannonScale: CGFloat = 1.7
+
+    private var cannonBase: CGPoint {
+        CGPoint(x: size.width * 0.35, y: size.height * 0.88)
+    }
+
+    private var muzzleTip: CGPoint {
+        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale)
+    }
+
+    var body: some View {
+        ZStack {
+            // Layers 0–8: atmosphere + cannon (rasterised)
+            ZStack {
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.08, green: 0.04, blue: 0.18),
+                        Color(red: 0.25, green: 0.08, blue: 0.22),
+                        Color(red: 0.55, green: 0.15, blue: 0.12),
+                        Color(red: 0.85, green: 0.40, blue: 0.10),
+                        Color(red: 0.95, green: 0.55, blue: 0.15)
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+
+                DesertDunes(
+                    layers: 3,
+                    colors: [
+                        Color(red: 0.10, green: 0.05, blue: 0.10),
+                        Color(red: 0.06, green: 0.03, blue: 0.06),
+                        Color(red: 0.03, green: 0.02, blue: 0.04)
+                    ],
+                    heightFraction: 0.15, size: size
+                )
+
+                TreeSilhouettes(
+                    count: 5, style: .palm,
+                    color: Color(red: 0.04, green: 0.02, blue: 0.04),
+                    opacityRange: 0.10...0.20,
+                    baseY: size.height * 0.86, size: size
+                )
+
+                Ellipse()
+                    .fill(
+                        RadialGradient(
+                            colors: [
+                                Color(red: 1.0, green: 0.55, blue: 0.15).opacity(0.25),
+                                Color(red: 0.95, green: 0.40, blue: 0.12).opacity(0.12),
+                                Color(red: 0.80, green: 0.25, blue: 0.10).opacity(0.05),
+                                .clear
+                            ],
+                            center: .center, startRadius: 10,
+                            endRadius: size.width * 0.45
+                        )
+                    )
+                    .frame(width: size.width * 0.9, height: 300)
+                    .position(x: size.width * 0.5, y: size.height * 0.85)
+
+                CelestialBody(
+                    bodyType: .halfDisc(radius: 22), glowRadius: 110,
+                    glowColor: Color(red: 1.0, green: 0.50, blue: 0.15),
+                    position: UnitPoint(x: 0.55, y: 0.86),
+                    pulseScale: 0.96...1.04, size: size
+                )
+
+                CloudLayer(
+                    width: size.width * 0.50, height: 14,
+                    color: Color(red: 0.95, green: 0.40, blue: 0.15),
+                    opacity: 0.08, yPosition: 0.25,
+                    driftSpeed: 18, driftDistance: 22, size: size
+                )
+                CloudLayer(
+                    width: size.width * 0.42, height: 10,
+                    color: Color(red: 1.0, green: 0.50, blue: 0.20),
+                    opacity: 0.06, yPosition: 0.38,
+                    driftSpeed: 22, driftDistance: 18, size: size
+                )
+                CloudLayer(
+                    width: size.width * 0.55, height: 16,
+                    color: Color(red: 0.90, green: 0.35, blue: 0.12),
+                    opacity: 0.06, yPosition: 0.50,
+                    driftSpeed: 16, driftDistance: 25, size: size
+                )
+
+                StarsField(
+                    count: 10, sizeRange: 1.0...2.0,
+                    opacityRange: 0.12...0.30, topHeavy: true,
+                    appear: appear, size: size
+                )
+
+                MistLayer(
+                    color: Color(red: 0.55, green: 0.22, blue: 0.08),
+                    heightFraction: 0.06, opacity: 0.05,
+                    riseSpeed: 14, size: size
+                )
+
+                RamadanCannon(
+                    color: Color(red: 0.30, green: 0.18, blue: 0.14),
+                    highlightColor: Color(red: 0.55, green: 0.38, blue: 0.28),
+                    scale: cannonScale, position: cannonBase
+                )
+            }
+            .drawingGroup()
+
+            // Layer 9: SpriteKit cannon fire (own Metal pass)
+            CannonFireEffect(
+                muzzlePosition: muzzleTip,
+                fireAngle: 145,
+                flashColor: Color(red: 1.0, green: 0.65, blue: 0.2),
+                smokeColor: Color(red: 0.6, green: 0.35, blue: 0.15),
+                size: size
+            )
+        }
+    }
+}
+
 // MARK: - Sunset Scene (Maghrib)
 
 /// Dramatic, the day's last breath, urgency mixed with beauty.

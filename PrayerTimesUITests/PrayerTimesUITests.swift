@@ -1,40 +1,65 @@
-//
-//  PrayerTimesUITests.swift
-//  PrayerTimesUITests
-//
-//  Created by Aliyya Nazhifah on 28/08/25.
-//
-
 import XCTest
 
 final class PrayerTimesUITests: XCTestCase {
 
+    var app: XCUIApplication!
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        // Skip onboarding and inject a fake location (Mecca) for all UI tests
+        app.launchEnvironment["TESTING"] = "1"
+        app.launchEnvironment["TESTING_LOCATION"] = "21.4225,39.8262,Mecca"
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+    func testAppLaunchesWithoutOnboarding() throws {
         app.launch()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // The main view should appear (menu bar panel), not the onboarding window
+        let settingsButton = app.buttons["MainView.settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 10),
+            "Main view should be visible after launch with onboarding skipped")
+    }
+
+    func testNavigateToSettings() throws {
+        app.launch()
+
+        let settingsButton = app.buttons["MainView.settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 10))
+        settingsButton.tap()
+
+        let notifButton = app.buttons["SettingsView.notificationsButton"]
+        XCTAssertTrue(notifButton.waitForExistence(timeout: 5),
+            "Settings view should be visible after tapping settings button")
+    }
+
+    func testNavigateToNotificationSettings() throws {
+        app.launch()
+
+        let settingsButton = app.buttons["MainView.settingsButton"]
+        XCTAssertTrue(settingsButton.waitForExistence(timeout: 10))
+        settingsButton.tap()
+
+        let notifButton = app.buttons["SettingsView.notificationsButton"]
+        XCTAssertTrue(notifButton.waitForExistence(timeout: 5))
+        notifButton.tap()
+
+        let backButton = app.buttons["NotificationsSettingsView.backButton"]
+        XCTAssertTrue(backButton.waitForExistence(timeout: 5),
+            "Notification settings view should be visible")
     }
 
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
             measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
+                let perfApp = XCUIApplication()
+                perfApp.launchEnvironment["TESTING"] = "1"
+                perfApp.launchEnvironment["TESTING_LOCATION"] = "21.4225,39.8262,Mecca"
+                perfApp.launch()
             }
         }
     }

@@ -4,8 +4,10 @@ import XCTest
 final class PrayerTimesTests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Clean UserDefaults before each test to avoid cross-contamination
-        UserDefaults.standard.removeObject(forKey: "notificationSettings")
+        // Clean test state and skip onboarding
+        TestHelpers.cleanUp()
+        TestHelpers.skipOnboarding()
+        TestHelpers.injectLocation(TestHelpers.mecca)
         // Cancel all pending notifications to prevent leaking between tests
         NotificationManager.cancelNotifications()
         // Wait for the notification center to process the cancellation
@@ -17,7 +19,7 @@ final class PrayerTimesTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-        UserDefaults.standard.removeObject(forKey: "notificationSettings")
+        TestHelpers.cleanUp()
         NotificationManager.cancelNotifications()
     }
 
@@ -39,18 +41,6 @@ final class PrayerTimesTests: XCTestCase {
         XCTAssertEqual(timings[5], .minutes_30)
     }
 
-    // MARK: - NotificationStyle Tests
-
-    func testNotificationStyleRawValues() {
-        XCTAssertEqual(NotificationStyle.system.rawValue, "system")
-        XCTAssertEqual(NotificationStyle.fullScreen.rawValue, "full_screen")
-        XCTAssertEqual(NotificationStyle.both.rawValue, "both")
-    }
-
-    func testNotificationStyleCount() {
-        XCTAssertEqual(NotificationStyle.allCases.count, 3)
-    }
-
     // MARK: - NotificationType Tests
 
     func testNotificationTypeRawValues() {
@@ -70,7 +60,8 @@ final class PrayerTimesTests: XCTestCase {
         XCTAssertTrue(settings.useGlobalSettings)
         XCTAssertTrue(settings.isEnabled)
         XCTAssertEqual(settings.notificationType, .both)
-        XCTAssertEqual(settings.notificationStyle, .system)
+        XCTAssertTrue(settings.systemNotificationEnabled)
+        XCTAssertFalse(settings.fullScreenNotificationEnabled)
         XCTAssertEqual(settings.prePrayerMinutes, .minutes_10)
     }
 
@@ -79,7 +70,8 @@ final class PrayerTimesTests: XCTestCase {
         XCTAssertTrue(settings.useGlobalSettings)
         XCTAssertFalse(settings.isEnabled)
         XCTAssertEqual(settings.notificationType, .atPrayerTime)
-        XCTAssertEqual(settings.notificationStyle, .system)
+        XCTAssertTrue(settings.systemNotificationEnabled)
+        XCTAssertFalse(settings.fullScreenNotificationEnabled)
         XCTAssertEqual(settings.prePrayerMinutes, .minutes_10)
     }
 
@@ -138,13 +130,13 @@ final class PrayerTimesTests: XCTestCase {
         let settings = NotificationSettings()
         var newFajrSettings = PrayerNotificationSettings.default
         newFajrSettings.isEnabled = false
-        newFajrSettings.notificationStyle = .fullScreen
+        newFajrSettings.fullScreenNotificationEnabled = true
         newFajrSettings.prePrayerMinutes = .minutes_20
 
         settings.updateSettings(for: "Fajr", settings: newFajrSettings)
 
         XCTAssertEqual(settings.settings(for: "Fajr").isEnabled, false)
-        XCTAssertEqual(settings.settings(for: "Fajr").notificationStyle, .fullScreen)
+        XCTAssertTrue(settings.settings(for: "Fajr").fullScreenNotificationEnabled)
         XCTAssertEqual(settings.settings(for: "Fajr").prePrayerMinutes, .minutes_20)
     }
 
@@ -154,12 +146,12 @@ final class PrayerTimesTests: XCTestCase {
 
         for prayer in prayers {
             var newSettings = PrayerNotificationSettings.default
-            newSettings.notificationStyle = .fullScreen
+            newSettings.fullScreenNotificationEnabled = true
             settings.updateSettings(for: prayer, settings: newSettings)
         }
 
         for prayer in prayers {
-            XCTAssertEqual(settings.settings(for: prayer).notificationStyle, .fullScreen, "Failed for \(prayer)")
+            XCTAssertTrue(settings.settings(for: prayer).fullScreenNotificationEnabled, "Failed for \(prayer)")
         }
     }
 
@@ -177,13 +169,13 @@ final class PrayerTimesTests: XCTestCase {
     func testEffectiveSettingsUsesGlobalWhenUseGlobalIsTrue() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_30
 
         // Fajr defaults to useGlobalSettings = true
         let effective = settings.effectiveSettings(for: "Fajr")
         XCTAssertEqual(effective.notificationType, .beforePrayer)
-        XCTAssertEqual(effective.notificationStyle, .fullScreen)
+        XCTAssertTrue(effective.fullScreenNotificationEnabled)
         XCTAssertEqual(effective.prePrayerMinutes, .minutes_30)
         XCTAssertTrue(effective.isEnabled)
     }
@@ -191,18 +183,20 @@ final class PrayerTimesTests: XCTestCase {
     func testEffectiveSettingsUsesCustomWhenUseGlobalIsFalse() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
 
         var fajrCustom = PrayerNotificationSettings.default
         fajrCustom.useGlobalSettings = false
         fajrCustom.notificationType = .atPrayerTime
-        fajrCustom.notificationStyle = .system
+        fajrCustom.systemNotificationEnabled = true
+        fajrCustom.fullScreenNotificationEnabled = false
         fajrCustom.prePrayerMinutes = .minutes_5
         settings.updateSettings(for: "Fajr", settings: fajrCustom)
 
         let effective = settings.effectiveSettings(for: "Fajr")
         XCTAssertEqual(effective.notificationType, .atPrayerTime)
-        XCTAssertEqual(effective.notificationStyle, .system)
+        XCTAssertTrue(effective.systemNotificationEnabled)
+        XCTAssertFalse(effective.fullScreenNotificationEnabled)
         XCTAssertEqual(effective.prePrayerMinutes, .minutes_5)
     }
 
@@ -222,7 +216,7 @@ final class PrayerTimesTests: XCTestCase {
     func testEffectiveSettingsForSunnahPrayers() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_20
 
         // Tahajud and Dhuha are disabled by default
@@ -230,7 +224,7 @@ final class PrayerTimesTests: XCTestCase {
             let effective = settings.effectiveSettings(for: prayer)
             XCTAssertFalse(effective.isEnabled, "\(prayer) should be disabled by default")
             XCTAssertEqual(effective.notificationType, .beforePrayer, "\(prayer) should use global notificationType")
-            XCTAssertEqual(effective.notificationStyle, .fullScreen, "\(prayer) should use global notificationStyle")
+            XCTAssertTrue(effective.fullScreenNotificationEnabled, "\(prayer) should use global fullScreenNotificationEnabled")
             XCTAssertEqual(effective.prePrayerMinutes, .minutes_20, "\(prayer) should use global prePrayerMinutes")
         }
     }
@@ -243,13 +237,15 @@ final class PrayerTimesTests: XCTestCase {
         fajrCustom.isEnabled = false
         fajrCustom.useGlobalSettings = false
         fajrCustom.notificationType = .beforePrayer
-        fajrCustom.notificationStyle = .fullScreen
+        fajrCustom.fullScreenNotificationEnabled = true
+        fajrCustom.systemNotificationEnabled = false
         fajrCustom.prePrayerMinutes = .minutes_20
         settings.fajrNotification = fajrCustom
         settings.prayerNotificationsEnabled = false
 
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .both
+        settings.globalSettings.systemNotificationEnabled = true
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_25
 
         do {
@@ -260,11 +256,13 @@ final class PrayerTimesTests: XCTestCase {
             XCTAssertEqual(decoded.fajrNotification.isEnabled, false)
             XCTAssertEqual(decoded.fajrNotification.useGlobalSettings, false)
             XCTAssertEqual(decoded.fajrNotification.notificationType, .beforePrayer)
-            XCTAssertEqual(decoded.fajrNotification.notificationStyle, .fullScreen)
+            XCTAssertTrue(decoded.fajrNotification.fullScreenNotificationEnabled)
+            XCTAssertFalse(decoded.fajrNotification.systemNotificationEnabled)
             XCTAssertEqual(decoded.fajrNotification.prePrayerMinutes, .minutes_20)
 
             XCTAssertEqual(decoded.globalSettings.notificationType, .atPrayerTime)
-            XCTAssertEqual(decoded.globalSettings.notificationStyle, .both)
+            XCTAssertTrue(decoded.globalSettings.systemNotificationEnabled)
+            XCTAssertTrue(decoded.globalSettings.fullScreenNotificationEnabled)
             XCTAssertEqual(decoded.globalSettings.prePrayerMinutes, .minutes_25)
         } catch {
             XCTFail("Codable failed: \(error)")
@@ -276,7 +274,8 @@ final class PrayerTimesTests: XCTestCase {
         settings.isEnabled = false
         settings.useGlobalSettings = false
         settings.notificationType = .beforePrayer
-        settings.notificationStyle = .fullScreen
+        settings.fullScreenNotificationEnabled = true
+        settings.systemNotificationEnabled = false
         settings.prePrayerMinutes = .minutes_25
 
         do {
@@ -286,7 +285,8 @@ final class PrayerTimesTests: XCTestCase {
             XCTAssertEqual(decoded.isEnabled, false)
             XCTAssertEqual(decoded.useGlobalSettings, false)
             XCTAssertEqual(decoded.notificationType, .beforePrayer)
-            XCTAssertEqual(decoded.notificationStyle, .fullScreen)
+            XCTAssertTrue(decoded.fullScreenNotificationEnabled)
+            XCTAssertFalse(decoded.systemNotificationEnabled)
             XCTAssertEqual(decoded.prePrayerMinutes, .minutes_25)
         } catch {
             XCTFail("Codable failed: \(error)")
@@ -301,18 +301,6 @@ final class PrayerTimesTests: XCTestCase {
                 XCTAssertEqual(decoded, timing)
             } catch {
                 XCTFail("Codable failed for \(timing): \(error)")
-            }
-        }
-    }
-
-    func testNotificationStyleCodable() {
-        for style in NotificationStyle.allCases {
-            do {
-                let encoded = try JSONEncoder().encode(style)
-                let decoded = try JSONDecoder().decode(NotificationStyle.self, from: encoded)
-                XCTAssertEqual(decoded, style)
-            } catch {
-                XCTFail("Codable failed for \(style): \(error)")
             }
         }
     }
@@ -346,8 +334,10 @@ final class PrayerTimesTests: XCTestCase {
         do {
             let decoded = try JSONDecoder().decode(NotificationSettings.self, from: oldJSON)
             XCTAssertTrue(decoded.prayerNotificationsEnabled)
-            XCTAssertEqual(decoded.globalSettings, .default)
             XCTAssertTrue(decoded.fajrNotification.isEnabled)
+            // Legacy "system" style should migrate to systemNotificationEnabled=true, fullScreenNotificationEnabled=false
+            XCTAssertTrue(decoded.fajrNotification.systemNotificationEnabled)
+            XCTAssertFalse(decoded.fajrNotification.fullScreenNotificationEnabled)
             XCTAssertFalse(decoded.sunriseNotification.isEnabled)
             // Tahajud and Dhuha should default to disabled when missing from old format
             XCTAssertFalse(decoded.tahajudNotification.isEnabled)
@@ -369,12 +359,12 @@ final class PrayerTimesTests: XCTestCase {
 
         var fajrSettings = PrayerNotificationSettings.default
         fajrSettings.useGlobalSettings = false
-        fajrSettings.notificationStyle = .fullScreen
+        fajrSettings.fullScreenNotificationEnabled = true
         fajrSettings.prePrayerMinutes = .minutes_20
         fajrSettings.notificationType = .both
         settings.updateSettings(for: "Fajr", settings: fajrSettings)
 
-        XCTAssertEqual(settings.fajrNotification.notificationStyle, .fullScreen)
+        XCTAssertTrue(settings.fajrNotification.fullScreenNotificationEnabled)
         XCTAssertEqual(settings.fajrNotification.prePrayerMinutes, .minutes_20)
         XCTAssertFalse(settings.fajrNotification.useGlobalSettings)
 
@@ -385,7 +375,7 @@ final class PrayerTimesTests: XCTestCase {
 
         let loadedSettings = NotificationSettings()
         XCTAssertTrue(loadedSettings.fajrNotification.isEnabled)
-        XCTAssertEqual(loadedSettings.fajrNotification.notificationStyle, .fullScreen)
+        XCTAssertTrue(loadedSettings.fajrNotification.fullScreenNotificationEnabled)
         XCTAssertFalse(loadedSettings.dhuhrNotification.isEnabled)
     }
 
@@ -889,7 +879,7 @@ final class PrayerTimesTests: XCTestCase {
         // effectiveSettings should return the global values
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_30
 
         // Fajr uses global settings by default
@@ -898,8 +888,8 @@ final class PrayerTimesTests: XCTestCase {
         let effective = settings.effectiveSettings(for: "Fajr")
         XCTAssertEqual(effective.notificationType, .beforePrayer,
             "effectiveSettings should return global notificationType when useGlobalSettings is true")
-        XCTAssertEqual(effective.notificationStyle, .fullScreen,
-            "effectiveSettings should return global notificationStyle when useGlobalSettings is true")
+        XCTAssertTrue(effective.fullScreenNotificationEnabled,
+            "effectiveSettings should return global fullScreenNotificationEnabled when useGlobalSettings is true")
         XCTAssertEqual(effective.prePrayerMinutes, .minutes_30,
             "effectiveSettings should return global prePrayerMinutes when useGlobalSettings is true")
     }
@@ -907,35 +897,38 @@ final class PrayerTimesTests: XCTestCase {
     func testScheduleNotificationsRespectsCustomOverride() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
 
         // Override Fajr with custom settings
         var fajrCustom = PrayerNotificationSettings.default
         fajrCustom.useGlobalSettings = false
         fajrCustom.notificationType = .atPrayerTime
-        fajrCustom.notificationStyle = .system
+        fajrCustom.systemNotificationEnabled = true
+        fajrCustom.fullScreenNotificationEnabled = false
         settings.updateSettings(for: "Fajr", settings: fajrCustom)
 
         let effective = settings.effectiveSettings(for: "Fajr")
         XCTAssertEqual(effective.notificationType, .atPrayerTime,
             "effectiveSettings should return custom notificationType when useGlobalSettings is false")
-        XCTAssertEqual(effective.notificationStyle, .system,
-            "effectiveSettings should return custom notificationStyle when useGlobalSettings is false")
+        XCTAssertTrue(effective.systemNotificationEnabled,
+            "effectiveSettings should return custom systemNotificationEnabled when useGlobalSettings is false")
+        XCTAssertFalse(effective.fullScreenNotificationEnabled,
+            "effectiveSettings should return custom fullScreenNotificationEnabled when useGlobalSettings is false")
     }
 
     func testGlobalSettingsChangeAffectsAllGlobalPrayers() {
         let settings = NotificationSettings()
 
         // Change global to fullScreen
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.notificationType = .atPrayerTime
         settings.globalSettings.prePrayerMinutes = .minutes_25
 
         let prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"]
         for prayer in prayers {
             let effective = settings.effectiveSettings(for: prayer)
-            XCTAssertEqual(effective.notificationStyle, .fullScreen,
-                "Global style change should affect \(prayer)")
+            XCTAssertTrue(effective.fullScreenNotificationEnabled,
+                "Global fullScreen change should affect \(prayer)")
             XCTAssertEqual(effective.notificationType, .atPrayerTime,
                 "Global type change should affect \(prayer)")
             XCTAssertEqual(effective.prePrayerMinutes, .minutes_25,
@@ -949,23 +942,26 @@ final class PrayerTimesTests: XCTestCase {
         // Set Fajr to custom
         var fajrCustom = PrayerNotificationSettings.default
         fajrCustom.useGlobalSettings = false
-        fajrCustom.notificationStyle = .system
+        fajrCustom.systemNotificationEnabled = true
+        fajrCustom.fullScreenNotificationEnabled = false
         fajrCustom.notificationType = .both
         settings.updateSettings(for: "Fajr", settings: fajrCustom)
 
         // Change global
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
         settings.globalSettings.notificationType = .beforePrayer
 
         let fajrEffective = settings.effectiveSettings(for: "Fajr")
-        XCTAssertEqual(fajrEffective.notificationStyle, .system,
+        XCTAssertTrue(fajrEffective.systemNotificationEnabled,
+            "Custom prayer should not be affected by global change")
+        XCTAssertFalse(fajrEffective.fullScreenNotificationEnabled,
             "Custom prayer should not be affected by global change")
         XCTAssertEqual(fajrEffective.notificationType, .both,
             "Custom prayer should not be affected by global change")
 
         // Dhuhr (still global) should use new global settings
         let dhuhrEffective = settings.effectiveSettings(for: "Dhuhr")
-        XCTAssertEqual(dhuhrEffective.notificationStyle, .fullScreen)
+        XCTAssertTrue(dhuhrEffective.fullScreenNotificationEnabled)
         XCTAssertEqual(dhuhrEffective.notificationType, .beforePrayer)
     }
 
@@ -1049,7 +1045,7 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationSchedulingAtPrayerTimeStyle() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1072,7 +1068,7 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationSchedulingBeforePrayerStyle() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_10
 
         let futureTime = Date().addingTimeInterval(7200)
@@ -1096,7 +1092,7 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationSchedulingBothStyle() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .both
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_10
 
         let futureTime = Date().addingTimeInterval(7200)
@@ -1120,7 +1116,8 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationSchedulingFullScreenCreatesFullScreenEntry() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
+        settings.globalSettings.systemNotificationEnabled = false
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1148,7 +1145,8 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationSchedulingBothStyleCreatesSystemAndFullScreen() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .both
+        settings.globalSettings.systemNotificationEnabled = true
+        settings.globalSettings.fullScreenNotificationEnabled = true
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1174,7 +1172,8 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationCancelRemovesAll() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .both
-        settings.globalSettings.notificationStyle = .both
+        settings.globalSettings.systemNotificationEnabled = true
+        settings.globalSettings.fullScreenNotificationEnabled = true
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1196,7 +1195,7 @@ final class PrayerTimesTests: XCTestCase {
     func testNotificationPreTimingSkipsIfAlreadyPassed() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_30
 
         // Prayer is 20 minutes from now, but pre-notification is 30 minutes before
@@ -1220,7 +1219,7 @@ final class PrayerTimesTests: XCTestCase {
     func testMultiplePrayersScheduleCorrectly() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         let base = Date().addingTimeInterval(3600)
         let prayerTimes: [String: Date] = [
@@ -1249,7 +1248,7 @@ final class PrayerTimesTests: XCTestCase {
     func testDisabledPrayerNotScheduled() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         // Disable Sunrise (already disabled by default)
         XCTAssertFalse(settings.sunriseNotification.isEnabled)
@@ -1409,7 +1408,7 @@ final class PrayerTimesTests: XCTestCase {
     func testSystemNotificationContent() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1440,7 +1439,7 @@ final class PrayerTimesTests: XCTestCase {
     func testPreNotificationContent() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .beforePrayer
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
         settings.globalSettings.prePrayerMinutes = .minutes_10
 
         let futureTime = Date().addingTimeInterval(7200)
@@ -1469,7 +1468,8 @@ final class PrayerTimesTests: XCTestCase {
     func testFullScreenNotificationContent() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .fullScreen
+        settings.globalSettings.fullScreenNotificationEnabled = true
+        settings.globalSettings.systemNotificationEnabled = false
 
         let futureTime = Date().addingTimeInterval(7200)
         NotificationManager.scheduleNotifications(
@@ -1505,7 +1505,7 @@ final class PrayerTimesTests: XCTestCase {
     func testSunnahPrayersNotScheduledWhenNotInPrayerOrder() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         // Enable sunnah notifications
         var tahajudEnabled = PrayerNotificationSettings.default
@@ -1532,7 +1532,7 @@ final class PrayerTimesTests: XCTestCase {
     func testSunnahPrayersScheduledWhenEnabledAndInOrder() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         // Enable Tahajud notifications
         var tahajudEnabled = PrayerNotificationSettings.default
@@ -1559,7 +1559,7 @@ final class PrayerTimesTests: XCTestCase {
     func testSunnahPrayersNotScheduledWhenDisabledEvenInOrder() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         // Tahajud is disabled by default
         XCTAssertFalse(settings.tahajudNotification.isEnabled)
@@ -1586,7 +1586,7 @@ final class PrayerTimesTests: XCTestCase {
     func testDhuhaNotScheduledWhenNotInPrayerOrder() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         var dhuhaEnabled = PrayerNotificationSettings.default
         dhuhaEnabled.isEnabled = true
@@ -1630,7 +1630,7 @@ final class PrayerTimesTests: XCTestCase {
     func testSunriseEffectiveSettingsWhenEnabled() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         var sunriseEnabled = PrayerNotificationSettings.default
         sunriseEnabled.isEnabled = true
@@ -1639,7 +1639,7 @@ final class PrayerTimesTests: XCTestCase {
         let effective = settings.effectiveSettings(for: "Sunrise")
         XCTAssertTrue(effective.isEnabled, "Sunrise should be enabled after explicitly enabling")
         XCTAssertEqual(effective.notificationType, .atPrayerTime, "Should use global notificationType")
-        XCTAssertEqual(effective.notificationStyle, .system, "Should use global notificationStyle")
+        XCTAssertTrue(effective.systemNotificationEnabled, "Should use global systemNotificationEnabled")
     }
 
     func testSunriseIndependentOfSunnahToggle() {
@@ -1669,12 +1669,12 @@ final class PrayerTimesTests: XCTestCase {
         var tahajudSettings = PrayerNotificationSettings.default
         tahajudSettings.isEnabled = true
         tahajudSettings.useGlobalSettings = false
-        tahajudSettings.notificationStyle = .fullScreen
+        tahajudSettings.fullScreenNotificationEnabled = true
         settings.updateSettings(for: "Tahajud", settings: tahajudSettings)
 
         XCTAssertTrue(settings.tahajudNotification.isEnabled)
         XCTAssertFalse(settings.tahajudNotification.useGlobalSettings)
-        XCTAssertEqual(settings.tahajudNotification.notificationStyle, .fullScreen)
+        XCTAssertTrue(settings.tahajudNotification.fullScreenNotificationEnabled)
     }
 
     func testUpdateSettingsForDhuha() {
@@ -1712,7 +1712,7 @@ final class PrayerTimesTests: XCTestCase {
         var tahajudSettings = PrayerNotificationSettings.default
         tahajudSettings.isEnabled = true
         tahajudSettings.useGlobalSettings = false
-        tahajudSettings.notificationStyle = .fullScreen
+        tahajudSettings.fullScreenNotificationEnabled = true
         settings.updateSettings(for: "Tahajud", settings: tahajudSettings)
 
         var dhuhaSettings = PrayerNotificationSettings.default
@@ -1725,7 +1725,7 @@ final class PrayerTimesTests: XCTestCase {
 
             XCTAssertTrue(decoded.tahajudNotification.isEnabled)
             XCTAssertFalse(decoded.tahajudNotification.useGlobalSettings)
-            XCTAssertEqual(decoded.tahajudNotification.notificationStyle, .fullScreen)
+            XCTAssertTrue(decoded.tahajudNotification.fullScreenNotificationEnabled)
 
             XCTAssertTrue(decoded.dhuhaNotification.isEnabled)
             XCTAssertTrue(decoded.dhuhaNotification.useGlobalSettings)
@@ -1737,7 +1737,7 @@ final class PrayerTimesTests: XCTestCase {
     func testAllSunnahPrayersScheduledWhenShowSunnahEnabled() {
         let settings = NotificationSettings()
         settings.globalSettings.notificationType = .atPrayerTime
-        settings.globalSettings.notificationStyle = .system
+        settings.globalSettings.systemNotificationEnabled = true
 
         // Enable all sunnah prayers
         for prayer in ["Sunrise", "Tahajud", "Dhuha"] {

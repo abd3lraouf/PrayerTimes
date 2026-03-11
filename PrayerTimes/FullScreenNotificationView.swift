@@ -14,14 +14,18 @@ struct FullScreenNotificationData {
 // MARK: - Prayer Theme
 
 enum PrayerTheme {
-    case night      // Fajr, Isha, Tahajud
-    case dawn       // Sunrise
-    case day        // Dhuhr, Dhuha
-    case afternoon  // Asr
-    case sunset     // Maghrib
+    case night          // Fajr, Isha, Tahajud
+    case dawn           // Sunrise
+    case day            // Dhuhr, Dhuha
+    case afternoon      // Asr
+    case sunset         // Maghrib
+    case ramadanSuhoor  // Ramadan cannon — pre-Fajr
+    case ramadanIftar   // Ramadan cannon — Maghrib
 
     init(prayerKey: String) {
         switch prayerKey {
+        case "RamadanSuhoor":            self = .ramadanSuhoor
+        case "RamadanIftar":             self = .ramadanIftar
         case "Fajr", "Isha", "Tahajud": self = .night
         case "Sunrise":                  self = .dawn
         case "Dhuhr", "Dhuha":           self = .day
@@ -53,36 +57,50 @@ enum PrayerTheme {
             return [Color(red: 0.15, green: 0.08, blue: 0.20),
                     Color(red: 0.55, green: 0.20, blue: 0.15),
                     Color(red: 0.70, green: 0.35, blue: 0.12)]
+        case .ramadanSuhoor:
+            return [Color(red: 0.02, green: 0.02, blue: 0.10),
+                    Color(red: 0.05, green: 0.04, blue: 0.18),
+                    Color(red: 0.12, green: 0.08, blue: 0.20)]
+        case .ramadanIftar:
+            return [Color(red: 0.08, green: 0.04, blue: 0.18),
+                    Color(red: 0.55, green: 0.15, blue: 0.12),
+                    Color(red: 0.95, green: 0.55, blue: 0.15)]
         }
     }
 
     var glowColor: Color {
         switch self {
-        case .night:     return Color(red: 0.3, green: 0.3, blue: 0.8)
-        case .dawn:      return Color(red: 0.8, green: 0.4, blue: 0.5)
-        case .day:       return Color(red: 0.9, green: 0.85, blue: 0.5)
-        case .afternoon: return Color(red: 0.9, green: 0.7, blue: 0.4)
-        case .sunset:    return Color(red: 0.9, green: 0.4, blue: 0.2)
+        case .night:         return Color(red: 0.3, green: 0.3, blue: 0.8)
+        case .dawn:          return Color(red: 0.8, green: 0.4, blue: 0.5)
+        case .day:           return Color(red: 0.9, green: 0.85, blue: 0.5)
+        case .afternoon:     return Color(red: 0.9, green: 0.7, blue: 0.4)
+        case .sunset:        return Color(red: 0.9, green: 0.4, blue: 0.2)
+        case .ramadanSuhoor: return Color(red: 0.5, green: 0.4, blue: 0.85)
+        case .ramadanIftar:  return Color(red: 1.0, green: 0.6, blue: 0.2)
         }
     }
 
     var iconName: String {
         switch self {
-        case .night:     return "moon.stars.fill"
-        case .dawn:      return "sunrise.fill"
-        case .day:       return "sun.max.fill"
-        case .afternoon: return "sun.haze.fill"
-        case .sunset:    return "sunset.fill"
+        case .night:         return "moon.stars.fill"
+        case .dawn:          return "sunrise.fill"
+        case .day:           return "sun.max.fill"
+        case .afternoon:     return "sun.haze.fill"
+        case .sunset:        return "sunset.fill"
+        case .ramadanSuhoor: return "moon.fill"
+        case .ramadanIftar:  return "sunset.fill"
         }
     }
 
     var cardFill: Color {
         switch self {
-        case .night:     return Color(red: 0.06, green: 0.06, blue: 0.16)
-        case .dawn:      return Color(red: 0.12, green: 0.08, blue: 0.16)
-        case .day:       return Color(red: 0.12, green: 0.20, blue: 0.30)
-        case .afternoon: return Color(red: 0.18, green: 0.18, blue: 0.22)
-        case .sunset:    return Color(red: 0.14, green: 0.08, blue: 0.12)
+        case .night:         return Color(red: 0.06, green: 0.06, blue: 0.16)
+        case .dawn:          return Color(red: 0.12, green: 0.08, blue: 0.16)
+        case .day:           return Color(red: 0.12, green: 0.20, blue: 0.30)
+        case .afternoon:     return Color(red: 0.18, green: 0.18, blue: 0.22)
+        case .sunset:        return Color(red: 0.14, green: 0.08, blue: 0.12)
+        case .ramadanSuhoor: return Color(red: 0.04, green: 0.04, blue: 0.14)
+        case .ramadanIftar:  return Color(red: 0.16, green: 0.08, blue: 0.10)
         }
     }
 }
@@ -276,6 +294,84 @@ struct FullScreenNotificationView: View {
         PrayerTheme(prayerKey: manager.notificationData?.prayerKey ?? "")
     }
 
+    // MARK: - Locale-aware number formatting
+
+    private static func localeFormattedNumber(_ value: Int, minDigits: Int = 1) -> String {
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        let useNative = UserDefaults.standard.object(forKey: StorageKeys.useNativeNumerals) as? Bool ?? true
+        let locale: Locale
+        if LanguageManager.nativeNumeralLanguages.contains(lang) && !useNative {
+            locale = Locale(identifier: "en")
+        } else if let nativeId = ["ar": "ar@numbers=arab", "fa": "fa", "ur": "ur@numbers=arabext"][lang] {
+            locale = Locale(identifier: nativeId)
+        } else {
+            locale = Locale(identifier: lang)
+        }
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .none
+        fmt.minimumIntegerDigits = minDigits
+        fmt.locale = locale
+        return fmt.string(from: NSNumber(value: value)) ?? "\(value)"
+    }
+
+    private static func localeFormattedTime(_ date: Date) -> String {
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        let useNative = UserDefaults.standard.object(forKey: StorageKeys.useNativeNumerals) as? Bool ?? true
+        let locale: Locale
+        if LanguageManager.nativeNumeralLanguages.contains(lang) && !useNative {
+            locale = Locale(identifier: "en")
+        } else if let nativeId = ["ar": "ar@numbers=arab", "fa": "fa", "ur": "ur@numbers=arabext"][lang] {
+            locale = Locale(identifier: nativeId)
+        } else {
+            locale = Locale(identifier: lang)
+        }
+        let fmt = DateFormatter()
+        fmt.locale = locale
+        fmt.timeStyle = .short
+        return fmt.string(from: date)
+    }
+
+    // MARK: - Language-aware fonts
+
+    private static var currentLanguage: String {
+        UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+    }
+
+    private static var isRTLLanguage: Bool {
+        ["ar", "fa", "ur"].contains(currentLanguage)
+    }
+
+    /// Hero font for the prayer name — uses a native serif/nastaliq font per language.
+    private static func prayerNameFont(size: CGFloat) -> Font {
+        switch currentLanguage {
+        case "ar":
+            return .custom("Baghdad", size: size)
+        case "fa":
+            return .custom("Farisi", size: size)
+        case "ur":
+            return .custom("Noto Nastaliq Urdu", size: size)
+        default:
+            return .system(size: size, weight: .bold, design: .serif)
+        }
+    }
+
+    /// Body/UI font — uses appropriate weight per language.
+    private static func bodyFont(size: CGFloat, weight: Font.Weight = .regular) -> Font {
+        if isRTLLanguage {
+            // System Arabic/Farsi/Urdu fonts render best without design variants
+            return .system(size: size, weight: weight)
+        }
+        return .system(size: size, weight: weight)
+    }
+
+    /// Digit font for countdown — avoids monospaced design for RTL languages.
+    private static func digitFont(size: CGFloat, weight: Font.Weight = .ultraLight) -> Font {
+        if isRTLLanguage {
+            return .system(size: size, weight: weight)
+        }
+        return .system(size: size, weight: weight, design: .monospaced)
+    }
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -314,7 +410,7 @@ struct FullScreenNotificationView: View {
                 VStack {
                     Spacer()
                     Text(NSLocalizedString("Tap anywhere or press Dismiss to close", comment: ""))
-                        .font(.system(size: 15, weight: .medium))
+                        .font(Self.bodyFont(size: 14, weight: .medium))
                         .foregroundColor(.white.opacity(appear ? 0.35 : 0))
                         .padding(.bottom, 40)
                         .allowsHitTesting(false)
@@ -355,11 +451,13 @@ struct FullScreenNotificationView: View {
     @ViewBuilder
     private func backgroundView(geo: GeometryProxy) -> some View {
         switch theme {
-        case .night:     NightSceneView(size: geo.size, appear: appear)
-        case .dawn:      DawnSceneView(size: geo.size, appear: appear)
-        case .day:       DaySceneView(size: geo.size, appear: appear)
-        case .afternoon: AfternoonSceneView(size: geo.size, appear: appear)
-        case .sunset:    SunsetSceneView(size: geo.size, appear: appear)
+        case .night:         NightSceneView(size: geo.size, appear: appear)
+        case .dawn:          DawnSceneView(size: geo.size, appear: appear)
+        case .day:           DaySceneView(size: geo.size, appear: appear)
+        case .afternoon:     AfternoonSceneView(size: geo.size, appear: appear)
+        case .sunset:        SunsetSceneView(size: geo.size, appear: appear)
+        case .ramadanSuhoor: SuhoorCannonSceneView(size: geo.size, appear: appear)
+        case .ramadanIftar:  IftarCannonSceneView(size: geo.size, appear: appear)
         }
     }
 
@@ -389,25 +487,26 @@ struct FullScreenNotificationView: View {
 
             // Prayer name
             Text(data.prayerName)
-                .font(.system(size: 56, weight: .bold, design: .rounded))
+                .font(Self.prayerNameFont(size: 52))
                 .foregroundColor(.white)
-                .padding(.bottom, 8)
+                .padding(.bottom, 10)
 
             // Subtitle
             Group {
                 if data.isPreNotification, let minutes = data.minutesBefore {
-                    Text(String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), String(minutes)))
+                    Text(String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""),
+                                Self.localeFormattedNumber(minutes)))
                 } else {
                     Text(NSLocalizedString("prayer_time_now", comment: ""))
                 }
             }
-            .font(.system(size: 24, weight: .medium))
+            .font(Self.bodyFont(size: 22, weight: .medium))
             .foregroundColor(.white.opacity(0.65))
-            .padding(.bottom, 4)
+            .padding(.bottom, 6)
 
             // Prayer time
-            Text(data.prayerTime, style: .time)
-                .font(.system(size: 22, design: .monospaced))
+            Text(Self.localeFormattedTime(data.prayerTime))
+                .font(Self.digitFont(size: 20, weight: .light))
                 .foregroundColor(.white.opacity(0.45))
                 .padding(.bottom, 32)
 
@@ -424,11 +523,11 @@ struct FullScreenNotificationView: View {
             if !data.isPreNotification || remaining <= 0 {
                 VStack(spacing: 8) {
                     Text(NSLocalizedString("prayer_time_urgency", comment: ""))
-                        .font(.system(size: 20, weight: .medium, design: .rounded))
+                        .font(Self.bodyFont(size: 19, weight: .medium))
                         .foregroundColor(.white.opacity(0.85))
                         .multilineTextAlignment(.center)
                     Text(NSLocalizedString("prayer_time_blessing", comment: ""))
-                        .font(.system(size: 15, weight: .regular))
+                        .font(Self.bodyFont(size: 14))
                         .foregroundColor(.white.opacity(0.45))
                         .multilineTextAlignment(.center)
                 }
@@ -439,7 +538,7 @@ struct FullScreenNotificationView: View {
             // Dismiss
             Button(action: dismiss) {
                 Text(NSLocalizedString("Dismiss", comment: ""))
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(Self.bodyFont(size: 17, weight: .semibold))
                     .foregroundColor(.white.opacity(0.85))
                     .frame(width: 220, height: 48)
                     .background(.white.opacity(0.1))
@@ -478,37 +577,37 @@ struct FullScreenNotificationView: View {
 
         return VStack(spacing: 10) {
             Text(NSLocalizedString("Time remaining", comment: ""))
-                .font(.system(size: 13, weight: .bold))
+                .font(Self.bodyFont(size: 12, weight: .semibold))
                 .foregroundColor(.white.opacity(0.4))
                 .textCase(.uppercase)
-                .tracking(3)
+                .tracking(Self.isRTLLanguage ? 0 : 2.5)
 
             HStack(spacing: 0) {
                 if h > 0 {
-                    digitBlock(String(format: "%d", h))
+                    digitBlock(Self.localeFormattedNumber(h))
                     colon
                 }
-                digitBlock(String(format: "%02d", m))
+                digitBlock(Self.localeFormattedNumber(m, minDigits: 2))
                 colon
-                digitBlock(String(format: "%02d", s))
+                digitBlock(Self.localeFormattedNumber(s, minDigits: 2))
             }
         }
     }
 
     private func digitBlock(_ value: String) -> some View {
         Text(value)
-            .font(.system(size: 54, weight: .thin, design: .monospaced))
+            .font(Self.digitFont(size: 48))
             .foregroundColor(.white)
             .monospacedDigit()
-            .frame(minWidth: 64)
+            .frame(minWidth: 58)
     }
 
     private var colon: some View {
         Text(":")
-            .font(.system(size: 42, weight: .thin, design: .monospaced))
+            .font(Self.digitFont(size: 38))
             .foregroundColor(.white.opacity(0.3))
-            .frame(width: 18)
-            .offset(y: -3)
+            .frame(width: 16)
+            .offset(y: -2)
     }
 
     // MARK: - Snooze
@@ -518,17 +617,18 @@ struct FullScreenNotificationView: View {
 
         return VStack(spacing: 12) {
             Text(NSLocalizedString("Remind me in", comment: ""))
-                .font(.system(size: 13, weight: .bold))
+                .font(Self.bodyFont(size: 12, weight: .semibold))
                 .foregroundColor(.white.opacity(0.4))
                 .textCase(.uppercase)
-                .tracking(3)
+                .tracking(Self.isRTLLanguage ? 0 : 2.5)
 
             HStack(spacing: 10) {
                 ForEach(snoozeOptions, id: \.self) { mins in
                     let enabled = minutesLeft > mins
                     Button(action: { manager.snooze(minutes: mins) }) {
-                        Text(String(format: NSLocalizedString("%@ min", comment: ""), String(mins)))
-                            .font(.system(size: 16, weight: .medium))
+                        Text(String(format: NSLocalizedString("%@ min", comment: ""),
+                                    Self.localeFormattedNumber(mins)))
+                            .font(Self.bodyFont(size: 15, weight: .medium))
                             .foregroundColor(enabled ? .white.opacity(0.85) : .white.opacity(0.2))
                             .frame(width: 100, height: 40)
                             .background(enabled ? .white.opacity(0.1) : .white.opacity(0.03))

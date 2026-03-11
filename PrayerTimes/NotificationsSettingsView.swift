@@ -116,15 +116,17 @@ struct NotificationsSettingsView: View {
                 vm.scheduleNotifications()
             }
 
-            StyledPicker(label: "Style", selection: $notificationSettings.globalSettings.notificationStyle) {
-                ForEach(NotificationStyle.allCases) { style in
-                    Text(style.localized).tag(style)
+            StyledToggle(label: "System Notification", isOn: $notificationSettings.globalSettings.systemNotificationEnabled)
+                .onChange(of: notificationSettings.globalSettings.systemNotificationEnabled) { _ in
+                    notificationSettings.save()
+                    vm.scheduleNotifications()
                 }
-            }
-            .onChange(of: notificationSettings.globalSettings.notificationStyle) { _ in
-                notificationSettings.save()
-                vm.scheduleNotifications()
-            }
+
+            StyledToggle(label: "Full Screen", isOn: $notificationSettings.globalSettings.fullScreenNotificationEnabled)
+                .onChange(of: notificationSettings.globalSettings.fullScreenNotificationEnabled) { _ in
+                    notificationSettings.save()
+                    vm.scheduleNotifications()
+                }
 
             if notificationSettings.globalSettings.notificationType == .beforePrayer || notificationSettings.globalSettings.notificationType == .both {
                 StyledPicker(label: "Remind Before", selection: $notificationSettings.globalSettings.prePrayerMinutes) {
@@ -218,19 +220,25 @@ struct PrayerNotificationRow: View {
                             }
                         }
 
-                        StyledPicker(label: "Style", selection: Binding(
-                            get: { settings.notificationStyle },
+                        StyledToggle(label: "System Notification", isOn: Binding(
+                            get: { settings.systemNotificationEnabled },
                             set: { newValue in
                                 var s = settings
-                                s.notificationStyle = newValue
+                                s.systemNotificationEnabled = newValue
                                 notificationSettings.updateSettings(for: prayerName, settings: s)
                                 vm.scheduleNotifications()
                             }
-                        )) {
-                            ForEach(NotificationStyle.allCases) { style in
-                                Text(style.localized).tag(style)
+                        ))
+
+                        StyledToggle(label: "Full Screen", isOn: Binding(
+                            get: { settings.fullScreenNotificationEnabled },
+                            set: { newValue in
+                                var s = settings
+                                s.fullScreenNotificationEnabled = newValue
+                                notificationSettings.updateSettings(for: prayerName, settings: s)
+                                vm.scheduleNotifications()
                             }
-                        }
+                        ))
 
                         if settings.notificationType == .beforePrayer || settings.notificationType == .both {
                             StyledPicker(label: "Remind Before", selection: Binding(

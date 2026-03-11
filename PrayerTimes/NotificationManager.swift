@@ -70,10 +70,7 @@ struct NotificationManager {
             guard prayerSettings.isEnabled else { continue }
 
             let localizedPrayerName = NSLocalizedString(prayerName, comment: "")
-            let style = prayerSettings.notificationStyle
-            let needsSystemNotification = (style == .system || style == .both)
-
-            guard needsSystemNotification else { continue }
+            guard prayerSettings.systemNotificationEnabled else { continue }
 
             switch prayerSettings.notificationType {
             case .atPrayerTime:
@@ -122,10 +119,7 @@ struct NotificationManager {
 
             guard prayerSettings.isEnabled else { continue }
 
-            let style = prayerSettings.notificationStyle
-            let needsFullScreen = (style == .fullScreen || style == .both)
-
-            guard needsFullScreen else { continue }
+            guard prayerSettings.fullScreenNotificationEnabled else { continue }
 
             switch prayerSettings.notificationType {
             case .atPrayerTime:
@@ -254,8 +248,15 @@ struct NotificationManager {
             if now >= scheduledFullScreenNotifications[i].fireDate {
                 scheduledFullScreenNotifications[i].hasFired = true
                 let n = scheduledFullScreenNotifications[i]
+                // Map Ramadan keys to localized display names
+                let displayName: String
+                switch n.prayerName {
+                case "RamadanSuhoor": displayName = NSLocalizedString("Suhoor", comment: "")
+                case "RamadanIftar":  displayName = NSLocalizedString("Iftar", comment: "")
+                default:              displayName = NSLocalizedString(n.prayerName, comment: "")
+                }
                 FullScreenNotificationManager.shared.showFullScreenNotification(
-                    prayerName: NSLocalizedString(n.prayerName, comment: ""),
+                    prayerName: displayName,
                     prayerKey: n.prayerName,
                     prayerTime: n.fireDate,
                     isPreNotification: n.isPreNotification,
@@ -282,12 +283,16 @@ struct NotificationManager {
 
     static func scheduleFastingNotifications(
         prayerTimes: [String: Date],
-        fastingManager: FastingModeManager
+        fastingManager: FastingModeManager,
+        settings: NotificationSettings? = nil
     ) {
         guard fastingManager.isFastingModeEnabled else { return }
 
         let suhoorMinutes = UserDefaults.standard.object(forKey: StorageKeys.suhoorPreAlertMinutes) as? Int ?? 30
         let iftarEnabled = UserDefaults.standard.object(forKey: StorageKeys.iftarNotificationEnabled) as? Bool ?? true
+        // Respect full-screen preference: use Fajr settings for Suhoor, Maghrib for Iftar
+        let suhoorFullScreen = settings?.effectiveSettings(for: "Fajr").fullScreenNotificationEnabled ?? false
+        let iftarFullScreen = settings?.effectiveSettings(for: "Maghrib").fullScreenNotificationEnabled ?? false
         let duaEnabled = UserDefaults.standard.bool(forKey: StorageKeys.duaRemindersEnabled)
         let taraweehEnabled = UserDefaults.standard.bool(forKey: StorageKeys.taraweehReminderEnabled)
         let taraweehMinutes = UserDefaults.standard.object(forKey: StorageKeys.taraweehMinutesAfterIsha) as? Int ?? 30
@@ -302,6 +307,15 @@ struct NotificationManager {
                     body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), LanguageManager.formatNumberStatic(suhoorMinutes)),
                     at: preTime
                 )
+                // Full-screen Ramadan cannon notification for Suhoor
+                if suhoorFullScreen {
+                    scheduleFullScreenTimer(
+                        prayerName: "RamadanSuhoor",
+                        fireDate: preTime,
+                        isPreNotification: true,
+                        minutesBefore: suhoorMinutes
+                    )
+                }
             }
         }
 
@@ -325,6 +339,15 @@ struct NotificationManager {
                 body: NSLocalizedString("iftar_time_body", comment: ""),
                 at: maghrib
             )
+            // Full-screen Ramadan cannon notification for Iftar
+            if iftarFullScreen {
+                scheduleFullScreenTimer(
+                    prayerName: "RamadanIftar",
+                    fireDate: maghrib,
+                    isPreNotification: false,
+                    minutesBefore: nil
+                )
+            }
 
             if duaEnabled {
                 scheduleSimpleNotification(

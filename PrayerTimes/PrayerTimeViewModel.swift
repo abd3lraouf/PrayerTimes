@@ -660,7 +660,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         }
 
         if let fm = fastingManager, fm.isFastingModeEnabled {
-            NotificationManager.scheduleFastingNotifications(prayerTimes: todayTimes, fastingManager: fm)
+            NotificationManager.scheduleFastingNotifications(prayerTimes: todayTimes, fastingManager: fm, settings: notificationSettings)
         }
     }
     
