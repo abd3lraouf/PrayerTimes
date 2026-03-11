@@ -143,11 +143,11 @@
 /* Notification Messages */
 "It's time for the %@ prayer." = "حان وقت صلاة %@.";
 "prayer_in_minutes_notification" = "الصلاة بعد %@ دقيقة";
-"prayer_coming_in_minutes" = "الصلاة بعد %@ دقيقة";
+"prayer_coming_in_minutes" = "الصلاة بعد %d دقيقة";
 "prayer_time_now" = "حان وقت الصلاة";
-"suhoor_ends_in_minutes" = "ينتهي السحور خلال %@ دقيقة — استعد لصلاة الفجر";
+"suhoor_ends_in_minutes" = "ينتهي السحور خلال %d دقيقة — استعد لصلاة الفجر";
 "suhoor_ended_prepare_fajr" = "انتهى السحور — حان وقت صلاة الفجر";
-"iftar_in_minutes" = "الإفطار خلال %@ دقيقة — استعد لصلاة المغرب";
+"iftar_in_minutes" = "الإفطار خلال %d دقيقة — استعد لصلاة المغرب";
 "iftar_time_pray_maghrib" = "حان وقت الإفطار — صلّ المغرب";
 "prayer_time_urgency" = "قُم الآن ولبِّ نداء الصلاة";
 "prayer_time_blessing" = "كل صلاة تُؤدّى في وقتها نورٌ لقلبك";

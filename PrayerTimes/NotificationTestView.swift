@@ -171,7 +171,7 @@ struct NotificationTestView: View {
     private func testSystemPre() {
         let content = UNMutableNotificationContent()
         content.title = displayName
-        content.body = String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), String(selectedMinutes))
+        content.body = String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""), locale: Locale.current, selectedMinutes)
         content.sound = .default
         content.categoryIdentifier = "PRAYER_PRE"
         content.userInfo = [

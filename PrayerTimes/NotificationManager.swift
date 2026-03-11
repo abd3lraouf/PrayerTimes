@@ -304,7 +304,7 @@ struct NotificationManager {
                 scheduleSimpleNotification(
                     id: "fasting_suhoor_pre",
                     title: NSLocalizedString("Suhoor", comment: ""),
-                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), LanguageManager.formatNumberStatic(suhoorMinutes)),
+                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), suhoorMinutes),
                     at: preTime
                 )
                 // Full-screen Ramadan cannon notification for Suhoor

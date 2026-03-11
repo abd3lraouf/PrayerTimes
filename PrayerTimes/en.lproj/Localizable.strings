@@ -143,11 +143,11 @@
 /* Notification Messages */
 "It's time for the %@ prayer." = "It's time for the %@ prayer.";
 "prayer_in_minutes_notification" = "Prayer in %@ minutes";
-"prayer_coming_in_minutes" = "Prayer in %@ minutes";
+"prayer_coming_in_minutes" = "Prayer in %d minutes";
 "prayer_time_now" = "It's time for prayer";
-"suhoor_ends_in_minutes" = "Suhoor ends in %@ minutes — prepare for Fajr";
+"suhoor_ends_in_minutes" = "Suhoor ends in %d minutes — prepare for Fajr";
 "suhoor_ended_prepare_fajr" = "Suhoor has ended — time for Fajr";
-"iftar_in_minutes" = "Iftar in %@ minutes — prepare for Maghrib";
+"iftar_in_minutes" = "Iftar in %d minutes — prepare for Maghrib";
 "iftar_time_pray_maghrib" = "It's Iftar — time for Maghrib";
 "prayer_time_urgency" = "Rise now and answer the call to prayer";
 "prayer_time_blessing" = "Every prayer offered on time is a gift to your soul";

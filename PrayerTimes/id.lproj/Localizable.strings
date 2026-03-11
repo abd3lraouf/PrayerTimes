@@ -143,11 +143,11 @@
 /* Notification Messages */
 "It's time for the %@ prayer." = "Saatnya shalat %@.";
 "prayer_in_minutes_notification" = "Shalat dalam %@ menit";
-"prayer_coming_in_minutes" = "Shalat dalam %@ menit";
+"prayer_coming_in_minutes" = "Shalat dalam %d menit";
 "prayer_time_now" = "Saatnya shalat";
-"suhoor_ends_in_minutes" = "Sahur berakhir dalam %@ menit — bersiap untuk Subuh";
+"suhoor_ends_in_minutes" = "Sahur berakhir dalam %d menit — bersiap untuk Subuh";
 "suhoor_ended_prepare_fajr" = "Sahur telah berakhir — saatnya shalat Subuh";
-"iftar_in_minutes" = "Berbuka dalam %@ menit — bersiap untuk Maghrib";
+"iftar_in_minutes" = "Berbuka dalam %d menit — bersiap untuk Maghrib";
 "iftar_time_pray_maghrib" = "Saatnya berbuka — shalat Maghrib";
 "prayer_time_urgency" = "Bangkitlah sekarang dan sambut panggilan shalat";
 "prayer_time_blessing" = "Setiap shalat yang dikerjakan tepat waktu adalah hadiah bagi jiwamu";

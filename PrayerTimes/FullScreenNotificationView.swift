@@ -296,21 +296,22 @@ struct FullScreenNotificationView: View {
 
     // MARK: - Locale-aware number formatting
 
-    private static func localeFormattedNumber(_ value: Int, minDigits: Int = 1) -> String {
+    private static var numeralLocale: Locale {
         let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
         let useNative = UserDefaults.standard.object(forKey: StorageKeys.useNativeNumerals) as? Bool ?? true
-        let locale: Locale
         if LanguageManager.nativeNumeralLanguages.contains(lang) && !useNative {
-            locale = Locale(identifier: "en")
+            return Locale(identifier: "en")
         } else if let nativeId = ["ar": "ar@numbers=arab", "fa": "fa", "ur": "ur@numbers=arabext"][lang] {
-            locale = Locale(identifier: nativeId)
-        } else {
-            locale = Locale(identifier: lang)
+            return Locale(identifier: nativeId)
         }
+        return Locale(identifier: lang)
+    }
+
+    private static func localeFormattedNumber(_ value: Int, minDigits: Int = 1) -> String {
         let fmt = NumberFormatter()
         fmt.numberStyle = .none
         fmt.minimumIntegerDigits = minDigits
-        fmt.locale = locale
+        fmt.locale = numeralLocale
         return fmt.string(from: NSNumber(value: value)) ?? "\(value)"
     }
 
@@ -387,24 +388,30 @@ struct FullScreenNotificationView: View {
     /// Subtitle shown below the prayer name.
     /// Ramadan scenes show a contextual message referencing Suhoor / Iftar.
     /// Uses Int argument for stringsdict plural rule compatibility.
+    /// Format a stringsdict plural string with an Int, using the app's numeral locale.
+    /// This lets stringsdict pick the correct plural form (zero/one/two/few/many/other)
+    /// while `%d` renders in locale-aware digits (e.g. Arabic-Indic ٥ instead of 5).
+    private static func localizedPluralString(_ key: String, count: Int) -> String {
+        String(format: NSLocalizedString(key, comment: ""),
+               locale: numeralLocale,
+               count)
+    }
+
     private static func displaySubtitle(for data: FullScreenNotificationData) -> String {
         switch data.prayerKey {
         case "RamadanSuhoor":
             if data.isPreNotification, let minutes = data.minutesBefore {
-                return String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""),
-                              localeFormattedNumber(minutes))
+                return localizedPluralString("suhoor_ends_in_minutes", count: minutes)
             }
             return NSLocalizedString("suhoor_ended_prepare_fajr", comment: "")
         case "RamadanIftar":
             if data.isPreNotification, let minutes = data.minutesBefore {
-                return String(format: NSLocalizedString("iftar_in_minutes", comment: ""),
-                              localeFormattedNumber(minutes))
+                return localizedPluralString("iftar_in_minutes", count: minutes)
             }
             return NSLocalizedString("iftar_time_pray_maghrib", comment: "")
         default:
             if data.isPreNotification, let minutes = data.minutesBefore {
-                return String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""),
-                              localeFormattedNumber(minutes))
+                return localizedPluralString("prayer_coming_in_minutes", count: minutes)
             }
             return NSLocalizedString("prayer_time_now", comment: "")
         }
