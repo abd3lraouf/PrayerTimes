@@ -140,7 +140,7 @@ struct CelestialBody: View {
         case sun(radius: CGFloat)
         /// Creates a crescent by overlaying a dark circle offset from a bright one.
         case crescent(radius: CGFloat, shadowOffset: CGFloat)
-        /// A circle clipped to its bottom half — used for the sunrise/sunset disc.
+        /// A circle clipped to its top half — used for the sunrise/sunset disc.
         case halfDisc(radius: CGFloat)
     }
 
@@ -252,9 +252,7 @@ struct CelestialBody: View {
                     )
                 )
                 .frame(width: radius * 2, height: radius * 2)
-                // Clip to lower half only so it appears rising over the horizon.
-                // BottomHalfClip is a Path-based Shape that masks everything above
-                // the vertical midpoint of its bounding rect.
+                // Clip to upper half so it appears rising over the horizon.
                 .clipShape(TopHalfClip())
         }
     }
@@ -483,7 +481,7 @@ private struct DunePath: View {
             let c4a = CGPoint(x: w * 0.80 + phaseShift, y: baseY - duneHeight * 0.20)
             let c4b = CGPoint(x: w * 0.90 + phaseShift, y: baseY + duneHeight * 0.10)
             let p4  = CGPoint(x: w,                      y: baseY + duneHeight * 0.20)
-            path.addCurve(to: p4, control1: c4a, control2: c4b)
+            path.addCurve(to: p4, control1: c4a.clampedX(w), control2: c4b.clampedX(w))
 
             // Close down to the bottom-right corner
             path.addLine(to: CGPoint(x: w, y: h))
