@@ -36,10 +36,10 @@ PrayerTheme (enum)           — unchanged mapping, adds new properties
 
 ### PrayerTheme Extensions
 
-Add to existing enum:
-- `sceneElements: [SceneElement]` — declares which elements each theme uses
+Changes to existing enum:
 - Remove `showStars` (replaced by scene-level composition)
 - Keep `gradientColors`, `glowColor`, `iconName`, `cardFill` unchanged
+- Theme-to-scene dispatch handled via `switch` in `backgroundView`, no new properties needed
 
 ---
 
