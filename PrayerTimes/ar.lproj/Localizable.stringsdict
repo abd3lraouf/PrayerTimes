@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>prayer_coming_in_minutes</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>%#@minutes@</string>
+        <key>minutes</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>zero</key>
+            <string>الصلاة الآن</string>
+            <key>one</key>
+            <string>الصلاة بعد دقيقة</string>
+            <key>two</key>
+            <string>الصلاة بعد دقيقتين</string>
+            <key>few</key>
+            <string>الصلاة بعد %d دقائق</string>
+            <key>many</key>
+            <string>الصلاة بعد %d دقيقة</string>
+            <key>other</key>
+            <string>الصلاة بعد %d دقيقة</string>
+        </dict>
+    </dict>
+    <key>suhoor_ends_in_minutes</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>السحور ينتهي بعد %#@minutes@</string>
+        <key>minutes</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>zero</key>
+            <string>الآن</string>
+            <key>one</key>
+            <string>دقيقة</string>
+            <key>two</key>
+            <string>دقيقتين</string>
+            <key>few</key>
+            <string>%d دقائق</string>
+            <key>many</key>
+            <string>%d دقيقة</string>
+            <key>other</key>
+            <string>%d دقيقة</string>
+        </dict>
+    </dict>
+</dict>
+</plist>

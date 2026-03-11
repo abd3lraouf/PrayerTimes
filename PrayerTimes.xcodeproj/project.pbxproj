@@ -41,6 +41,7 @@
 		CC969C7F2E60857D00C8630A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC969C7E2E60857D00C8630A /* Preview Assets.xcassets */; };
 		CC969C8A2E60857E00C8630A /* PrayerTimesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C892E60857E00C8630A /* PrayerTimesTests.swift */; };
 		38DFE3755C90931B1465F8F4 /* ColorContrastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */; };
+		A1B2C3D4E5F60001DEADBEEF /* FullScreenNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002DEADBEEF /* FullScreenNotificationTests.swift */; };
 		CC969C942E60857E00C8630A /* PrayerTimesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */; };
 		CC969C962E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */; };
 		CC969CA32E6085F200C8630A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC969CA22E6085F200C8630A /* Info.plist */; };
@@ -71,10 +72,13 @@
 		E540B73AD9E7315C46D7AA19 /* FastingModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D329B7601767339D948D68 /* FastingModeManager.swift */; };
 		EF58A708A057A6938710ECE9 /* Inter-LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 496052EA3F65C5BFC45AD9BD /* Inter-LICENSE.txt */; };
 		F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */; };
+		6755689CAAB244A48F4241FE /* SceneElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = E713EA076E38477BB973D909 /* SceneElements.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* PrayerSceneViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6071829A1B2C3D45E6F /* PrayerSceneViews.swift */; };
 		F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA1602F5B512200C702DC /* SystemSettingsView.swift */; };
 		F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15E2F5B512200C702DC /* NotificationSettings.swift */; };
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
 		FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */; };
+		A0B27A1AD18C4FE6B277241E /* NotificationTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +147,7 @@
 		CC969C852E60857E00C8630A /* PrayerTimesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC969C892E60857E00C8630A /* PrayerTimesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesTests.swift; sourceTree = "<group>"; };
 		B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorContrastTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002DEADBEEF /* FullScreenNotificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNotificationTests.swift; sourceTree = "<group>"; };
 		CC969C8F2E60857E00C8630A /* PrayerTimesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC969C932E60857E00C8630A /* PrayerTimesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesUITests.swift; sourceTree = "<group>"; };
 		CC969C952E60857E00C8630A /* PrayerTimesUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -174,11 +179,14 @@
 		CE24B45B25C2F5B6FBD79DE7 /* PrayerTimesScreenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrayerTimesScreenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6D329B7601767339D948D68 /* FastingModeManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FastingModeManager.swift; sourceTree = "<group>"; };
 		F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenNotificationView.swift; sourceTree = "<group>"; };
+		E713EA076E38477BB973D909 /* SceneElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneElements.swift; sourceTree = "<group>"; };
+		D4E5F6071829A1B2C3D45E6F /* PrayerSceneViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerSceneViews.swift; sourceTree = "<group>"; };
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+		6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTestView.swift; sourceTree = "<group>"; };
 /* Begin PBXFrameworksBuildPhase section */
 		68ECB7F49EA4DBB967D307B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -307,6 +315,8 @@
 				CC4659602E661CC400159A83 /* TextFieldStepper.swift */,
 				CC4659642E6629C000159A83 /* PrayerTimesStepper.swift */,
 				F45FA15D2F5B512200C702DC /* FullScreenNotificationView.swift */,
+				E713EA076E38477BB973D909 /* SceneElements.swift */,
+				D4E5F6071829A1B2C3D45E6F /* PrayerSceneViews.swift */,
 				F45FA15E2F5B512200C702DC /* NotificationSettings.swift */,
 				F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */,
 				F45FA1602F5B512200C702DC /* SystemSettingsView.swift */,
@@ -317,6 +327,7 @@
 				45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */,
 				43E050B467AE13BA8195B50C /* IslamicEvents.swift */,
 				E9270E59ADC4AAEA6FD440BB /* Fonts */,
+				6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */,
 			);
 			path = PrayerTimes;
 			sourceTree = "<group>";
@@ -334,6 +345,7 @@
 			children = (
 				CC969C892E60857E00C8630A /* PrayerTimesTests.swift */,
 				B16C08E2F5D84CD5DEB1D1C6 /* ColorContrastTests.swift */,
+				A1B2C3D4E5F60002DEADBEEF /* FullScreenNotificationTests.swift */,
 			);
 			path = PrayerTimesTests;
 			sourceTree = "<group>";
@@ -591,6 +603,8 @@
 				CCE1BA3F2E61852B003AF03C /* FluidMenuBarExtraWindow.swift in Sources */,
 				CCEC0E4F2E60D2EC001E9B1E /* NotificationManager.swift in Sources */,
 				F45FA1612F5B512200C702DC /* FullScreenNotificationView.swift in Sources */,
+				6755689CAAB244A48F4241FE /* SceneElements.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* PrayerSceneViews.swift in Sources */,
 				F45FA1622F5B512200C702DC /* SystemSettingsView.swift in Sources */,
 				F45FA1632F5B512200C702DC /* NotificationSettings.swift in Sources */,
 				F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */,
@@ -615,6 +629,7 @@
 				D3311CB91BF00E39D5607CD6 /* HijriCalendarView.swift in Sources */,
 				FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */,
 				016C6E29FE6809424777457A /* IslamicEvents.swift in Sources */,
+				A0B27A1AD18C4FE6B277241E /* NotificationTestView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,6 +639,7 @@
 			files = (
 				CC969C8A2E60857E00C8630A /* PrayerTimesTests.swift in Sources */,
 				38DFE3755C90931B1465F8F4 /* ColorContrastTests.swift in Sources */,
+				A1B2C3D4E5F60001DEADBEEF /* FullScreenNotificationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -835,7 +851,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -864,7 +880,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -882,7 +898,7 @@
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -901,7 +917,7 @@
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -918,7 +934,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -935,7 +951,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.6.0;
+				MARKETING_VERSION = 2.7.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;

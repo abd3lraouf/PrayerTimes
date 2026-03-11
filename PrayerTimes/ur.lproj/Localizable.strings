@@ -144,6 +144,8 @@
 "prayer_in_minutes_notification" = "نماز %@ منٹ میں";
 "prayer_coming_in_minutes" = "نماز %@ منٹ میں";
 "prayer_time_now" = "نماز کا وقت ہو گیا ہے";
+"prayer_time_urgency" = "ابھی اُٹھیں اور نماز کی پکار پر لبیک کہیں";
+"prayer_time_blessing" = "ہر نماز جو وقت پر ادا کی جائے، روح کے لیے ایک تحفہ ہے";
 
 /* Full Screen Notification */
 "Dismiss" = "بند کریں";
@@ -232,3 +234,34 @@
 "English" = "انگریزی";
 "العربية" = "عربی";
 "Indonesia" = "انڈونیشیائی";
+
+/* Notification Testing (DEBUG only) */
+"Test Notifications" = "اطلاعات کا امتحان";
+"Notification Testing" = "اطلاعات کا امتحان";
+"Select Prayer" = "نماز منتخب کریں";
+"Prayer" = "نماز";
+"Full Screen Notification" = "پوری اسکرین اطلاعات";
+"Test Now" = "ابھی امتحان کریں";
+"Pre-notify" = "پہلے اطلاع دیں";
+"System Notification" = "سسٹم اطلاعات";
+"Test At Time" = "وقت پر امتحان کریں";
+"Test Pre-Notification" = "پہلے کی اطلاع کا امتحان";
+"Quick Tests" = "تیز امتحان";
+"Tips:" = "نکات:";
+"Right-click menu bar icon for quick actions" = "فوری کارروائی کے لیے مینو بار آئیکن پر دائیں کلک کریں";
+"System notifications show snooze options" = "سسٹم کی اطلاعات میں نیند کے اختیارات دکھاتے ہیں";
+"Full screen appears above all windows" = "پوری اسکرین تمام ونڈوز کے اوپر ظاہر ہوتی ہے";
+"Full screen notification triggered" = "پوری اسکرین اطلاعات فعال ہو گئی";
+"Full screen pre-notification triggered" = "پوری اسکرین پہلے کی اطلاع فعال ہو گئی";
+"System notification sent" = "سسٹم کی اطلاعات بھیج دی گئی";
+"System pre-notification sent" = "سسٹم کی پہلے کی اطلاع بھیج دی گئی";
+"Snooze %@ min" = "%@ منٹ نیند";
+"Snoozed reminder" = "یاد دہانی ملتوی";
+"Show next prayer" = "اگلی نماز دکھائیں";
+"Refresh prayer times" = "نماز کے اوقات تازہ کریں";
+"Error: %@" = "خرابی: %@";
+"Remind me in" = "مجھے یاد دلائیں";
+"%@ min" = "%@ منٹ";
+"Time remaining" = "باقی وقت";
+"Tap anywhere or press Dismiss to close" = "بند کرنے کے لیے کہیں بھی کلک کریں یا بند کریں دبائیں";
+"Countdown" = "الٹی گنتی";

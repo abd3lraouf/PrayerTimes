@@ -23,7 +23,6 @@ struct AboutView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            // Header
             Button(action: handleBackButton) {
                 HStack {
                     Image(systemName: layoutDirection == .rightToLeft ? "chevron.right" : "chevron.left")
@@ -47,7 +46,6 @@ struct AboutView: View {
 
             ScrollView {
                 VStack(spacing: 16) {
-                    // Hero: App Icon + Name + Version Badge
                     VStack(spacing: 10) {
                         Image(nsImage: NSImage(named: "AppIcon") ?? NSImage())
                             .resizable()
@@ -73,7 +71,6 @@ struct AboutView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.top, 4)
 
-                    // Description
                     Text("A simple and beautiful prayer times app for your menu bar.")
                         .font(.caption)
                         .foregroundColor(Color("SecondaryTextColor"))
@@ -85,7 +82,6 @@ struct AboutView: View {
                         .frame(height: 0.5)
                         .padding(.horizontal, 4)
 
-                    // Credits
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Credits")
                             .font(.caption)
@@ -112,7 +108,6 @@ struct AboutView: View {
                         .frame(height: 0.5)
                         .padding(.horizontal, 4)
 
-                    // Options
                     StyledToggle(label: "Show Welcome Guide on Launch", isOn: $showOnboardingAtLaunch)
                 }
                 .padding(.horizontal, 16)

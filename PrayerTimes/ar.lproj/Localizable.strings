@@ -145,6 +145,8 @@
 "prayer_in_minutes_notification" = "الصلاة بعد %@ دقيقة";
 "prayer_coming_in_minutes" = "الصلاة بعد %@ دقيقة";
 "prayer_time_now" = "حان وقت الصلاة";
+"prayer_time_urgency" = "قُم الآن ولبِّ نداء الصلاة";
+"prayer_time_blessing" = "كل صلاة تُؤدّى في وقتها نورٌ لقلبك";
 
 /* Full Screen Notification */
 "Dismiss" = "إغلاق";
@@ -267,3 +269,34 @@
 "English" = "الإنجليزية";
 "العربية" = "العربية";
 "Indonesia" = "الإندونيسية";
+
+/* Notification Testing (DEBUG only) */
+"Test Notifications" = "اختبار الإشعارات";
+"Notification Testing" = "اختبار الإشعارات";
+"Select Prayer" = "اختر الصلاة";
+"Prayer" = "الصلاة";
+"Full Screen Notification" = "إشعار ملء الشاشة";
+"Test Now" = "اختبار الآن";
+"Pre-notify" = "إشعار مسبق";
+"System Notification" = "إشعار النظام";
+"Test At Time" = "اختبار عند الوقت";
+"Test Pre-Notification" = "اختبار الإشعار المسبق";
+"Quick Tests" = "اختبارات سريعة";
+"Tips:" = "نصائح:";
+"Right-click menu bar icon for quick actions" = "انقر بزر الماوس الأيمن على أيقونة شريط القائمة للإجراءات السريعة";
+"System notifications show snooze options" = "إشعارات النظام تظهر خيارات التأجيل";
+"Full screen appears above all windows" = "ملء الشاشة يظهر فوق جميع النوافذ";
+"Full screen notification triggered" = "تم تشغيل إشعار ملء الشاشة";
+"Full screen pre-notification triggered" = "تم تشغيل الإشعار المسبق لملء الشاشة";
+"System notification sent" = "تم إرسال إشعار النظام";
+"System pre-notification sent" = "تم إرسال الإشعار المسبق للنظام";
+"Snooze %@ min" = "تأجيل %@ د";
+"Snoozed reminder" = "تذكير مؤجل";
+"Show next prayer" = "إظهار الصلاة التالية";
+"Refresh prayer times" = "تحديث أوقات الصلاة";
+"Error: %@" = "خطأ: %@";
+"Remind me in" = "ذكّرني بعد";
+"%@ min" = "%@ د";
+"Time remaining" = "الوقت المتبقي";
+"Tap anywhere or press Dismiss to close" = "انقر في أي مكان أو اضغط إغلاق للخروج";
+"Countdown" = "العد التنازلي";

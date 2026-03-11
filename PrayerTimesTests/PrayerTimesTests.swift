@@ -1278,6 +1278,7 @@ final class PrayerTimesTests: XCTestCase {
         let now = Date()
         let data = FullScreenNotificationData(
             prayerName: "Fajr",
+            prayerKey: "Fajr",
             prayerTime: now,
             isPreNotification: false,
             minutesBefore: nil
@@ -1292,6 +1293,7 @@ final class PrayerTimesTests: XCTestCase {
         let now = Date()
         let data = FullScreenNotificationData(
             prayerName: "Dhuhr",
+            prayerKey: "Dhuhr",
             prayerTime: now,
             isPreNotification: true,
             minutesBefore: 10
@@ -1386,6 +1388,7 @@ final class PrayerTimesTests: XCTestCase {
         // because they trigger NSWindow creation which crashes in unit tests.
         let data = FullScreenNotificationData(
             prayerName: "Asr",
+            prayerKey: "Asr",
             prayerTime: Date(),
             isPreNotification: false,
             minutesBefore: nil

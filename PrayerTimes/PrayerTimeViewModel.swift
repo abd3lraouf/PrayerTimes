@@ -526,11 +526,19 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
     private func createMenuTitle(_ text: String, color: NSColor? = nil) -> NSAttributedString {
         let isRTL = languageManager.isRTLEnabled
+        let font = NSFont.menuBarFont(ofSize: 0)
 
         var attributes: [NSAttributedString.Key: Any] = [
             .paragraphStyle: isRTL ? rtlParagraphStyle : ltrParagraphStyle,
-            .font: NSFont.menuBarFont(ofSize: 0)
+            .font: font
         ]
+
+        if isRTL {
+            // Arabic glyphs extend further below the baseline than Latin,
+            // pushing the text up relative to the icon. Shift the text down
+            // so the baselines of the text and the SF Symbol icon align.
+            attributes[.baselineOffset] = -1.0
+        }
 
         if let color = color {
             attributes[.foregroundColor] = color

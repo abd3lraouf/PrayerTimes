@@ -256,6 +256,7 @@ struct NotificationManager {
                 let n = scheduledFullScreenNotifications[i]
                 FullScreenNotificationManager.shared.showFullScreenNotification(
                     prayerName: NSLocalizedString(n.prayerName, comment: ""),
+                    prayerKey: n.prayerName,
                     prayerTime: n.fireDate,
                     isPreNotification: n.isPreNotification,
                     minutesBefore: n.minutesBefore
@@ -448,4 +449,5 @@ struct NotificationManager {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: eventIds)
         }
     }
+    
 }

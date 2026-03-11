@@ -14,6 +14,9 @@ struct SettingsView: View {
     @State private var isSystemHovering = false
     @State private var isHijriHovering = false
     @State private var isFastingHovering = false
+    #if DEBUG
+    @State private var isTestHovering = false
+    #endif
 
     private var viewWidth: CGFloat {
         return vm.useCompactLayout ? 280 : 330
@@ -120,6 +123,28 @@ struct SettingsView: View {
                         }
                         .padding(.vertical, 5).padding(.horizontal, 8).background(isSystemHovering ? Color("HoverColor") : .clear).cornerRadius(5)
                     }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isSystemHovering = hovering }
+                    
+                    #if DEBUG
+                    Rectangle()
+                        .fill(Color("DividerColor"))
+                        .frame(height: 0.5)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 4)
+                    
+                    Button(action: { NotificationTestWindowController.shared.show(languageManager: languageManager) }) {
+                        HStack {
+                            Image(systemName: "bell.badge.waveform")
+                                .font(.subheadline)
+                                .foregroundColor(.orange)
+                            Text("Test Notifications").font(.subheadline)
+                            Spacer()
+                            Image(systemName: "arrow.up.forward.square")
+                                .font(.caption.weight(.bold))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 5).padding(.horizontal, 8).background(isTestHovering ? Color("HoverColor") : .clear).cornerRadius(5)
+                    }.buttonStyle(.plain).padding(.horizontal, 5).onHover { hovering in isTestHovering = hovering }
+                    #endif
                 }
             }
             .padding(.vertical, 8)

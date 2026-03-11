@@ -144,6 +144,8 @@
 "prayer_in_minutes_notification" = "نماز تا %@ دقیقه دیگر";
 "prayer_coming_in_minutes" = "نماز تا %@ دقیقه دیگر";
 "prayer_time_now" = "وقت نماز فرا رسیده است";
+"prayer_time_urgency" = "برخیز و ندای نماز را لبیک بگو";
+"prayer_time_blessing" = "هر نمازی که به موقع خوانده شود، هدیه‌ای برای روح توست";
 
 /* Full Screen Notification */
 "Dismiss" = "بستن";
@@ -232,3 +234,34 @@
 "English" = "انگلیسی";
 "العربية" = "عربی";
 "Indonesia" = "اندونزیایی";
+
+/* Notification Testing (DEBUG only) */
+"Test Notifications" = "آزمایش اعلان‌ها";
+"Notification Testing" = "آزمایش اعلان‌ها";
+"Select Prayer" = "انتخاب نماز";
+"Prayer" = "نماز";
+"Full Screen Notification" = "اعلان تمام صفحه";
+"Test Now" = "آزمایش الان";
+"Pre-notify" = "اعلان قبلی";
+"System Notification" = "اعلان سیستم";
+"Test At Time" = "آزمایش در زمان";
+"Test Pre-Notification" = "آزمایش اعلان قبلی";
+"Quick Tests" = "آزمایش‌های سریع";
+"Tips:" = "نکات:";
+"Right-click menu bar icon for quick actions" = "کلیک راست روی آیکون نوار منو برای اقدام سریع";
+"System notifications show snooze options" = "اعلان‌های سیستم گزینه‌های تعویق را نشان می‌دهند";
+"Full screen appears above all windows" = "تمام صفحه بالای همه پنجره‌ها ظاهر می‌شود";
+"Full screen notification triggered" = "اعلان تمام صفحه فعال شد";
+"Full screen pre-notification triggered" = "اعلان قبلی تمام صفحه فعال شد";
+"System notification sent" = "اعلان سیستم ارسال شد";
+"System pre-notification sent" = "اعلان قبلی سیستم ارسال شد";
+"Snooze %@ min" = "تعویق %@ دقیقه";
+"Snoozed reminder" = "یادآوری به تعویق";
+"Show next prayer" = "نمایش نماز بعدی";
+"Refresh prayer times" = "بازخوانی اوقات نماز";
+"Error: %@" = "خطا: %@";
+"Remind me in" = "یادآوری بعد از";
+"%@ min" = "%@ دقیقه";
+"Time remaining" = "زمان باقی‌مانده";
+"Tap anywhere or press Dismiss to close" = "برای بستن هرجایی کلیک کنید یا دکمه بستن را بزنید";
+"Countdown" = "شمارش معکوس";

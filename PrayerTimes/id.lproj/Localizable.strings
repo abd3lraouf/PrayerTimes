@@ -145,6 +145,8 @@
 "prayer_in_minutes_notification" = "Shalat dalam %@ menit";
 "prayer_coming_in_minutes" = "Shalat dalam %@ menit";
 "prayer_time_now" = "Saatnya shalat";
+"prayer_time_urgency" = "Bangkitlah sekarang dan sambut panggilan shalat";
+"prayer_time_blessing" = "Setiap shalat yang dikerjakan tepat waktu adalah hadiah bagi jiwamu";
 
 /* Full Screen Notification */
 "Dismiss" = "Tutup";
@@ -267,3 +269,34 @@
 "English" = "Inggris";
 "العربية" = "Arab";
 "Indonesia" = "Indonesia";
+
+/* Notification Testing (DEBUG only) */
+"Test Notifications" = "Uji Notifikasi";
+"Notification Testing" = "Pengujian Notifikasi";
+"Select Prayer" = "Pilih Waktu Shalat";
+"Prayer" = "Shalat";
+"Full Screen Notification" = "Notifikasi Layar Penuh";
+"Test Now" = "Uji Sekarang";
+"Pre-notify" = "Notifikasi Awal";
+"System Notification" = "Notifikasi Sistem";
+"Test At Time" = "Uji Saat Waktu";
+"Test Pre-Notification" = "Uji Notifikasi Awal";
+"Quick Tests" = "Uji Cepat";
+"Tips:" = "Tips:";
+"Right-click menu bar icon for quick actions" = "Klik kanan ikon menu bar untuk aksi cepat";
+"System notifications show snooze options" = "Notifikasi sistem menampilkan opsi tunda";
+"Full screen appears above all windows" = "Layar penuh muncul di atas semua jendela";
+"Full screen notification triggered" = "Notifikasi layar penuh diaktifkan";
+"Full screen pre-notification triggered" = "Notifikasi awal layar penuh diaktifkan";
+"System notification sent" = "Notifikasi sistem terkirim";
+"System pre-notification sent" = "Notifikasi awal sistem terkirim";
+"Snooze %@ min" = "Tunda %@ mnt";
+"Snoozed reminder" = "Pengingat ditunda";
+"Show next prayer" = "Tampilkan shalat berikutnya";
+"Refresh prayer times" = "Segarkan waktu shalat";
+"Error: %@" = "Kesalahan: %@";
+"Remind me in" = "Ingatkan dalam";
+"%@ min" = "%@ mnt";
+"Time remaining" = "Waktu tersisa";
+"Tap anywhere or press Dismiss to close" = "Ketuk di mana saja atau tekan Tutup untuk menutup";
+"Countdown" = "Hitung mundur";

@@ -145,6 +145,8 @@
 "prayer_in_minutes_notification" = "Prayer in %@ minutes";
 "prayer_coming_in_minutes" = "Prayer in %@ minutes";
 "prayer_time_now" = "It's time for prayer";
+"prayer_time_urgency" = "Rise now and answer the call to prayer";
+"prayer_time_blessing" = "Every prayer offered on time is a gift to your soul";
 
 /* Full Screen Notification */
 "Dismiss" = "Dismiss";
@@ -267,3 +269,33 @@
 "English" = "English";
 "العربية" = "العربية";
 "Indonesia" = "Indonesia";
+
+/* Notification Testing (DEBUG only) */
+"Test Notifications" = "Test Notifications";
+"Notification Testing" = "Notification Testing";
+"Select Prayer" = "Select Prayer";
+"Prayer" = "Prayer";
+"Full Screen Notification" = "Full Screen Notification";
+"Test Now" = "Test Now";
+"Pre-notify" = "Pre-notify";
+"System Notification" = "System Notification";
+"Test At Time" = "Test At Time";
+"Test Pre-Notification" = "Test Pre-Notification";
+"Quick Tests" = "Quick Tests";
+"Tips:" = "Tips:";
+"Right-click menu bar icon for quick actions" = "Right-click menu bar icon for quick actions";
+"System notifications show snooze options" = "System notifications show snooze options";
+"Full screen appears above all windows" = "Full screen appears above all windows";
+"Full screen notification triggered" = "Full screen notification triggered";
+"Full screen pre-notification triggered" = "Full screen pre-notification triggered";
+"System notification sent" = "System notification sent";
+"System pre-notification sent" = "System pre-notification sent";
+"Snooze %@ min" = "Snooze %@ min";
+"Snoozed reminder" = "Snoozed reminder";
+"Show next prayer" = "Show next prayer";
+"Refresh prayer times" = "Refresh prayer times";
+"Remind me in" = "Remind me in";
+"%@ min" = "%@ min";
+"Time remaining" = "Time remaining";
+"Tap anywhere or press Dismiss to close" = "Tap anywhere or press Dismiss to close";
+"Countdown" = "Countdown";

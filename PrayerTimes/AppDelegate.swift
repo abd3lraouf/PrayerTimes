@@ -1,5 +1,3 @@
-// MARK: - GANTI SELURUH FILE: AppDelegate.swift (VERSI FINAL DENGAN KONTROL PENUH)
-
 import SwiftUI
 import Combine
 import NavigationStack
@@ -72,6 +70,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
                 let prayerName = NSLocalizedString("Fajr", comment: "")
                 FullScreenNotificationManager.shared.showFullScreenNotification(
                     prayerName: prayerName,
+                    prayerKey: "Fajr",
                     prayerTime: Date()
                 )
             }
@@ -84,10 +83,85 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         ) { [weak self] _ in
             self?.systemDidWake()
         }
+        
+        // Register notification categories
+        registerNotificationCategories()
+    }
+    
+    // MARK: - Notification Categories
+    
+    private func registerNotificationCategories() {
+        let dismissAction = UNNotificationAction(
+            identifier: "DISMISS_ACTION",
+            title: NSLocalizedString("Dismiss", comment: ""),
+            options: []
+        )
+        
+        let snooze5Action = UNNotificationAction(
+            identifier: "SNOOZE_5",
+            title: String(format: NSLocalizedString("Snooze %@ min", comment: ""), "5"),
+            options: .foreground
+        )
+        
+        let snooze10Action = UNNotificationAction(
+            identifier: "SNOOZE_10",
+            title: String(format: NSLocalizedString("Snooze %@ min", comment: ""), "10"),
+            options: .foreground
+        )
+        
+        let snooze15Action = UNNotificationAction(
+            identifier: "SNOOZE_15",
+            title: String(format: NSLocalizedString("Snooze %@ min", comment: ""), "15"),
+            options: .foreground
+        )
+        
+        let snooze30Action = UNNotificationAction(
+            identifier: "SNOOZE_30",
+            title: String(format: NSLocalizedString("Snooze %@ min", comment: ""), "30"),
+            options: .foreground
+        )
+        
+        let prayerCategory = UNNotificationCategory(
+            identifier: "PRAYER_TIME",
+            actions: [dismissAction, snooze5Action, snooze10Action, snooze15Action, snooze30Action],
+            intentIdentifiers: [],
+            hiddenPreviewsBodyPlaceholder: "",
+            options: [.customDismissAction, .hiddenPreviewsShowTitle]
+        )
+        
+        let prayerPreCategory = UNNotificationCategory(
+            identifier: "PRAYER_PRE",
+            actions: [dismissAction, snooze5Action, snooze10Action, snooze15Action, snooze30Action],
+            intentIdentifiers: [],
+            hiddenPreviewsBodyPlaceholder: "",
+            options: [.customDismissAction, .hiddenPreviewsShowTitle]
+        )
+        
+        let fastingCategory = UNNotificationCategory(
+            identifier: "FASTING_SUHOOR",
+            actions: [dismissAction, snooze5Action, snooze10Action],
+            intentIdentifiers: [],
+            hiddenPreviewsBodyPlaceholder: "",
+            options: [.customDismissAction]
+        )
+        
+        let iftarCategory = UNNotificationCategory(
+            identifier: "FASTING_IFTAR",
+            actions: [dismissAction],
+            intentIdentifiers: [],
+            hiddenPreviewsBodyPlaceholder: "",
+            options: [.customDismissAction]
+        )
+        
+        UNUserNotificationCenter.current().setNotificationCategories([
+            prayerCategory,
+            prayerPreCategory,
+            fastingCategory,
+            iftarCategory
+        ])
     }
     
     private func systemDidWake() {
-        // Tunggu sebentar untuk memastikan koneksi jaringan sudah siap jika diperlukan
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.vm.updatePrayerTimes()
         }
@@ -96,11 +170,78 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     // MARK: - UNUserNotificationCenterDelegate
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.banner, .sound])
+        completionHandler([.banner, .sound, .list, .badge])
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
+        handleNotificationResponse(response, completionHandler: completionHandler)
+    }
+    
+    private func handleNotificationResponse(_ response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
+        defer { completionHandler() }
+        
+        let userInfo = response.notification.request.content.userInfo
+        let actionIdentifier = response.actionIdentifier
+        
+        guard let prayerName = userInfo["prayerName"] as? String else {
+            return
+        }
+        
+        switch actionIdentifier {
+        case UNNotificationDefaultActionIdentifier:
+            // User tapped notification - show fullscreen
+            if let prayerTime = userInfo["prayerTime"] as? Date {
+                DispatchQueue.main.async {
+                    FullScreenNotificationManager.shared.showFullScreenNotification(
+                        prayerName: NSLocalizedString(prayerName, comment: ""),
+                        prayerKey: prayerName,
+                        prayerTime: prayerTime,
+                        isPreNotification: userInfo["isPreNotification"] as? Bool ?? false,
+                        minutesBefore: userInfo["minutesBefore"] as? Int
+                    )
+                }
+            }
+            
+        case "SNOOZE_5":
+            snoozeNotification(prayerName: prayerName, minutes: 5, userInfo: userInfo)
+            
+        case "SNOOZE_10":
+            snoozeNotification(prayerName: prayerName, minutes: 10, userInfo: userInfo)
+            
+        case "SNOOZE_15":
+            snoozeNotification(prayerName: prayerName, minutes: 15, userInfo: userInfo)
+            
+        case "SNOOZE_30":
+            snoozeNotification(prayerName: prayerName, minutes: 30, userInfo: userInfo)
+            
+        case "DISMISS_ACTION":
+            break
+            
+        default:
+            break
+        }
+    }
+    
+    private func snoozeNotification(prayerName: String, minutes: Int, userInfo: [AnyHashable: Any]) {
+        let content = UNMutableNotificationContent()
+        content.title = NSLocalizedString(prayerName, comment: "")
+        content.body = NSLocalizedString("Snoozed reminder", comment: "")
+        content.sound = .default
+        content.userInfo = userInfo
+        content.interruptionLevel = .timeSensitive
+        
+        let trigger = UNTimeIntervalNotificationTrigger(
+            timeInterval: TimeInterval(minutes * 60),
+            repeats: false
+        )
+        
+        let request = UNNotificationRequest(
+            identifier: "\(prayerName)_snooze_\(minutes)_\(UUID().uuidString)",
+            content: content,
+            trigger: trigger
+        )
+        
+        UNUserNotificationCenter.current().add(request)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -134,13 +275,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
     private func setupContextMenu() {
         guard let button = menuBarExtra?.statusItem.button else { return }
         let menu = NSMenu()
+        
+        // Quick action: Show next prayer notification
+        let showNotificationItem = NSMenuItem(title: NSLocalizedString("Show next prayer", comment: ""), action: #selector(showNextPrayerNotification), keyEquivalent: "")
+        showNotificationItem.target = self
+        menu.addItem(showNotificationItem)
+        
+        // Refresh prayer times
+        let refreshItem = NSMenuItem(title: NSLocalizedString("Refresh prayer times", comment: ""), action: #selector(refreshPrayerTimes), keyEquivalent: "r")
+        refreshItem.target = self
+        menu.addItem(refreshItem)
+        
+        menu.addItem(NSMenuItem.separator())
+        
         let welcomeItem = NSMenuItem(title: NSLocalizedString("Show Welcome Window", comment: ""), action: #selector(showOnboardingWindow), keyEquivalent: "")
         welcomeItem.target = self
         menu.addItem(welcomeItem)
         menu.addItem(NSMenuItem.separator())
+        
         let quitItem = NSMenuItem(title: NSLocalizedString("Quit PrayerTimes Pro", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         menu.addItem(quitItem)
         button.menu = menu
+    }
+    
+    @objc func showNextPrayerNotification() {
+        guard let prayerTime = vm.todayTimes[vm.nextPrayerName] else { return }
+        let prayerName = NSLocalizedString(vm.nextPrayerName, comment: "")
+        FullScreenNotificationManager.shared.showFullScreenNotification(
+            prayerName: prayerName,
+            prayerKey: vm.nextPrayerName,
+            prayerTime: prayerTime
+        )
+    }
+    
+    @objc func refreshPrayerTimes() {
+        vm.updatePrayerTimes()
     }
 
     @objc func showOnboardingWindow() {
@@ -152,10 +321,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
 
         let onboardingView = LanguageManagerView(manager: languageManager) {
             OnboardingView()
-                .environmentObject(vm)
-                .environmentObject(vm.notificationSettings)
-                .environmentObject(hijriManager)
-                .environmentObject(fastingManager)
+                .environmentObject(self.vm)
+                .environmentObject(self.vm.notificationSettings)
+                .environmentObject(self.hijriManager)
+                .environmentObject(self.fastingManager)
                 .environmentObject(NavigationModel())
         }
 
@@ -199,14 +368,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject, NSWindowDe
         let shouldShowIcon = vm.alwaysShowMenuBarIcon || isIconOnly
         guard let button = menuBarExtra?.statusItem.button else { return }
         if shouldShowIcon {
-            if let image = NSImage(named: "MenuBarIcon") {
-                image.isTemplate = true
-                image.size = NSSize(width: 16, height: 16)
-                button.image = image
+            if let image = NSImage(systemSymbolName: "moon.stars.fill", accessibilityDescription: "PrayerTimes") {
+                let config = NSImage.SymbolConfiguration(pointSize: 14, weight: .regular)
+                let configured = image.withSymbolConfiguration(config)
+                configured?.isTemplate = true
+                button.image = configured
                 button.imagePosition = .imageLeading
             }
         } else {
             button.image = nil
         }
     }
-}	
+}
