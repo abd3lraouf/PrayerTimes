@@ -144,6 +144,10 @@
 "prayer_in_minutes_notification" = "نماز تا %@ دقیقه دیگر";
 "prayer_coming_in_minutes" = "نماز تا %@ دقیقه دیگر";
 "prayer_time_now" = "وقت نماز فرا رسیده است";
+"suhoor_ends_in_minutes" = "سحری تا %@ دقیقه دیگر تمام می‌شود — آماده نماز صبح شوید";
+"suhoor_ended_prepare_fajr" = "سحری تمام شد — وقت نماز صبح است";
+"iftar_in_minutes" = "افطار تا %@ دقیقه دیگر — آماده نماز مغرب شوید";
+"iftar_time_pray_maghrib" = "وقت افطار است — نماز مغرب بخوانید";
 "prayer_time_urgency" = "برخیز و ندای نماز را لبیک بگو";
 "prayer_time_blessing" = "هر نمازی که به موقع خوانده شود، هدیه‌ای برای روح توست";
 
@@ -215,7 +219,6 @@
 "Taraweeh" = "تراویح";
 "fasting_day_counter" = "روز %@ از %@ — رمضان";
 "last_ten_nights_message" = "این ده شب مبارک آخر است — شب قدر ممکن است در میان آنها باشد";
-"suhoor_ends_in_minutes" = "سحری تا %@ دقیقه دیگر تمام می‌شود";
 "iftar_time_body" = "وقت افطار فرا رسیده است";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";

@@ -145,6 +145,10 @@
 "prayer_in_minutes_notification" = "Shalat dalam %@ menit";
 "prayer_coming_in_minutes" = "Shalat dalam %@ menit";
 "prayer_time_now" = "Saatnya shalat";
+"suhoor_ends_in_minutes" = "Sahur berakhir dalam %@ menit — bersiap untuk Subuh";
+"suhoor_ended_prepare_fajr" = "Sahur telah berakhir — saatnya shalat Subuh";
+"iftar_in_minutes" = "Berbuka dalam %@ menit — bersiap untuk Maghrib";
+"iftar_time_pray_maghrib" = "Saatnya berbuka — shalat Maghrib";
 "prayer_time_urgency" = "Bangkitlah sekarang dan sambut panggilan shalat";
 "prayer_time_blessing" = "Setiap shalat yang dikerjakan tepat waktu adalah hadiah bagi jiwamu";
 
@@ -250,7 +254,6 @@
 "Taraweeh" = "Tarawih";
 "fasting_day_counter" = "Hari %@ dari %@ — Ramadan";
 "last_ten_nights_message" = "Ini adalah 10 malam terakhir yang penuh berkah — Lailatul Qadr mungkin ada di antaranya";
-"suhoor_ends_in_minutes" = "Sahur berakhir dalam %@ menit";
 "iftar_time_body" = "Saatnya berbuka puasa";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";

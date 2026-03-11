@@ -372,6 +372,44 @@ struct FullScreenNotificationView: View {
         return .system(size: size, weight: weight, design: .monospaced)
     }
 
+    // MARK: - Ramadan display text
+
+    /// Title shown on the full-screen notification.
+    /// Ramadan scenes show the related prayer name (Fajr / Maghrib).
+    private static func displayTitle(for data: FullScreenNotificationData) -> String {
+        switch data.prayerKey {
+        case "RamadanSuhoor": return NSLocalizedString("Fajr", comment: "")
+        case "RamadanIftar":  return NSLocalizedString("Maghrib", comment: "")
+        default:              return data.prayerName
+        }
+    }
+
+    /// Subtitle shown below the prayer name.
+    /// Ramadan scenes show a contextual message referencing Suhoor / Iftar.
+    /// Uses Int argument for stringsdict plural rule compatibility.
+    private static func displaySubtitle(for data: FullScreenNotificationData) -> String {
+        switch data.prayerKey {
+        case "RamadanSuhoor":
+            if data.isPreNotification, let minutes = data.minutesBefore {
+                return String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""),
+                              localeFormattedNumber(minutes))
+            }
+            return NSLocalizedString("suhoor_ended_prepare_fajr", comment: "")
+        case "RamadanIftar":
+            if data.isPreNotification, let minutes = data.minutesBefore {
+                return String(format: NSLocalizedString("iftar_in_minutes", comment: ""),
+                              localeFormattedNumber(minutes))
+            }
+            return NSLocalizedString("iftar_time_pray_maghrib", comment: "")
+        default:
+            if data.isPreNotification, let minutes = data.minutesBefore {
+                return String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""),
+                              localeFormattedNumber(minutes))
+            }
+            return NSLocalizedString("prayer_time_now", comment: "")
+        }
+    }
+
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -486,19 +524,14 @@ struct FullScreenNotificationView: View {
             .padding(.bottom, 28)
 
             // Prayer name
-            Text(data.prayerName)
+            Text(Self.displayTitle(for: data))
                 .font(Self.prayerNameFont(size: 52))
                 .foregroundColor(.white)
                 .padding(.bottom, 10)
 
             // Subtitle
             Group {
-                if data.isPreNotification, let minutes = data.minutesBefore {
-                    Text(String(format: NSLocalizedString("prayer_coming_in_minutes", comment: ""),
-                                Self.localeFormattedNumber(minutes)))
-                } else {
-                    Text(NSLocalizedString("prayer_time_now", comment: ""))
-                }
+                Text(Self.displaySubtitle(for: data))
             }
             .font(Self.bodyFont(size: 22, weight: .medium))
             .foregroundColor(.white.opacity(0.65))

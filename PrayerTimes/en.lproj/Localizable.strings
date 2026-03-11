@@ -145,6 +145,10 @@
 "prayer_in_minutes_notification" = "Prayer in %@ minutes";
 "prayer_coming_in_minutes" = "Prayer in %@ minutes";
 "prayer_time_now" = "It's time for prayer";
+"suhoor_ends_in_minutes" = "Suhoor ends in %@ minutes — prepare for Fajr";
+"suhoor_ended_prepare_fajr" = "Suhoor has ended — time for Fajr";
+"iftar_in_minutes" = "Iftar in %@ minutes — prepare for Maghrib";
+"iftar_time_pray_maghrib" = "It's Iftar — time for Maghrib";
 "prayer_time_urgency" = "Rise now and answer the call to prayer";
 "prayer_time_blessing" = "Every prayer offered on time is a gift to your soul";
 
@@ -250,7 +254,6 @@
 "Taraweeh" = "Taraweeh";
 "fasting_day_counter" = "Day %@ of %@ — Ramadan";
 "last_ten_nights_message" = "These are the blessed last 10 nights — Laylat al-Qadr may be among them";
-"suhoor_ends_in_minutes" = "Suhoor ends in %@ minutes";
 "iftar_time_body" = "It's time to break your fast";
 "dua_beginning_fast" = "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ\nWa bisawmi ghadin nawaytu min shahri Ramadan";
 "dua_breaking_fast" = "اللَّهُمَّ إِنِّي لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ\nAllahumma inni laka sumtu wa ala rizqika aftartu";
