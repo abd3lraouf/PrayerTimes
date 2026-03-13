@@ -468,13 +468,26 @@ struct SuhoorCannonSceneView: View {
 
     private let cannonScale: CGFloat = 1.6
 
-    private var cannonBase: CGPoint {
-        CGPoint(x: size.width * 0.68, y: size.height * 0.88)
+    /// RTL: cannon flips to the opposite side and fires the other direction.
+    private var isRTL: Bool {
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        return ["ar", "fa", "ur"].contains(lang)
     }
 
-    private var muzzleTip: CGPoint {
-        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale)
+    /// LTR: cannon on right, fires left. RTL: cannon on left, fires right.
+    private var cannonBase: CGPoint {
+        let xFrac: CGFloat = isRTL ? 0.32 : 0.68
+        return CGPoint(x: size.width * xFrac, y: size.height * 0.88)
     }
+
+    private var isMirrored: Bool { isRTL }
+
+    private var muzzleTip: CGPoint {
+        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale, mirrored: isMirrored)
+    }
+
+    /// SpriteKit fire angle: 145° = upper-left, 35° = upper-right
+    private var fireAngle: Double { isRTL ? 35 : 145 }
 
     var body: some View {
         ZStack {
@@ -550,9 +563,16 @@ struct SuhoorCannonSceneView: View {
                 )
 
                 RamadanCannon(
-                    color: Color(red: 0.28, green: 0.24, blue: 0.38),
-                    highlightColor: Color(red: 0.50, green: 0.46, blue: 0.65),
-                    scale: cannonScale, position: cannonBase
+                    scale: cannonScale, position: cannonBase,
+                    mirrored: isMirrored
+                )
+
+                CannonballsPile(
+                    scale: cannonScale,
+                    position: CGPoint(
+                        x: cannonBase.x + (isRTL ? 1 : -1) * 80 * cannonScale,
+                        y: cannonBase.y
+                    )
                 )
             }
             .drawingGroup()
@@ -560,10 +580,11 @@ struct SuhoorCannonSceneView: View {
             // Layer 8: SpriteKit cannon fire (own Metal pass)
             CannonFireEffect(
                 muzzlePosition: muzzleTip,
-                fireAngle: 145,
+                fireAngle: fireAngle,
                 flashColor: Color(red: 1.0, green: 0.85, blue: 0.3),
                 smokeColor: Color(red: 0.5, green: 0.5, blue: 0.6),
-                size: size
+                size: size,
+                groundFraction: 0.93
             )
         }
     }
@@ -580,13 +601,25 @@ struct IftarCannonSceneView: View {
 
     private let cannonScale: CGFloat = 1.7
 
-    private var cannonBase: CGPoint {
-        CGPoint(x: size.width * 0.35, y: size.height * 0.88)
+    private var isRTL: Bool {
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        return ["ar", "fa", "ur"].contains(lang)
     }
 
-    private var muzzleTip: CGPoint {
-        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale)
+    /// LTR: cannon on left, fires right (mirrored). RTL: cannon on right, fires left.
+    private var cannonBase: CGPoint {
+        let xFrac: CGFloat = isRTL ? 0.65 : 0.35
+        return CGPoint(x: size.width * xFrac, y: size.height * 0.88)
     }
+
+    /// LTR: mirrored (fires right). RTL: normal (fires left).
+    private var isMirrored: Bool { !isRTL }
+
+    private var muzzleTip: CGPoint {
+        RamadanCannon.muzzleTip(base: cannonBase, scale: cannonScale, mirrored: isMirrored)
+    }
+
+    private var fireAngle: Double { isRTL ? 145 : 35 }
 
     var body: some View {
         ZStack {
@@ -675,9 +708,16 @@ struct IftarCannonSceneView: View {
                 )
 
                 RamadanCannon(
-                    color: Color(red: 0.30, green: 0.18, blue: 0.14),
-                    highlightColor: Color(red: 0.55, green: 0.38, blue: 0.28),
-                    scale: cannonScale, position: cannonBase
+                    scale: cannonScale, position: cannonBase,
+                    mirrored: isMirrored
+                )
+
+                CannonballsPile(
+                    scale: cannonScale,
+                    position: CGPoint(
+                        x: cannonBase.x + (isRTL ? -1 : 1) * 80 * cannonScale,
+                        y: cannonBase.y
+                    )
                 )
             }
             .drawingGroup()
@@ -685,10 +725,11 @@ struct IftarCannonSceneView: View {
             // Layer 9: SpriteKit cannon fire (own Metal pass)
             CannonFireEffect(
                 muzzlePosition: muzzleTip,
-                fireAngle: 145,
+                fireAngle: fireAngle,
                 flashColor: Color(red: 1.0, green: 0.65, blue: 0.2),
                 smokeColor: Color(red: 0.6, green: 0.35, blue: 0.15),
-                size: size
+                size: size,
+                groundFraction: 0.93
             )
         }
     }

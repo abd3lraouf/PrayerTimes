@@ -1,8 +1,7 @@
-// MARK: - BUAT FILE BARU: PrayerTimes/main.swift
-
 import AppKit
 
-// Titik masuk utama aplikasi kita.
+_ = AppLogger.shared
+
 let delegate = AppDelegate()
 NSApplication.shared.delegate = delegate
 _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)

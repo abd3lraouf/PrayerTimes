@@ -78,10 +78,14 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
     private var timer: Timer?
     private var locationTimeZone: TimeZone = .current { didSet { _cachedDateFormatter = nil } }
     private var locationDisplayTimer: Timer?
+    private var midnightTimer: Timer?
     private var _cachedDateFormatter: DateFormatter?
     private var _cachedNumberFormatter: NumberFormatter?
     private var lastCalculationDate: Date?
 
+
+    private var popoverObserver: NSObjectProtocol?
+    private var defaultsObserver: NSObjectProtocol?
 
     override init() {
         let savedMethodName = UserDefaults.standard.string(forKey: StorageKeys.calculationMethodName) ?? "Muslim World League"
@@ -94,10 +98,10 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
         startTimer()
         setupSearchPublisher()
         setupNotificationObserver()
-        NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
+        popoverObserver = NotificationCenter.default.addObserver(forName: .popoverDidOpen, object: nil, queue: .main) { [weak self] _ in
             self?.updateCountdown()
         }
-        NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
+        defaultsObserver = NotificationCenter.default.addObserver(forName: UserDefaults.didChangeNotification, object: nil, queue: .main) { [weak self] _ in
             guard let self = self else { return }
             let currentNumeralLocale = self.languageManager.numeralLocale.identifier
             if self._cachedNumberFormatter?.locale.identifier != currentNumeralLocale {
@@ -106,6 +110,14 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
                 self.updateCountdown()
             }
         }
+    }
+
+    deinit {
+        timer?.invalidate()
+        midnightTimer?.invalidate()
+        locationDisplayTimer?.invalidate()
+        if let obs = popoverObserver { NotificationCenter.default.removeObserver(obs) }
+        if let obs = defaultsObserver { NotificationCenter.default.removeObserver(obs) }
     }
     
     func forwardAnimation() -> NavigationAnimation? {
@@ -505,7 +517,7 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
             }
         } else {
             countdown = NSLocalizedString("time_now", comment: "")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { self.updateNextPrayer() }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in self?.updateNextPrayer() }
         }
         updateMenuTitle(now: now)
     }
@@ -677,14 +689,32 @@ class PrayerTimeViewModel: NSObject, ObservableObject, CLLocationManagerDelegate
 
             if let lastDate = self.lastCalculationDate,
                !Calendar.current.isDate(lastDate, inSameDayAs: Date()) {
-                self.fastingManager?.checkAndAutoEnable()
-                self.updatePrayerTimes()
+                self.handleDayChange()
             } else {
                 self.updateCountdown()
             }
         }
         // Ensure timer fires even during menu interaction / scrolling
         RunLoop.main.add(timer!, forMode: .common)
+        scheduleMidnightTimer()
+    }
+
+    private func scheduleMidnightTimer() {
+        midnightTimer?.invalidate()
+        guard let midnight = Calendar.current.nextDate(after: Date(), matching: DateComponents(hour: 0, minute: 0, second: 1), matchingPolicy: .nextTime) else { return }
+        midnightTimer = Timer(fireAt: midnight, interval: 0, target: self, selector: #selector(midnightFired), userInfo: nil, repeats: false)
+        RunLoop.main.add(midnightTimer!, forMode: .common)
+    }
+
+    @objc private func midnightFired() {
+        log("Midnight rollover - recalculating prayer times", level: .info, category: "PrayerTimes")
+        handleDayChange()
+        scheduleMidnightTimer()
+    }
+
+    private func handleDayChange() {
+        fastingManager?.checkAndAutoEnable()
+        updatePrayerTimes()
     }
     
     private func handleAuthorizationStatus(status: CLAuthorizationStatus) {

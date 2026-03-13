@@ -3,6 +3,7 @@ import UserNotifications
 
 struct ScheduledFullScreenNotification {
     let prayerName: String
+    let prayerTime: Date
     let fireDate: Date
     let isPreNotification: Bool
     let minutesBefore: Int?
@@ -125,6 +126,7 @@ struct NotificationManager {
             case .atPrayerTime:
                 scheduleFullScreenTimer(
                     prayerName: prayerName,
+                    prayerTime: prayerTime,
                     fireDate: prayerTime,
                     isPreNotification: false,
                     minutesBefore: nil
@@ -135,6 +137,7 @@ struct NotificationManager {
                    preTime > Date() {
                     scheduleFullScreenTimer(
                         prayerName: prayerName,
+                        prayerTime: prayerTime,
                         fireDate: preTime,
                         isPreNotification: true,
                         minutesBefore: prayerSettings.prePrayerMinutes.rawValue
@@ -144,6 +147,7 @@ struct NotificationManager {
             case .both:
                 scheduleFullScreenTimer(
                     prayerName: prayerName,
+                    prayerTime: prayerTime,
                     fireDate: prayerTime,
                     isPreNotification: false,
                     minutesBefore: nil
@@ -152,6 +156,7 @@ struct NotificationManager {
                    preTime > Date() {
                     scheduleFullScreenTimer(
                         prayerName: prayerName,
+                        prayerTime: prayerTime,
                         fireDate: preTime,
                         isPreNotification: true,
                         minutesBefore: prayerSettings.prePrayerMinutes.rawValue
@@ -220,6 +225,7 @@ struct NotificationManager {
 
     private static func scheduleFullScreenTimer(
         prayerName: String,
+        prayerTime: Date,
         fireDate: Date,
         isPreNotification: Bool,
         minutesBefore: Int?
@@ -228,6 +234,7 @@ struct NotificationManager {
 
         let notification = ScheduledFullScreenNotification(
             prayerName: prayerName,
+            prayerTime: prayerTime,
             fireDate: fireDate,
             isPreNotification: isPreNotification,
             minutesBefore: minutesBefore
@@ -258,7 +265,7 @@ struct NotificationManager {
                 FullScreenNotificationManager.shared.showFullScreenNotification(
                     prayerName: displayName,
                     prayerKey: n.prayerName,
-                    prayerTime: n.fireDate,
+                    prayerTime: n.prayerTime,
                     isPreNotification: n.isPreNotification,
                     minutesBefore: n.minutesBefore
                 )
@@ -304,13 +311,14 @@ struct NotificationManager {
                 scheduleSimpleNotification(
                     id: "fasting_suhoor_pre",
                     title: NSLocalizedString("Suhoor", comment: ""),
-                    body: String(format: NSLocalizedString("suhoor_ends_in_minutes", comment: ""), suhoorMinutes),
+                    body: Self.localizedPluralString("suhoor_ends_in_minutes", count: suhoorMinutes),
                     at: preTime
                 )
                 // Full-screen Ramadan cannon notification for Suhoor
                 if suhoorFullScreen {
                     scheduleFullScreenTimer(
                         prayerName: "RamadanSuhoor",
+                        prayerTime: suhoor,
                         fireDate: preTime,
                         isPreNotification: true,
                         minutesBefore: suhoorMinutes
@@ -343,6 +351,7 @@ struct NotificationManager {
             if iftarFullScreen {
                 scheduleFullScreenTimer(
                     prayerName: "RamadanIftar",
+                    prayerTime: maghrib,
                     fireDate: maghrib,
                     isPreNotification: false,
                     minutesBefore: nil
@@ -370,6 +379,30 @@ struct NotificationManager {
                 at: taraweeh
             )
         }
+    }
+
+    /// Resolve a stringsdict plural string with the correct language bundle and locale-aware digits.
+    private static func localizedPluralString(_ key: String, count: Int) -> String {
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        let bundle: Bundle
+        if let path = Bundle.main.path(forResource: lang, ofType: "lproj"),
+           let langBundle = Bundle(path: path) {
+            bundle = langBundle
+        } else {
+            bundle = Bundle.main
+        }
+        let format = bundle.localizedString(forKey: key, value: nil, table: nil)
+
+        let useNative = UserDefaults.standard.object(forKey: StorageKeys.useNativeNumerals) as? Bool ?? true
+        let locale: Locale
+        if LanguageManager.nativeNumeralLanguages.contains(lang) && !useNative {
+            locale = Locale(identifier: "en")
+        } else if let nativeId = ["ar": "ar@numbers=arab", "fa": "fa", "ur": "ur@numbers=arabext"][lang] {
+            locale = Locale(identifier: nativeId)
+        } else {
+            locale = Locale(identifier: lang)
+        }
+        return String(format: format, locale: locale, count)
     }
 
     private static func scheduleSimpleNotification(id: String, title: String, body: String, at date: Date) {
@@ -411,65 +444,66 @@ struct NotificationManager {
     static func scheduleIslamicEventNotifications(hijriManager: HijriCalendarManager) {
         guard UserDefaults.standard.bool(forKey: StorageKeys.islamicEventNotifications) else { return }
 
-        cancelIslamicEventNotifications()
+        cancelIslamicEventNotifications {
+            let today = Date()
+            let todayComponents = hijriManager.hijriDate(from: today)
+            guard let currentMonth = todayComponents.month, let currentYear = todayComponents.year else { return }
 
-        let today = Date()
-        let todayComponents = hijriManager.hijriDate(from: today)
-        guard let currentMonth = todayComponents.month, let currentYear = todayComponents.year else { return }
+            // Schedule for remaining events this month and all of next month
+            let monthsToCheck: [(Int, Int)] = {
+                var result = [(currentMonth, currentYear)]
+                let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
+                let nextYear = currentMonth == 12 ? currentYear + 1 : currentYear
+                result.append((nextMonth, nextYear))
+                return result
+            }()
 
-        // Schedule for remaining events this month and all of next month
-        let monthsToCheck: [(Int, Int)] = {
-            var result = [(currentMonth, currentYear)]
-            let nextMonth = currentMonth == 12 ? 1 : currentMonth + 1
-            let nextYear = currentMonth == 12 ? currentYear + 1 : currentYear
-            result.append((nextMonth, nextYear))
-            return result
-        }()
+            for (month, year) in monthsToCheck {
+                let events = IslamicEvents.events(forMonth: month)
+                for event in events {
+                    var eventComponents = DateComponents()
+                    eventComponents.month = month
+                    eventComponents.day = event.day
+                    eventComponents.year = year
+                    let eventGregorianDate = hijriManager.gregorianDate(fromHijri: eventComponents)
 
-        for (month, year) in monthsToCheck {
-            let events = IslamicEvents.events(forMonth: month)
-            for event in events {
-                var eventComponents = DateComponents()
-                eventComponents.month = month
-                eventComponents.day = event.day
-                eventComponents.year = year
-                let eventGregorianDate = hijriManager.gregorianDate(fromHijri: eventComponents)
+                    // Schedule notification for the day before at 8 PM
+                    guard let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: eventGregorianDate) else { continue }
+                    guard dayBefore > today else { continue }
 
-                // Schedule notification for the day before at 8 PM
-                guard let dayBefore = Calendar.current.date(byAdding: .day, value: -1, to: eventGregorianDate) else { continue }
-                guard dayBefore > today else { continue }
+                    var triggerComponents = Calendar.current.dateComponents([.year, .month, .day], from: dayBefore)
+                    triggerComponents.hour = 20
+                    triggerComponents.minute = 0
 
-                var triggerComponents = Calendar.current.dateComponents([.year, .month, .day], from: dayBefore)
-                triggerComponents.hour = 20
-                triggerComponents.minute = 0
+                    let content = UNMutableNotificationContent()
+                    content.title = event.localizedName
+                    content.body = String(format: NSLocalizedString("event_tomorrow_notification", comment: ""), event.localizedName)
+                    content.sound = .default
+                    content.userInfo = ["isIslamicEvent": true, "eventKey": event.nameKey]
 
-                let content = UNMutableNotificationContent()
-                content.title = event.localizedName
-                content.body = String(format: NSLocalizedString("event_tomorrow_notification", comment: ""), event.localizedName)
-                content.sound = .default
-                content.userInfo = ["isIslamicEvent": true, "eventKey": event.nameKey]
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
+                    let identifier = "islamic_event_\(event.nameKey)_\(month)_\(event.day)_\(year)"
+                    let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
 
-                let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: false)
-                let identifier = "islamic_event_\(event.nameKey)_\(month)_\(event.day)_\(year)"
-                let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
-
-                UNUserNotificationCenter.current().add(request) { error in
-                    #if DEBUG
-                    if let error = error {
-                        print("Failed to schedule Islamic event notification: \(error.localizedDescription)")
-                    } else {
-                        print("Scheduled Islamic event notification: \(event.nameKey) for \(dayBefore)")
+                    UNUserNotificationCenter.current().add(request) { error in
+                        #if DEBUG
+                        if let error = error {
+                            print("Failed to schedule Islamic event notification: \(error.localizedDescription)")
+                        } else {
+                            print("Scheduled Islamic event notification: \(event.nameKey) for \(dayBefore)")
+                        }
+                        #endif
                     }
-                    #endif
                 }
             }
         }
     }
 
-    static func cancelIslamicEventNotifications() {
+    static func cancelIslamicEventNotifications(completion: (() -> Void)? = nil) {
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in
             let eventIds = requests.filter { $0.identifier.hasPrefix("islamic_event_") }.map { $0.identifier }
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: eventIds)
+            DispatchQueue.main.async { completion?() }
         }
     }
     

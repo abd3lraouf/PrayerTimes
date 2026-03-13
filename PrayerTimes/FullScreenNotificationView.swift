@@ -115,6 +115,7 @@ class FullScreenNotificationManager: NSObject, ObservableObject {
 
     private var window: NSWindow?
     private var pendingNotification: FullScreenNotificationData?
+    private var snoozeWorkItem: DispatchWorkItem?
     private var isScreenLocked = false
     private var observersSetup = false
 
@@ -196,15 +197,19 @@ class FullScreenNotificationManager: NSObject, ObservableObject {
     func snooze(minutes: Int) {
         guard let d = notificationData else { return }
         dismissFullScreenNotification()
-        DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(minutes * 60)) { [weak self] in
+        let workItem = DispatchWorkItem { [weak self] in
             self?.showFullScreenNotification(
                 prayerName: d.prayerName, prayerKey: d.prayerKey,
                 prayerTime: d.prayerTime, isPreNotification: d.isPreNotification,
                 minutesBefore: d.minutesBefore)
         }
+        snoozeWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + TimeInterval(minutes * 60), execute: workItem)
     }
 
     func dismissFullScreenNotification() {
+        snoozeWorkItem?.cancel()
+        snoozeWorkItem = nil
         let doClose = {
             #if DEBUG
             print("[FullScreen] dismissFullScreenNotification — isShowing=\(self.isShowing), window=\(String(describing: self.window))")
@@ -388,13 +393,27 @@ struct FullScreenNotificationView: View {
     /// Subtitle shown below the prayer name.
     /// Ramadan scenes show a contextual message referencing Suhoor / Iftar.
     /// Uses Int argument for stringsdict plural rule compatibility.
-    /// Format a stringsdict plural string with an Int, using the app's numeral locale.
-    /// This lets stringsdict pick the correct plural form (zero/one/two/few/many/other)
-    /// while `%d` renders in locale-aware digits (e.g. Arabic-Indic ٥ instead of 5).
+    /// Resolve a stringsdict plural string with correct Arabic plural forms
+    /// (zero/one/two/few/many/other) and locale-aware digits.
+    ///
+    /// Uses the language-specific bundle directly so that `%#@variable@` tokens
+    /// resolve against the stringsdict plural definitions, not just the flat
+    /// `.strings` fallback.
     private static func localizedPluralString(_ key: String, count: Int) -> String {
-        String(format: NSLocalizedString(key, comment: ""),
-               locale: numeralLocale,
-               count)
+        let lang = UserDefaults.standard.string(forKey: StorageKeys.selectedLanguage) ?? "en"
+        // Get the language-specific bundle that contains the .stringsdict
+        let bundle: Bundle
+        if let path = Bundle.main.path(forResource: lang, ofType: "lproj"),
+           let langBundle = Bundle(path: path) {
+            bundle = langBundle
+        } else {
+            bundle = Bundle.main
+        }
+        // NSLocalizedString from the correct bundle resolves the stringsdict format key
+        let format = bundle.localizedString(forKey: key, value: nil, table: nil)
+        // String(format:locale:) resolves %#@variable@ plural tokens using the
+        // locale's plural rules AND renders %d in locale-aware numerals
+        return String(format: format, locale: numeralLocale, count)
     }
 
     private static func displaySubtitle(for data: FullScreenNotificationData) -> String {

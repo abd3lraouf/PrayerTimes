@@ -406,11 +406,13 @@ final class ScheduledFullScreenNotificationTests: XCTestCase {
         let date = Date().addingTimeInterval(300)
         let notification = ScheduledFullScreenNotification(
             prayerName: "Dhuhr",
+            prayerTime: date,
             fireDate: date,
             isPreNotification: false,
             minutesBefore: nil
         )
         XCTAssertEqual(notification.prayerName, "Dhuhr")
+        XCTAssertEqual(notification.prayerTime, date)
         XCTAssertEqual(notification.fireDate, date)
         XCTAssertFalse(notification.isPreNotification)
         XCTAssertNil(notification.minutesBefore)
@@ -418,22 +420,27 @@ final class ScheduledFullScreenNotificationTests: XCTestCase {
     }
 
     func testScheduledNotificationPreConstruction() {
-        let date = Date().addingTimeInterval(600)
+        let prayerDate = Date().addingTimeInterval(600)
+        let fireDate = Date().addingTimeInterval(0)
         let notification = ScheduledFullScreenNotification(
             prayerName: "Asr",
-            fireDate: date,
+            prayerTime: prayerDate,
+            fireDate: fireDate,
             isPreNotification: true,
             minutesBefore: 10
         )
         XCTAssertTrue(notification.isPreNotification)
+        XCTAssertEqual(notification.prayerTime, prayerDate)
         XCTAssertEqual(notification.minutesBefore, 10)
         XCTAssertFalse(notification.hasFired)
     }
 
     func testHasFiredMutation() {
+        let date = Date().addingTimeInterval(10)
         var notification = ScheduledFullScreenNotification(
             prayerName: "Maghrib",
-            fireDate: Date().addingTimeInterval(10),
+            prayerTime: date,
+            fireDate: date,
             isPreNotification: false,
             minutesBefore: nil
         )

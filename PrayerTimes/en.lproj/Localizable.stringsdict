@@ -21,7 +21,23 @@
     <key>suhoor_ends_in_minutes</key>
     <dict>
         <key>NSStringLocalizedFormatKey</key>
-        <string>Suhoor ends in %#@minutes@</string>
+        <string>Suhoor ends in %#@minutes@ — prepare for Fajr</string>
+        <key>minutes</key>
+        <dict>
+            <key>NSStringFormatSpecTypeKey</key>
+            <string>NSStringPluralRuleType</string>
+            <key>NSStringFormatValueTypeKey</key>
+            <string>d</string>
+            <key>one</key>
+            <string>%d minute</string>
+            <key>other</key>
+            <string>%d minutes</string>
+        </dict>
+    </dict>
+    <key>iftar_in_minutes</key>
+    <dict>
+        <key>NSStringLocalizedFormatKey</key>
+        <string>Iftar in %#@minutes@ — prepare for Maghrib</string>
         <key>minutes</key>
         <dict>
             <key>NSStringFormatSpecTypeKey</key>

@@ -33,6 +33,7 @@
 		CC786E652E638353007299F3 /* PrayerTimesCalculationMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E642E638353007299F3 /* PrayerTimesCalculationMethod.swift */; };
 		CC786E672E638425007299F3 /* LocationSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E662E638425007299F3 /* LocationSearchResult.swift */; };
 		CC786E6C2E63B1CB007299F3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CC786E6E2E63B1CB007299F3 /* Localizable.strings */; };
+		AA111111AAAA000000000001 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = AA111111AAAA000000000004 /* Localizable.stringsdict */; };
 		CC786E722E63BB26007299F3 /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E712E63BB26007299F3 /* LanguageManager.swift */; };
 		CC786E742E63BD15007299F3 /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC786E732E63BD15007299F3 /* VisualEffectView.swift */; };
 		CC969C782E60857A00C8630A /* PrayerTimesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC969C772E60857A00C8630A /* PrayerTimesApp.swift */; };
@@ -80,6 +81,7 @@
 		F45FA1642F5B512200C702DC /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */; };
 		FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45460CFA1A7D8CAF502DB1EE /* HijriCalendarSettingsView.swift */; };
 		A0B27A1AD18C4FE6B277241E /* NotificationTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */; };
+		AA11BB22CC33DD44EE55FF66 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA11BB22CC33DD44EE55FF67 /* AppLogger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +137,8 @@
 		CC786E642E638353007299F3 /* PrayerTimesCalculationMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerTimesCalculationMethod.swift; sourceTree = "<group>"; };
 		CC786E662E638425007299F3 /* LocationSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResult.swift; sourceTree = "<group>"; };
 		CC786E6D2E63B1CB007299F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		AA111111AAAA000000000002 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		AA111111AAAA000000000003 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ar; path = ar.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CC786E6F2E63B20E007299F3 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC786E702E63B21D007299F3 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CC786E712E63BB26007299F3 /* LanguageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageManager.swift; sourceTree = "<group>"; };
@@ -186,9 +190,10 @@
 		F45FA15E2F5B512200C702DC /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		F45FA15F2F5B512200C702DC /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
 		F45FA1602F5B512200C702DC /* SystemSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSettingsView.swift; sourceTree = "<group>"; };
+		AA11BB22CC33DD44EE55FF67 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-		6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTestView.swift; sourceTree = "<group>"; };
 /* Begin PBXFrameworksBuildPhase section */
 		68ECB7F49EA4DBB967D307B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -307,6 +312,7 @@
 				CC786E642E638353007299F3 /* PrayerTimesCalculationMethod.swift */,
 				CC786E662E638425007299F3 /* LocationSearchResult.swift */,
 				CC786E6E2E63B1CB007299F3 /* Localizable.strings */,
+				AA111111AAAA000000000004 /* Localizable.stringsdict */,
 				CC786E732E63BD15007299F3 /* VisualEffectView.swift */,
 				CC07FC5F2E63FD5800924451 /* LocationAndCalcSettingsView.swift */,
 				CCE079702E6438100026054C /* main.swift */,
@@ -330,6 +336,7 @@
 				43E050B467AE13BA8195B50C /* IslamicEvents.swift */,
 				E9270E59ADC4AAEA6FD440BB /* Fonts */,
 				6EAE68997E9F4FC98D6949CB /* NotificationTestView.swift */,
+				AA11BB22CC33DD44EE55FF67 /* AppLogger.swift */,
 			);
 			path = PrayerTimes;
 			sourceTree = "<group>";
@@ -532,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC786E6C2E63B1CB007299F3 /* Localizable.strings in Resources */,
+				AA111111AAAA000000000001 /* Localizable.stringsdict in Resources */,
 				CC786E5D2E636A58007299F3 /* timezones.json in Resources */,
 				CC969C7F2E60857D00C8630A /* Preview Assets.xcassets in Resources */,
 				CC969C7C2E60857D00C8630A /* Assets.xcassets in Resources */,
@@ -633,6 +641,7 @@
 				FB6432CE2670491599845F1B /* HijriCalendarSettingsView.swift in Sources */,
 				016C6E29FE6809424777457A /* IslamicEvents.swift in Sources */,
 				A0B27A1AD18C4FE6B277241E /* NotificationTestView.swift in Sources */,
+				AA11BB22CC33DD44EE55FF66 /* AppLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -688,6 +697,15 @@
 				CCBD46F86A2CC54DE3B21A4D /* ur */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		AA111111AAAA000000000004 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA111111AAAA000000000002 /* en */,
+				AA111111AAAA000000000003 /* ar */,
+			);
+			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -855,7 +873,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -884,7 +902,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -902,7 +920,7 @@
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -921,7 +939,7 @@
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -938,7 +956,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -955,7 +973,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5F97S3Q2DP;
 				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 2.8.1;
+				MARKETING_VERSION = 2.9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abd3lraouf.PrayerTimesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
